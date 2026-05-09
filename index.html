@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会穿 · AI 男性穿搭助手</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7f5f0;--card:#fff;--ink:#1a1a1a;--muted:#6b6b6b;--border:rgba(0,0,0,0.09);--safe-bg:#e8f5ee;--safe-c:#1d6b44;--tag-bg:#f0ede8;--accent:#c8a96e;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+  header{padding:32px 24px 20px;max-width:980px;margin:0 auto;display:flex;align-items:baseline;gap:12px;}
+  .logo{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;}
+  .logo-sub{font-size:13px;color:var(--muted);}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px 60px;}
+  .card{background:var(--card);border-radius:16px;border:1px solid var(--border);}
+  .form-card{padding:28px 32px;}
+
+  /* 分区标题 */
+  .section-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.8px;margin-bottom:14px;text-transform:uppercase;}
+
+  /* 字段网格 */
+  .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;}
+  .fields-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .fields-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+  .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:500;letter-spacing:.3px;}
+  .field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s;height:40px;}
+  .field textarea{height:72px;padding:10px 12px;resize:none;line-height:1.5;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);}
+
+  /* API Key 区 */
+  .api-section{background:var(--tag-bg);border-radius:12px;padding:16px;margin-bottom:20px;}
+  .api-section-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:10px;}
+  .api-row{display:flex;gap:10px;align-items:center;}
+  .api-input{flex:1;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:12px;font-family:monospace;background:var(--card);color:var(--ink);outline:none;}
+  .api-input:focus{border-color:var(--ink);}
+  .api-hint{font-size:11px;color:var(--muted);margin-top:6px;}
+  .api-hint a{color:var(--ink);}
+
+  /* 预算 */
+  .budget-section{margin-bottom:20px;}
+  .budget-total-bar{display:flex;align-items:center;justify-content:space-between;background:var(--tag-bg);border-radius:10px;padding:10px 16px;margin-bottom:14px;}
+  .budget-total-label{font-size:12px;color:var(--muted);}
+  .budget-total-value{font-size:18px;font-weight:700;font-family:'Noto Serif SC',serif;}
+  .budget-sliders{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .budget-slider-item{background:var(--bg);border-radius:12px;padding:12px;}
+  .slider-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .slider-label{font-size:11px;color:var(--muted);font-weight:500;}
+  .slider-value{font-size:14px;font-weight:700;font-family:'Noto Serif SC',serif;}
+  input[type=range]{width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;-webkit-appearance:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--ink);cursor:pointer;}
+  .slider-range{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;}
+
+  .btn{width:100%;height:48px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;letter-spacing:1px;transition:opacity .15s;}
+  .btn:hover{opacity:.85;}.btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* AI 推荐状态 */
+  .ai-status{display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-top:20px;text-align:center;}
+  .ai-status.show{display:block;}
+  .ai-status-icon{font-size:28px;margin-bottom:10px;}
+  .ai-status-text{font-size:14px;color:var(--muted);}
+  .ai-thinking{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--ink);animation:bounce 1.2s infinite;}
+  .dot:nth-child(2){animation-delay:.2s;}
+  .dot:nth-child(3){animation-delay:.4s;}
+  @keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+  /* 结果 */
+  .result{display:none;margin-top:20px;}.result.show{display:block;}
+  .ai-summary{background:linear-gradient(135deg,#1a1a1a,#333);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+  .ai-summary-title{font-size:12px;opacity:.6;letter-spacing:.5px;margin-bottom:8px;}
+  .ai-summary-text{font-size:14px;line-height:1.7;opacity:.9;}
+
+  .meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .badge{display:inline-flex;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;}
+  .badge.dark{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .tips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+  .tip{background:var(--tag-bg);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--muted);}
+  .section-label{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:14px;}
+
+  /* 套装卡片 */
+  .outfit{margin-bottom:20px;}
+  .outfit-head{padding:16px 24px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .outfit-num{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--muted);margin-right:8px;}
+  .outfit-name{font-weight:500;font-size:15px;}
+  .safe-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;background:var(--safe-bg);color:var(--safe-c);}
+  .outfit-reason{padding:10px 24px 12px;font-size:13px;color:var(--muted);line-height:1.7;border-bottom:1px solid var(--border);}
+  .items{display:grid;grid-template-columns:repeat(3,1fr);}
+  .item{padding:18px 14px;border-right:1px solid var(--border);text-align:center;}
+  .item:last-child{border-right:none;}
+  .img-box{width:110px;height:110px;border-radius:12px;margin:0 auto 10px;overflow:hidden;background:#f8f8f8;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;}
+  .img-box img{width:100%;height:100%;object-fit:contain;transition:transform .2s;}
+  .img-box img:hover{transform:scale(1.06);}
+  .item-cat{font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:500;letter-spacing:.5px;}
+  .item-name{font-size:12px;font-weight:500;margin-bottom:2px;line-height:1.4;}
+  .item-brand{font-size:11px;color:var(--muted);margin-bottom:4px;}
+  .item-price{font-size:16px;font-weight:700;margin-bottom:9px;font-family:'Noto Serif SC',serif;}
+  .item-price .cur{font-size:11px;font-weight:400;color:var(--muted);}
+  .buy-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:var(--ink);color:#fff;border-radius:20px;font-size:11px;font-weight:500;text-decoration:none;transition:opacity .15s;}
+  .buy-btn:hover{opacity:.78;}
+  .outfit-foot{padding:12px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:0 0 16px 16px;}
+  .foot-label{font-size:12px;color:var(--muted);}
+  .foot-right{display:flex;align-items:center;gap:12px;}
+  .foot-budget{font-size:11px;color:var(--muted);}
+  .foot-price{font-size:18px;font-weight:700;font-family:'Noto Serif SC',serif;}
+  .foot-price.over{color:#c0392b;}
+
+  /* 试穿 */
+  .tryon-section{padding:28px 32px;margin-top:28px;}
+  .tryon-title{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:700;margin-bottom:8px;}
+  .tryon-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+  .api-tabs{display:flex;gap:8px;margin-bottom:20px;}
+  .api-tab{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;background:var(--bg);}
+  .api-tab.active{border-color:var(--ink);background:var(--ink);color:#fff;}
+  .api-panel{display:none;}.api-panel.active{display:block;}
+  .note-box{font-size:12px;color:var(--muted);background:var(--tag-bg);border-radius:8px;padding:10px 14px;margin-bottom:18px;line-height:1.7;}
+  .note-box a{color:var(--ink);}
+  .input-label{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:6px;}
+  .key-input{width:100%;height:40px;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;font-family:monospace;background:var(--bg);color:var(--ink);outline:none;margin-bottom:4px;}
+  .key-input:focus{border-color:var(--ink);}
+  .key-hint{font-size:11px;color:var(--muted);margin-bottom:16px;}
+  .sel{width:100%;height:42px;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;margin-bottom:14px;}
+  .tryon-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;}
+  .upload-area{border:1.5px dashed var(--border);border-radius:12px;background:var(--bg);padding:16px;text-align:center;cursor:pointer;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:border-color .15s;}
+  .upload-area:hover{border-color:var(--ink);}
+  .upload-area.filled{border-style:solid;border-color:#aaa;}
+  .upload-icon{font-size:26px;}
+  .upload-label{font-size:13px;font-weight:500;}
+  .upload-hint{font-size:11px;color:var(--muted);}
+  .upload-preview{width:100%;height:140px;object-fit:contain;border-radius:8px;display:none;}
+  .upload-input{display:none;}
+  .auto-fill-btn{width:100%;height:38px;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:14px;transition:background .15s;}
+  .auto-fill-btn:hover{background:#ede9e3;}
+  .btn-tryon{width:100%;height:48px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;}
+  .btn-tryon:hover{opacity:.85;}.btn-tryon:disabled{opacity:.4;cursor:not-allowed;}
+  .progress-wrap{display:none;margin-top:18px;}
+  .progress-wrap.show{display:block;}
+  .progress-label{font-size:13px;color:var(--muted);margin-bottom:8px;}
+  .progress-bar-bg{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .progress-bar{height:100%;background:var(--ink);border-radius:3px;width:0%;transition:width .4s;}
+  .progress-status{font-size:12px;color:var(--muted);margin-top:6px;}
+  .tryon-result{display:none;margin-top:22px;}
+  .tryon-result.show{display:block;}
+  .result-label-sm{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:10px;}
+  .result-box{background:var(--bg);border-radius:12px;border:1px solid var(--border);padding:16px;}
+  .compare-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  .compare-item{text-align:center;}
+  .compare-img{width:100%;border-radius:8px;object-fit:contain;max-height:280px;}
+  .compare-caption{font-size:11px;color:var(--muted);margin-top:4px;}
+  .ai-text{font-size:14px;line-height:1.9;white-space:pre-wrap;}
+
+  @media(max-width:640px){
+    .budget-sliders,.fields-3{grid-template-columns:1fr;}
+    .fields-2{grid-template-columns:1fr;}
+    .items{grid-template-columns:1fr;}
+    .item{border-right:none;border-bottom:1px solid var(--border);}
+    .item:last-child{border-bottom:none;}
+    .tryon-grid,.compare-row{grid-template-columns:1fr;}
+    .form-card,.tryon-section{padding:20px;}
+    .api-tabs{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">会穿</span>
+  <span class="logo-sub">AI 男性穿搭助手 · 不踩雷</span>
+</header>
+<div class="wrap" id="app">
+  <div style="text-align:center;padding:60px 0;color:var(--muted)">
+    <div style="width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px"></div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+    加载中…
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DeepSeek API Key（替换这里）
+// ══════════════════════════════════════════════════════
+const DEEPSEEK_API_KEY = 'YOUR_DEEPSEEK_API_KEY_HERE';
+
+// ══════════════════════════════════════════════════════
+// 备用商品数据库（Amazon.ca 联盟链接）
+// ══════════════════════════════════════════════════════
+const FALLBACK_DB = {
+  tops:[
+    {id:'t1',name:'Gildan 重磅纯棉白T恤',brand:'Gildan',price:28,color:'白色',color_tone:'light',img:'https://m.media-amazon.com/images/I/71vs-a2TcQL._AC_UL320_.jpg',buy:'https://amzn.to/4w9HHvw',tags:['basic','casual','clean','minimal','simple'],avoid_body:[]},
+    {id:'t2',name:'Hanes 黑色圆领卫衣',brand:'Hanes',price:45,color:'黑色',color_tone:'dark',img:'https://m.media-amazon.com/images/I/61MqlWHSZTL._AC_UL320_.jpg',buy:'https://amzn.to/3RuXpBt',tags:['casual','basic','clean','street'],avoid_body:[]},
+    {id:'t3',name:'Lacoste 灰色Polo衫',brand:'Lacoste',price:98,color:'浅灰',color_tone:'light',img:'https://m.media-amazon.com/images/I/71oFsNIFHJL._AC_UL320_.jpg',buy:'https://amzn.to/4wiHfen',tags:['smart_casual','clean','korean','preppy'],avoid_body:['偏胖']},
+    {id:'t4',name:'Amazon Essentials 牛津纺白衬衫',brand:'Amazon Essentials',price:35,color:'白色',color_tone:'light',img:'https://m.media-amazon.com/images/I/71yuBFVkKAL._AC_UL320_.jpg',buy:'https://amzn.to/4d9pFRn',tags:['smart_casual','clean','korean','formal','preppy'],avoid_body:[]},
+    {id:'t5',name:'Nautica 藏蓝长袖T恤',brand:'Nautica',price:42,color:'藏蓝',color_tone:'dark',img:'https://m.media-amazon.com/images/I/71ZHXQ3FTML._AC_UL320_.jpg',buy:'https://amzn.to/4dvOR5Y',tags:['casual','clean','basic','preppy'],avoid_body:[]},
+  ],
+  bottoms:[
+    {id:'b1',name:'Haggar 修身直筒卡其裤',brand:'Haggar',price:55,color:'卡其',color_tone:'medium',img:'https://m.media-amazon.com/images/I/61dYhMCJT9L._AC_UL320_.jpg',buy:'https://amzn.to/4f5JL1y',tags:['smart_casual','clean','korean','preppy'],avoid_body:[]},
+    {id:'b2',name:"Levi's 511 修身黑色牛仔裤",brand:"Levi's",price:78,color:'黑色',color_tone:'dark',img:'https://m.media-amazon.com/images/I/51SiF2B9qoL._AC_UL320_.jpg',buy:'https://amzn.to/4tZRfI1',tags:['casual','basic','clean','korean','street'],avoid_body:['偏胖']},
+    {id:'b3',name:"Levi's 514 直筒深蓝牛仔裤",brand:"Levi's",price:72,color:'深蓝',color_tone:'dark',img:'https://m.media-amazon.com/images/I/51MlbUzJEQL._AC_UL320_.jpg',buy:'https://amzn.to/4dxH3kb',tags:['casual','basic','clean','street'],avoid_body:[]},
+    {id:'b4',name:'Amazon Essentials 灰色运动裤',brand:'Amazon Essentials',price:32,color:'灰色',color_tone:'medium',img:'https://m.media-amazon.com/images/I/71q6yFgxEkL._AC_UL320_.jpg',buy:'https://amzn.to/4ngWTTL',tags:['casual','sport','basic','simple'],avoid_body:[]},
+    {id:'b5',name:'Dockers 卡其九分锥形裤',brand:'Dockers',price:58,color:'卡其',color_tone:'medium',img:'https://m.media-amazon.com/images/I/71GhMQAyeyL._AC_UL320_.jpg',buy:'https://amzn.to/3QUYQsU',tags:['smart_casual','korean','clean','preppy'],avoid_body:[]},
+  ],
+  shoes:[
+    {id:'s1',name:'Converse Chuck Taylor 白帆布鞋',brand:'Converse',price:65,color:'白色',color_tone:'light',img:'https://m.media-amazon.com/images/I/71SqInq6EzL._AC_UL320_.jpg',buy:'https://amzn.to/42UMWSn',tags:['basic','casual','clean','korean','minimal','street','preppy'],avoid_body:[]},
+    {id:'s2',name:'New Balance 574 米白复古跑鞋',brand:'New Balance',price:89,color:'米白',color_tone:'light',img:'https://m.media-amazon.com/images/I/71eZwCCKtgL._AC_UL320_.jpg',buy:'https://amzn.to/4ngnMqK',tags:['casual','korean','clean','street'],avoid_body:[]},
+    {id:'s3',name:'Skechers 黑色运动跑鞋',brand:'Skechers',price:72,color:'黑色',color_tone:'dark',img:'https://m.media-amazon.com/images/I/61f0KJVQAZL._AC_UL320_.jpg',buy:'https://amzn.to/4ni4JMJ',tags:['casual','sport','basic','clean'],avoid_body:[]},
+    {id:'s4',name:'Cole Haan 黑色简约乐福鞋',brand:'Cole Haan',price:120,color:'黑色',color_tone:'dark',img:'https://m.media-amazon.com/images/I/61yCLQOgkbL._AC_UL320_.jpg',buy:'https://amzn.to/4djp4gb',tags:['smart_casual','korean','clean','formal','preppy'],avoid_body:[]},
+  ]
+};
+
+let DB = FALLBACK_DB;
+let dataSource = 'fallback';
+
+async function loadProducts(){
+  try{
+    const r = await fetch('./products.json');
+    if(!r.ok) throw new Error('no file');
+    const data = await r.json();
+    const products = data.products||[];
+    if(!products.length) throw new Error('empty');
+    DB = {
+      tops:    products.filter(p=>p.category==='top'),
+      bottoms: products.filter(p=>p.category==='bottom'),
+      shoes:   FALLBACK_DB.shoes
+    };
+    if(!DB.tops.length) DB.tops = FALLBACK_DB.tops;
+    if(!DB.bottoms.length) DB.bottoms = FALLBACK_DB.bottoms;
+    dataSource = 'uniqlo';
+    console.log(`✅ 优衣库数据：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件`);
+  }catch(e){
+    DB = FALLBACK_DB;
+    dataSource = 'fallback';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// 预过滤：在发给 DeepSeek 前先做硬过滤
+// ══════════════════════════════════════════════════════
+function bodyInfo(h,w){
+  const b=+(w/Math.pow(h/100,2)).toFixed(1);
+  if(b<18.5)return{label:'偏瘦',bmi:b};
+  if(b<24)  return{label:'标准',bmi:b};
+  if(b<28)  return{label:'略微偏胖',bmi:b};
+  return         {label:'偏胖',bmi:b};
+}
+
+function preFilter(products, body, budgetLimit){
+  return products.filter(p=>{
+    if(p.price > budgetLimit) return false;
+    if(p.avoid_body && p.avoid_body.includes(body.label)) return false;
+    return true;
+  }).slice(0, 15); // 最多发15件给AI，省token
+}
+
+// ══════════════════════════════════════════════════════
+// DeepSeek API 调用
+// ══════════════════════════════════════════════════════
+async function callDeepSeek(userInfo, candidates){
+  const apiKey = document.getElementById('dsKey')?.value.trim() || DEEPSEEK_API_KEY;
+
+  const candidateText = {
+    tops: candidates.tops.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${p.tags.join(',')}`).join('\n'),
+    bottoms: candidates.bottoms.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${p.tags.join(',')}`).join('\n'),
+    shoes: candidates.shoes.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${p.tags.join(',')}`).join('\n'),
+  };
+
+  const prompt = `你是一位专业男性穿搭顾问，请根据用户信息从候选商品中选出3套完整穿搭方案。
+
+【用户信息】
+- 身高：${userInfo.height}cm，体重：${userInfo.weight}kg，体型：${userInfo.body}
+- 肤色：${userInfo.skin}
+- 脸型：${userInfo.face}
+- 场景：${userInfo.scene}
+- 风格偏好：${userInfo.style}
+- 排斥款式：${userInfo.dislike||'无'}
+- 已有单品：${userInfo.existing||'无'}
+- 补充描述：${userInfo.desc||'无'}
+- 上衣预算：CA$${userInfo.budgets.top}，裤子预算：CA$${userInfo.budgets.bottom}，鞋子预算：CA$${userInfo.budgets.shoes}
+
+【候选上衣】
+${candidateText.tops}
+
+【候选裤子】
+${candidateText.bottoms}
+
+【候选鞋子】
+${candidateText.shoes}
+
+【选择规则】
+1. 必须从候选商品中选，使用商品ID
+2. 三套穿搭的上衣/裤子/鞋子尽量不重复
+3. 考虑颜色搭配协调性（深色上衣配浅/中色裤，或浅色上衣配深色裤）
+4. 考虑用户肤色和脸型对颜色、领口的影响
+5. 套装1最安全，套装2加一点个性，套装3可以稍微冒险
+
+【返回格式】严格JSON，不要任何其他文字：
+{
+  "summary": "对这个用户穿搭风格的总体分析（2-3句话）",
+  "tips": ["针对该用户的具体穿搭建议1", "建议2", "建议3"],
+  "outfits": [
+    {
+      "id": 1,
+      "name": "套装名称",
+      "safety": "高",
+      "reason": "详细推荐理由，包括为什么适合该体型、肤色、场景（3-4句话）",
+      "top_id": "商品ID",
+      "bottom_id": "商品ID",
+      "shoes_id": "商品ID"
+    }
+  ]
+}`;
+
+  const resp = await fetch('https://api.deepseek.com/chat/completions',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${apiKey}`
+    },
+    body:JSON.stringify({
+      model:'deepseek-chat',
+      messages:[{role:'user',content:prompt}],
+      temperature:0.7,
+      max_tokens:2000,
+      response_format:{type:'json_object'}
+    })
+  });
+
+  if(!resp.ok){
+    const e = await resp.json();
+    throw new Error(e.error?.message||`DeepSeek API 错误 ${resp.status}`);
+  }
+
+  const data = await resp.json();
+  const text = data.choices?.[0]?.message?.content||'{}';
+  return JSON.parse(text);
+}
+
+// ══════════════════════════════════════════════════════
+// 渲染结果
+// ══════════════════════════════════════════════════════
+const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'}};
+
+function findProduct(id){
+  return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);
+}
+
+function renderResult(aiResult, userInfo, allCandidates){
+  const budgetTotal = userInfo.budgets.top + userInfo.budgets.bottom + userInfo.budgets.shoes;
+
+  const tipsHTML = (aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
+
+  const outfitsHTML = (aiResult.outfits||[]).map(o=>{
+    const top    = findProduct(o.top_id)    || allCandidates.tops[0];
+    const bottom = findProduct(o.bottom_id) || allCandidates.bottoms[0];
+    const shoe   = findProduct(o.shoes_id)  || allCandidates.shoes[0];
+    if(!top||!bottom||!shoe) return '';
+    const total = top.price+bottom.price+shoe.price;
+
+    const items = [
+      {cat:'top',p:top,budget:userInfo.budgets.top},
+      {cat:'bottom',p:bottom,budget:userInfo.budgets.bottom},
+      {cat:'shoes',p:shoe,budget:userInfo.budgets.shoes},
+    ].map(({cat,p,budget})=>`
+      <div class="item">
+        <div class="img-box">
+          <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'">
+          <span style="display:none">${CAT[cat].icon}</span>
+        </div>
+        <div class="item-cat">${CAT[cat].label}</div>
+        <div class="item-name">${p.name}</div>
+        <div class="item-brand">${p.brand}</div>
+        <div class="item-price"><span class="cur">CA$</span>${p.price}</div>
+        <a class="buy-btn" href="${p.buy}" target="_blank" rel="noopener">购买 ↗</a>
+      </div>`).join('');
+
+    return `<div class="card outfit">
+      <div class="outfit-head">
+        <div><span class="outfit-num">套装 ${o.id}</span><span class="outfit-name">${o.name}</span></div>
+        <span class="safe-badge">安全度 ${o.safety}</span>
+      </div>
+      <div class="outfit-reason">💡 ${o.reason}</div>
+      <div class="items">${items}</div>
+      <div class="outfit-foot">
+        <span class="foot-label">三件合计</span>
+        <div class="foot-right">
+          <span class="foot-budget">预算 CA$${budgetTotal}</span>
+          <span class="foot-price${total>budgetTotal?' over':''}">CA$${total}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const outfitOpts = (aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
+  const sourceBar = dataSource==='uniqlo'
+    ? `<div style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--safe-bg);border-radius:10px;margin-bottom:16px;font-size:12px;color:var(--safe-c)">✅ 已加载优衣库加拿大真实商品数据（${DB.tops.length+DB.bottoms.length} 件）</div>`
+    : '';
+
+  document.getElementById('result').innerHTML = `
+    ${sourceBar}
+    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">🤖 AI 穿搭分析</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
+    <div class="meta-row">
+      <span class="badge">🧍 ${userInfo.body}（BMI ${userInfo.bmi}）</span>
+      <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
+    </div>
+    <div class="tips">${tipsHTML}</div>
+    <p class="section-label">为你生成 ${(aiResult.outfits||[]).length} 套个性化穿搭方案</p>
+    ${outfitsHTML}
+
+    <div class="card tryon-section">
+      <div class="tryon-title">👗 AI 虚拟试穿</div>
+      <div class="tryon-sub">上传你的照片，AI 把推荐的衣服穿到你身上。</div>
+      <div class="api-tabs">
+        <div class="api-tab active" onclick="switchTab('fashn')">🚀 Fashn.ai 试穿</div>
+        <div class="api-tab" onclick="switchTab('claude')">💬 AI 文字分析</div>
+      </div>
+      <div class="api-panel active" id="panel-fashn">
+        <div class="note-box">专业虚拟试穿 API，免费注册送额度。👉 <a href="https://fashn.ai" target="_blank">fashn.ai</a> → 注册 → Dashboard → 复制 API Key</div>
+        <div class="input-label">Fashn.ai API Key</div>
+        <input class="key-input" id="fashnKey" type="password" placeholder="fa-xxxxxxxxxxxxxxxx">
+        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
+        <div class="input-label" style="margin-bottom:6px">选择试穿套装</div>
+        <select class="sel" id="fashnSel">${outfitOpts}</select>
+        <div class="tryon-grid">
+          <div>
+            <div class="input-label" style="margin-bottom:8px">你的照片（正面全身）</div>
+            <div class="upload-area" id="personArea" onclick="document.getElementById('personInput').click()">
+              <div class="upload-icon">🧍</div><div class="upload-label">点击上传照片</div>
+              <div class="upload-hint">JPG/PNG，正面站立效果最佳</div>
+              <img class="upload-preview" id="personPreview">
+            </div>
+            <input class="upload-input" type="file" id="personInput" accept="image/jpeg,image/png" onchange="previewImg('personInput','personPreview','personArea')">
+          </div>
+          <div>
+            <div class="input-label" style="margin-bottom:8px">衣服图片</div>
+            <div class="upload-area" id="garmentArea" onclick="document.getElementById('garmentInput').click()">
+              <div class="upload-icon">👕</div><div class="upload-label" id="garmentLabel">点击上传衣服图</div>
+              <div class="upload-hint">或点下方自动填入</div>
+              <img class="upload-preview" id="garmentPreview">
+            </div>
+            <input class="upload-input" type="file" id="garmentInput" accept="image/jpeg,image/png" onchange="previewImg('garmentInput','garmentPreview','garmentArea')">
+          </div>
+        </div>
+        <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入所选套装的上衣图片</button>
+        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">🤖 开始虚拟试穿</button>
+        <div class="progress-wrap" id="fashnProgress">
+          <div class="progress-label">AI 处理中，通常 15-40 秒…</div>
+          <div class="progress-bar-bg"><div class="progress-bar" id="fashnBar"></div></div>
+          <div class="progress-status" id="fashnStatus">提交任务…</div>
+        </div>
+        <div class="tryon-result" id="fashnResult">
+          <div class="result-label-sm">✨ 虚拟试穿效果</div>
+          <div class="result-box">
+            <div class="compare-row">
+              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="原图"><div class="compare-caption">原始照片</div></div>
+              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="效果"><div class="compare-caption">试穿效果</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="api-panel" id="panel-claude">
+        <div class="note-box">Claude AI 生成详细穿搭效果文字分析。👉 <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></div>
+        <div class="input-label">Claude API Key</div>
+        <input class="key-input" id="claudeKey" type="password" placeholder="sk-ant-api03-...">
+        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
+        <div class="input-label" style="margin-bottom:6px">选择套装</div>
+        <select class="sel" id="claudeSel">${outfitOpts}</select>
+        <button class="btn-tryon" id="claudeBtn" onclick="runClaude()">💬 生成穿搭效果分析</button>
+        <div class="tryon-result" id="claudeResult" style="margin-top:16px">
+          <div class="result-label-sm">AI 穿搭效果分析</div>
+          <div class="result-box"><div class="ai-text" id="claudeText"></div></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  window._recData = {outfits: aiResult.outfits, allCandidates};
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ══════════════════════════════════════════════════════
+// 主推荐流程
+// ══════════════════════════════════════════════════════
+async function getRecommend(){
+  const h = parseInt(document.getElementById('height').value);
+  const w = parseInt(document.getElementById('weight').value);
+  if(!h||!w){alert('请填写身高和体重');return;}
+
+  const body = bodyInfo(h,w);
+  const budgets = {
+    top:    parseInt(document.getElementById('topBudget').value),
+    bottom: parseInt(document.getElementById('bottomBudget').value),
+    shoes:  parseInt(document.getElementById('shoesBudget').value),
+  };
+
+  const userInfo = {
+    height: h, weight: w,
+    body: body.label, bmi: body.bmi,
+    skin:    document.getElementById('skin').value,
+    face:    document.getElementById('face').value,
+    scene:   document.getElementById('scene').value,
+    style:   document.getElementById('style').value,
+    dislike: document.getElementById('dislike').value,
+    existing:document.getElementById('existing').value,
+    desc:    document.getElementById('desc').value,
+    budgets,
+  };
+
+  // 预过滤
+  const candidates = {
+    tops:    preFilter(DB.tops,    body, budgets.top),
+    bottoms: preFilter(DB.bottoms, body, budgets.bottom),
+    shoes:   preFilter(DB.shoes,   body, budgets.shoes),
+  };
+
+  if(!candidates.tops.length||!candidates.bottoms.length||!candidates.shoes.length){
+    alert('预算范围内没有合适商品，请调高预算');
+    return;
+  }
+
+  document.getElementById('mainBtn').disabled=true;
+  document.getElementById('aiStatus').classList.add('show');
+  document.getElementById('result').classList.remove('show');
+
+  try{
+    const aiResult = await callDeepSeek(userInfo, candidates);
+    document.getElementById('aiStatus').classList.remove('show');
+    renderResult(aiResult, userInfo, candidates);
+  }catch(e){
+    document.getElementById('aiStatus').classList.remove('show');
+    alert('AI 推荐失败：'+e.message+'\n\n请检查 DeepSeek API Key 是否正确');
+    console.error(e);
+  }finally{
+    document.getElementById('mainBtn').disabled=false;
+  }
+}
+
+// ── 预算滑块 ──────────────────────────────────────────
+function updateSlider(cat,val){
+  val=parseInt(val);
+  const maxMap={top:200,bottom:200,shoes:250};
+  const ids={top:'topBudgetDisplay',bottom:'bottomBudgetDisplay',shoes:'shoesBudgetDisplay'};
+  const el=document.getElementById(ids[cat]);
+  el.textContent=val>=maxMap[cat]?`CA$${val}+`:`CA$${val}`;
+  updateTotal();
+}
+function updateTotal(){
+  const t=parseInt(document.getElementById('topBudget').value);
+  const b=parseInt(document.getElementById('bottomBudget').value);
+  const s=parseInt(document.getElementById('shoesBudget').value);
+  document.getElementById('totalDisplay').textContent=`CA$${t+b+s}`;
+}
+
+// ── 试穿相关 ──────────────────────────────────────────
+function switchTab(name){
+  ['fashn','claude'].forEach((n,i)=>{
+    document.querySelectorAll('.api-tab')[i].classList.toggle('active',n===name);
+    document.getElementById('panel-'+n).classList.toggle('active',n===name);
+  });
+}
+function previewImg(inputId,previewId,areaId){
+  const file=document.getElementById(inputId).files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById(previewId);
+    const area=document.getElementById(areaId);
+    img.src=e.target.result;img.style.display='block';
+    area.querySelectorAll('.upload-icon,.upload-label,.upload-hint').forEach(el=>el.style.display='none');
+    area.classList.add('filled');
+  };
+  reader.readAsDataURL(file);
+}
+function autoFill(){
+  const data=window._recData;if(!data)return;
+  const oid=parseInt(document.getElementById('fashnSel').value);
+  const o=data.outfits.find(x=>x.id===oid);if(!o)return;
+  const top=findProduct(o.top_id);if(!top)return;
+  const img=document.getElementById('garmentPreview');
+  const area=document.getElementById('garmentArea');
+  img.src=top.img;img.style.display='block';
+  area.querySelectorAll('.upload-icon,.upload-hint').forEach(el=>el.style.display='none');
+  document.getElementById('garmentLabel').textContent=top.name;
+  area.classList.add('filled');
+  window._garmentUrl=top.img;
+}
+function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(file);});}
+async function runFashn(){
+  const key=document.getElementById('fashnKey').value.trim();
+  if(!key){alert('请填写 Fashn.ai API Key');return;}
+  const personFile=document.getElementById('personInput').files[0];
+  if(!personFile){alert('请上传你的人物照片');return;}
+  const garmentFile=document.getElementById('garmentInput').files[0];
+  if(!garmentFile&&!window._garmentUrl){alert('请上传衣服图片或点击「自动填入」');return;}
+  const btn=document.getElementById('fashnBtn');
+  btn.disabled=true;btn.textContent='⏳ 处理中…';
+  document.getElementById('fashnProgress').classList.add('show');
+  let pct=0,mi=0;
+  const bar=document.getElementById('fashnBar'),status=document.getElementById('fashnStatus');
+  const msgs=['上传图片…','AI分析人体轮廓…','生成试穿效果…','最后润色…'];
+  const timer=setInterval(()=>{pct+=Math.random()*6;if(pct>88)pct=88;bar.style.width=pct+'%';if(mi<msgs.length&&pct>mi*25){status.textContent=msgs[mi];mi++;}},800);
+  try{
+    const personB64=await fileToBase64(personFile);
+    const garmentB64=garmentFile?await fileToBase64(garmentFile):window._garmentUrl;
+    const r=await fetch('https://api.fashn.ai/v1/run',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
+      body:JSON.stringify({model_image:personB64,garment_image:garmentB64,category:'tops',mode:'balanced'})});
+    if(!r.ok){const e=await r.json();throw new Error(e.error||e.detail||`HTTP ${r.status}`);}
+    const {id:predId}=await r.json();
+    let output=null;
+    for(let i=0;i<40;i++){
+      await new Promise(r=>setTimeout(r,3000));
+      const poll=await fetch(`https://api.fashn.ai/v1/status/${predId}`,{headers:{'Authorization':`Bearer ${key}`}});
+      const d=await poll.json();
+      if(d.status==='completed'){output=d.output;break;}
+      if(d.status==='failed') throw new Error('处理失败：'+d.error);
+    }
+    if(!output) throw new Error('处理超时，请重试');
+    clearInterval(timer);bar.style.width='100%';
+    const resultUrl=Array.isArray(output)?output[0]:output;
+    document.getElementById('origImg').src=personB64;
+    document.getElementById('outImg').src=resultUrl;
+    document.getElementById('fashnResult').classList.add('show');
+  }catch(e){clearInterval(timer);alert('试穿失败：'+e.message);}
+  finally{btn.disabled=false;btn.textContent='🤖 开始虚拟试穿';
+    setTimeout(()=>{document.getElementById('fashnProgress').classList.remove('show');bar.style.width='0';},2000);}
+}
+async function runClaude(){
+  const key=document.getElementById('claudeKey').value.trim();
+  if(!key){alert('请填写 Claude API Key');return;}
+  const data=window._recData;if(!data)return;
+  const oid=parseInt(document.getElementById('claudeSel').value);
+  const o=data.outfits.find(x=>x.id===oid);
+  const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
+  const btn=document.getElementById('claudeBtn');
+  btn.disabled=true;btn.textContent='💬 生成中…';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:
+        `你是专业男性穿搭顾问。为以下穿搭写上身效果分析，语气像朋友聊天。
+穿搭：上衣→${top?.name}（${top?.color}）裤子→${bottom?.name}（${bottom?.color}）鞋子→${shoe?.name}（${shoe?.color}）
+分析：🎨整体视觉 📐体型修饰 ✨搭配亮点 🌍场景适配 💡上身小细节`}]})});
+    if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
+    const j=await r.json();
+    document.getElementById('claudeText').textContent=j.content?.[0]?.text||'生成失败';
+    document.getElementById('claudeResult').classList.add('show');
+  }catch(e){alert('生成失败：'+e.message);}
+  finally{btn.disabled=false;btn.textContent='💬 生成穿搭效果分析';}
+}
+
+// ══════════════════════════════════════════════════════
+// 初始化：加载数据后渲染完整表单
+// ══════════════════════════════════════════════════════
+async function init(){
+  await loadProducts();
+  document.getElementById('app').innerHTML = `
+    <div class="card form-card">
+      <p class="section-title">基本信息</p>
+      <div class="fields">
+        <div class="field"><label>身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
+        <div class="field"><label>体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
+        <div class="field"><label>肤色</label>
+          <select id="skin">
+            <option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option>
+          </select>
+        </div>
+        <div class="field"><label>脸型</label>
+          <select id="face">
+            <option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option>
+          </select>
+        </div>
+        <div class="field"><label>场景</label>
+          <select id="scene">
+            <option>日常</option><option>上课</option><option selected>约会</option>
+            <option>通勤</option><option>运动</option><option>正式场合</option>
+            <option>周末出行</option><option>聚会</option>
+          </select>
+        </div>
+        <div class="field"><label>风格偏好</label>
+          <select id="style">
+            <option>简单百搭</option><option selected>干净清爽</option><option>韩系</option>
+            <option>日系</option><option>美式休闲</option><option>极简</option>
+            <option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fields-2">
+        <div class="field"><label>不喜欢的款式（可选）</label>
+          <input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…">
+        </div>
+        <div class="field"><label>已有的主要单品（可选）</label>
+          <input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…">
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:20px">
+        <label>补充描述（可选）</label>
+        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲；想要稍微有点韩系感但不要太夸张…"></textarea>
+      </div>
+
+      <div class="budget-section">
+        <p class="section-title">分类预算设置</p>
+        <div class="budget-total-bar">
+          <span class="budget-total-label">套装预计总价</span>
+          <span class="budget-total-value" id="totalDisplay">CA$230</span>
+        </div>
+        <div class="budget-sliders">
+          <div class="budget-slider-item">
+            <div class="slider-header">
+              <div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label">上衣预算</span></div>
+              <span class="slider-value" id="topBudgetDisplay">CA$60</span>
+            </div>
+            <input type="range" id="topBudget" min="20" max="200" step="10" value="60" oninput="updateSlider('top',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header">
+              <div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label">裤子预算</span></div>
+              <span class="slider-value" id="bottomBudgetDisplay">CA$80</span>
+            </div>
+            <input type="range" id="bottomBudget" min="20" max="200" step="10" value="80" oninput="updateSlider('bottom',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header">
+              <div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label">鞋子预算</span></div>
+              <span class="slider-value" id="shoesBudgetDisplay">CA$90</span>
+            </div>
+            <input type="range" id="shoesBudget" min="20" max="250" step="10" value="90" oninput="updateSlider('shoes',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$250+</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DeepSeek API Key -->
+      <div class="api-section">
+        <div class="api-section-title">🤖 DeepSeek API Key（用于个性化 AI 推荐）</div>
+        <div class="api-row">
+          <input class="api-input" id="dsKey" type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+        </div>
+        <div class="api-hint">
+          去 <a href="https://platform.deepseek.com/api-keys" target="_blank">platform.deepseek.com</a> 免费注册获取 · Key 仅在本地浏览器使用
+        </div>
+      </div>
+
+      <button class="btn" id="mainBtn" onclick="getRecommend()">🤖 AI 个性化穿搭推荐</button>
+    </div>
+
+    <!-- AI 思考状态 -->
+    <div class="ai-status" id="aiStatus">
+      <div class="ai-status-icon">🤖</div>
+      <div class="ai-status-text">DeepSeek 正在分析你的穿搭需求…</div>
+      <div class="ai-thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+
+    <div class="result" id="result"></div>
+  `;
+  updateTotal();
+}
+
+init();
+</script>
+</body>
+</html>
