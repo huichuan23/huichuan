@@ -1,0 +1,3779 @@
+{
+  "products": [
+    {
+      "id": "amazon_B077ZMKWVM",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 27.99,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/61mAUtT25xL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B077ZMKWVM?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B077ZMKWVM",
+      "keyword": "men white crew neck t-shirt"
+    },
+    {
+      "id": "amazon_B01F8LOEFC",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Men's 4 Pack FreshIQ Crewneck Undershirt",
+      "brand": "Amazon",
+      "price": 22.97,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/51z3AhzqKlL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01F8LOEFC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01F8LOEFC",
+      "keyword": "men white crew neck t-shirt"
+    },
+    {
+      "id": "amazon_B08QX8LLGB",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Fruit of The Loom Mens Cotton Undershirts (Crew & A-Shirt) Base Layer Top",
+      "brand": "Amazon",
+      "price": 20.01,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/71zeCFkT6-L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08QX8LLGB?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08QX8LLGB",
+      "keyword": "men white crew neck t-shirt"
+    },
+    {
+      "id": "amazon_B07S2XJ9CM",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Jack & Jones Men's Regular Fit T-Shirt JJEORGANIC Basic TEE SS O-Neck NOOS",
+      "brand": "Amazon",
+      "price": 14.56,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/515Kh-DMVJL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07S2XJ9CM?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07S2XJ9CM",
+      "keyword": "men white crew neck t-shirt"
+    },
+    {
+      "id": "amazon_B07JD5GLBN",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 25.41,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/61C-skMeafL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07JD5GLBN?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07JD5GLBN",
+      "keyword": "men white crew neck t-shirt"
+    },
+    {
+      "id": "amazon_B07JDFPQTC",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 32.13,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/61Jkk5m9EWL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07JDFPQTC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07JDFPQTC",
+      "keyword": "men black t-shirt"
+    },
+    {
+      "id": "amazon_B00UYSLAYS",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Men's ComfortSoft 4 Pack Cotton Crewneck T-Shirt",
+      "brand": "Amazon",
+      "price": 22.97,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/41gyy9dZ6WL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B00UYSLAYS?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B00UYSLAYS",
+      "keyword": "men black t-shirt"
+    },
+    {
+      "id": "amazon_B07JBS5BJQ",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 32.13,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/51wDsZxtTLL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07JBS5BJQ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07JBS5BJQ",
+      "keyword": "men black t-shirt"
+    },
+    {
+      "id": "amazon_B07RYSG814",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Jack & Jones Men's Regular Fit T-Shirt JJEORGANIC Basic TEE SS O-Neck NOOS",
+      "brand": "Amazon",
+      "price": 14.78,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/61Pzlw2qfqL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07RYSG814?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07RYSG814",
+      "keyword": "men black t-shirt"
+    },
+    {
+      "id": "amazon_B077ZKDQLV",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 29.34,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/710o0VupScL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B077ZKDQLV?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B077ZKDQLV",
+      "keyword": "men black t-shirt"
+    },
+    {
+      "id": "amazon_B0787P86ZZ",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 29.34,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/710o0VupScL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0787P86ZZ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0787P86ZZ",
+      "keyword": "men basic t-shirt"
+    },
+    {
+      "id": "amazon_B07XLTPC5L",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Platinum Crew T-Shirts",
+      "brand": "Amazon",
+      "price": 29.34,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61Nn7FcOqBL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07XLTPC5L?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07XLTPC5L",
+      "keyword": "men basic t-shirt"
+    },
+    {
+      "id": "amazon_B07MNSWM9V",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Heavy Cotton T-Shirt G5000Shirt",
+      "brand": "Amazon",
+      "price": 18.23,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71drNwPTpfL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07MNSWM9V?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07MNSWM9V",
+      "keyword": "men basic t-shirt"
+    },
+    {
+      "id": "amazon_B0BB97M2RS",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Alimens & Gentle Mens Long Sleeve Dress Shirts Wrinkle Free Casual Button Down Shirts",
+      "brand": "Amazon",
+      "price": 29.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71iORXhenvS._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BB97M2RS?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BB97M2RS",
+      "keyword": "men dress shirt"
+    },
+    {
+      "id": "amazon_B0BWN4CM59",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Alimens & Gentle Men's Dress Shirts Long Sleeve Stretch Wrinkle-Free Formal Solid Button Down Shirt with Pocket",
+      "brand": "Amazon",
+      "price": 34.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61xcuJXmXJL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BWN4CM59?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BWN4CM59",
+      "keyword": "men dress shirt"
+    },
+    {
+      "id": "amazon_B09W26RM6G",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "ALEX VANDO Mens Printed Dress Shirts Long Sleeve Regular Fit Fashion Shirt",
+      "brand": "Amazon",
+      "price": 24.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81UlQg9u4IL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09W26RM6G?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09W26RM6G",
+      "keyword": "men dress shirt"
+    },
+    {
+      "id": "amazon_B07CK1DDXH",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Beninos Men's Dress Shirts Solid Long Sleeve Texture Formal Shirt Business Casual Button Down Shirts",
+      "brand": "Amazon",
+      "price": 29.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51VRcBiZqsL._AC_SL1152_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07CK1DDXH?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07CK1DDXH",
+      "keyword": "men dress shirt"
+    },
+    {
+      "id": "amazon_B0F9FQQTK2",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "PJ PAUL JONES Men's Oxford Button Down Shirt Long Sleeve Regular Fit Business Casual Dress Shirts with Chest Pocket",
+      "brand": "Amazon",
+      "price": 31.62,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71zdb4rn+sL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0F9FQQTK2?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0F9FQQTK2",
+      "keyword": "men dress shirt"
+    },
+    {
+      "id": "amazon_B0CW3FS1SW",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "COOFANDY Mens Short Sleeve Casual Button Down Shirts Summer Untucked Dress Shirts with Pocket",
+      "brand": "Amazon",
+      "price": 32.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71uNlUL0ybL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CW3FS1SW?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CW3FS1SW",
+      "keyword": "men short sleeve shirt"
+    },
+    {
+      "id": "amazon_B0DRP12YG7",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "HMIYA Mens Hawaiian Shirts Short Sleeve Button Up Chemise Homme S-3XL",
+      "brand": "Amazon",
+      "price": 18.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71OlJGMFglL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0DRP12YG7?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0DRP12YG7",
+      "keyword": "men short sleeve shirt"
+    },
+    {
+      "id": "amazon_B0FNQNKMR5",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "HMIYA Mens Hawaiian Shirts Short Sleeve Button Up Chemise Homme S-3XL",
+      "brand": "Amazon",
+      "price": 18.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/615M-c8T1qL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0FNQNKMR5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0FNQNKMR5",
+      "keyword": "men short sleeve shirt"
+    },
+    {
+      "id": "amazon_B0DYJD9BX2",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "HMIYA Mens Hawaiian Shirts Short Sleeve Button Up Chemise Homme S-3XL",
+      "brand": "Amazon",
+      "price": 18.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71D7SaOVIvL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0DYJD9BX2?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0DYJD9BX2",
+      "keyword": "men short sleeve shirt"
+    },
+    {
+      "id": "amazon_B0BWTXTYSM",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Alimens & Gentle Mens Short Sleeve Dress Shirts Wrinkle Free Casual Button Down Shirts with Pocket",
+      "brand": "Amazon",
+      "price": 27.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61F7+qi2PfL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BWTXTYSM?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BWTXTYSM",
+      "keyword": "men short sleeve shirt"
+    },
+    {
+      "id": "amazon_B0B28SWXWP",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Alimens & Gentle Men's Classic Button Down Collar Shirt",
+      "brand": "Amazon",
+      "price": 25.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71cz5NDCJ6L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B28SWXWP?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B28SWXWP",
+      "keyword": "men long sleeve shirt"
+    },
+    {
+      "id": "amazon_B071ZGMXXJ",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Russell Athletic Men's Basic Cotton Long-Sleeve T-Shirt",
+      "brand": "Amazon",
+      "price": 14.73,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71TDabt93DL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B071ZGMXXJ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B071ZGMXXJ",
+      "keyword": "men long sleeve shirt"
+    },
+    {
+      "id": "amazon_B09S6WGQLK",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Mens Ultra Cotton Long Sleeve T-ShirtShirt",
+      "brand": "Amazon",
+      "price": 32.67,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71agynPLO6L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09S6WGQLK?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09S6WGQLK",
+      "keyword": "men long sleeve shirt"
+    },
+    {
+      "id": "amazon_B0BB95VJHH",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Alimens & Gentle Mens Long Sleeve Dress Shirts Wrinkle Free Casual Button Down Shirts",
+      "brand": "Amazon",
+      "price": 28.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61mVlcsHXPL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BB95VJHH?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BB95VJHH",
+      "keyword": "men long sleeve shirt"
+    },
+    {
+      "id": "amazon_B00H383N8I",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Jerzees Mens Dri-Power Long Sleeve T-Shirt MultipackT-Shirt",
+      "brand": "Amazon",
+      "price": 13.57,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61kAAK8-uGL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B00H383N8I?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B00H383N8I",
+      "keyword": "men long sleeve shirt"
+    },
+    {
+      "id": "amazon_B01L8JJ57U",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Men's EcoSmart Fleece Sweatshirt",
+      "brand": "Amazon",
+      "price": 27.11,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61azFaUG-XL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01L8JJ57U?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01L8JJ57U",
+      "keyword": "men crewneck sweatshirt"
+    },
+    {
+      "id": "amazon_B01M1OKRTK",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan Men’s Fleece Crewneck Sweatshirt, Style G18000Sweatshirt",
+      "brand": "Amazon",
+      "price": 23.23,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61MHjUD24OL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01M1OKRTK?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01M1OKRTK",
+      "keyword": "men crewneck sweatshirt"
+    },
+    {
+      "id": "amazon_B0DJTXHBDF",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Levi's Men's Crewneck Sweatshirts",
+      "brand": "Amazon",
+      "price": 44.69,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51v2+8ubeML._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0DJTXHBDF?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0DJTXHBDF",
+      "keyword": "men crewneck sweatshirt"
+    },
+    {
+      "id": "amazon_B0721C21RJ",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Men's EcoSmart Fleece Sweatshirt",
+      "brand": "Amazon",
+      "price": 30.57,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81D+bCgn8hL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0721C21RJ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0721C21RJ",
+      "keyword": "men crewneck sweatshirt"
+    },
+    {
+      "id": "amazon_B01L8JJLJ2",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Men's EcoSmart Fleece Sweatshirt",
+      "brand": "Amazon",
+      "price": 24.01,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71ukKld6F1L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01L8JJLJ2?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01L8JJLJ2",
+      "keyword": "men crewneck sweatshirt"
+    },
+    {
+      "id": "amazon_B00JUM2V4W",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Mens EcoSmart Hoodie, Midweight Fleece Sweatshirt, Pullover Hooded Sweatshirt for MenHooded Sweatshirt",
+      "brand": "Amazon",
+      "price": 34.14,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71HZ1q1AOXL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B00JUM2V4W?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B00JUM2V4W",
+      "keyword": "men hoodie"
+    },
+    {
+      "id": "amazon_B01L8JJY5I",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Hanes Mens EcoSmart Hoodie, Midweight Fleece Sweatshirt, Pullover Hooded Sweatshirt for MenHooded Sweatshirt",
+      "brand": "Amazon",
+      "price": 29.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71gy6A0MdZL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01L8JJY5I?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01L8JJY5I",
+      "keyword": "men hoodie"
+    },
+    {
+      "id": "amazon_B075KSPN7J",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials Men's Hooded Fleece Sweatshirt",
+      "brand": "Amazon",
+      "price": 25.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91WmouRQ6VL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B075KSPN7J?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B075KSPN7J",
+      "keyword": "men hoodie"
+    },
+    {
+      "id": "amazon_B08YHBW4J5",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Fruit of The Loom Mens EverSoft Fleece Full Zip Hoodie JacketHooded Sweatshirt",
+      "brand": "Amazon",
+      "price": 26.78,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71KJElQJkJL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08YHBW4J5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08YHBW4J5",
+      "keyword": "men hoodie"
+    },
+    {
+      "id": "amazon_B014RQ1L1O",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Gildan mens Men's Fleece Hooded Sweatshirt",
+      "brand": "Amazon",
+      "price": 30.22,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61qTPaU7dYL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B014RQ1L1O?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B014RQ1L1O",
+      "keyword": "men hoodie"
+    },
+    {
+      "id": "amazon_B079RF7HBX",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials Men's Big and Tall V-Neck Sweater fit by DXL",
+      "brand": "Amazon",
+      "price": 23.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91TjXmFP4dL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B079RF7HBX?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B079RF7HBX",
+      "keyword": "men sweater"
+    },
+    {
+      "id": "amazon_B079R8JP4Z",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials mens standard Crewneck Sweater",
+      "brand": "Amazon",
+      "price": 23.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91nG7tYFJ4L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B079R8JP4Z?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B079R8JP4Z",
+      "keyword": "men sweater"
+    },
+    {
+      "id": "amazon_B08X2D6KFL",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials Mens Long-Sleeve Quarter-Zip Fleece Sweatshirt",
+      "brand": "Amazon",
+      "price": 28.4,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/814wOvUMjCL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08X2D6KFL?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08X2D6KFL",
+      "keyword": "men sweater"
+    },
+    {
+      "id": "amazon_B0FMX3GZ1Y",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Sailwind Mens Crewneck Sweater Soft Casual Sweaters Classic Pullover Sweaters for Men",
+      "brand": "Amazon",
+      "price": 38.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/613qcgO-S9L._AC_SX342_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0FMX3GZ1Y?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0FMX3GZ1Y",
+      "keyword": "men sweater"
+    },
+    {
+      "id": "amazon_B07P5DV39R",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials Mens Crewneck Cable Sweater",
+      "brand": "Amazon",
+      "price": 30.4,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91UjgTfsWeL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07P5DV39R?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07P5DV39R",
+      "keyword": "men knit sweater"
+    },
+    {
+      "id": "amazon_B08617CVYD",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials Mens Long-Sleeve 100% Cotton Fisherman Cable Crewneck Sweater",
+      "brand": "Amazon",
+      "price": 41.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91bxX3N6hhL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08617CVYD?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08617CVYD",
+      "keyword": "men knit sweater"
+    },
+    {
+      "id": "amazon_B0DC9SQBYS",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Askdeer Men's Pullover Sweater Fisherman Classic Crewneck Sweater Casual Long Sleeve Knit Sweaters",
+      "brand": "Amazon",
+      "price": 48.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81Fh4BGz8cL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0DC9SQBYS?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0DC9SQBYS",
+      "keyword": "men knit sweater"
+    },
+    {
+      "id": "amazon_B0FM7XGT19",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "COOFANDY Men's Crew Neck Sweater Slim Fit Lightweight Sweaters Knitted Pullover for Casual Or Dressy Wear",
+      "brand": "Amazon",
+      "price": 39.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71xAod-2YML._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0FM7XGT19?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0FM7XGT19",
+      "keyword": "men knit sweater"
+    },
+    {
+      "id": "amazon_B079RDWBGV",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials mens standard Crewneck Sweater",
+      "brand": "Amazon",
+      "price": 25.3,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91nG7tYFJ4L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B079RDWBGV?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B079RDWBGV",
+      "keyword": "men knit sweater"
+    },
+    {
+      "id": "amazon_B0B59BJG6Y",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "MLYENX Polo Shirts for Men Quick-Dry Athletic Golf Polo Casual Short Sleeve Moisture Wicking Shirts",
+      "brand": "Amazon",
+      "price": 52.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81nEUfj+f4L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B59BJG6Y?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B59BJG6Y",
+      "keyword": "men polo shirt"
+    },
+    {
+      "id": "amazon_B09TVFT2KC",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "MAGCOMSEN Men's Polo Shirts Quick Dry 3 Buttons Casual Work T Shirts Short Sleeve Golf Shirt Pique Jersey Outdoor Performance",
+      "brand": "Amazon",
+      "price": 19.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81qzajvJmPL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09TVFT2KC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09TVFT2KC",
+      "keyword": "men polo shirt"
+    },
+    {
+      "id": "amazon_B0F9L1ZW36",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "HMIYA Mens Short Sleeve Polo Shirts Button Color Block Cotton Tops",
+      "brand": "Amazon",
+      "price": 33.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61qkZtYsJML._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0F9L1ZW36?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0F9L1ZW36",
+      "keyword": "men polo shirt"
+    },
+    {
+      "id": "amazon_B01IXFP9Y0",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Amazon Essentials Mens Regular-Fit Cotton Pique Polo Shirt",
+      "brand": "Amazon",
+      "price": 18.0,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81wo3jFNr9L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01IXFP9Y0?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01IXFP9Y0",
+      "keyword": "men polo shirt"
+    },
+    {
+      "id": "amazon_B0B6NNVG3D",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "CE' CERDR Men's Golf Polo Shirts Short Sleeve Quick-Dry Moisture Wicking Athletic Performence Casual Golf T-Shirt…",
+      "brand": "Amazon",
+      "price": 44.64,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/812em4Ii7jL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B6NNVG3D?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B6NNVG3D",
+      "keyword": "men polo shirt"
+    },
+    {
+      "id": "amazon_B0BTNK81NH",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "MAGCOMSEN Men's Bomber Jacket Lightweight Casual Spring Fall Windbreaker Full Zip Light Coat Flight Golf Jackets",
+      "brand": "Amazon",
+      "price": 46.73,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81zThEMcs1L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BTNK81NH?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BTNK81NH",
+      "keyword": "men bomber jacket"
+    },
+    {
+      "id": "amazon_B08RNJX8TH",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Rdruko Men's Lightweight Bomber Jacket Casual Windbreaker Flight Golf Spring Jacket",
+      "brand": "Amazon",
+      "price": 42.39,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61SO3dv0T7L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08RNJX8TH?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08RNJX8TH",
+      "keyword": "men bomber jacket"
+    },
+    {
+      "id": "amazon_B07VQJ8QGP",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "TACVASEN Men's Bomber Jacket Winter Warm Padded Work Coat Casual Windproof Quilted Jacket with Zipper Pockets",
+      "brand": "Amazon",
+      "price": 55.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61efJYh-g3L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07VQJ8QGP?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07VQJ8QGP",
+      "keyword": "men bomber jacket"
+    },
+    {
+      "id": "amazon_B07VQHGCVY",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "TACVASEN Men's Bomber Jacket Lightweight Casual Spring Fall Windbreaker Zip Up Coat with Pocket",
+      "brand": "Amazon",
+      "price": 56.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71Cp5YPuK3L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07VQHGCVY?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07VQHGCVY",
+      "keyword": "men bomber jacket"
+    },
+    {
+      "id": "amazon_B07VFVYGM5",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "MAGCOMSEN Men's Bomber Jacket with Pockets Lightweight Casual Windbreaker Full Zip Spring Fall Coat",
+      "brand": "Amazon",
+      "price": 33.24,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61+cXSQzXYL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07VFVYGM5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07VFVYGM5",
+      "keyword": "men bomber jacket"
+    },
+    {
+      "id": "amazon_B08RNJV14P",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Rdruko Men's Lightweight Bomber Jacket Casual Windbreaker Flight Golf Spring Jacket",
+      "brand": "Amazon",
+      "price": 42.39,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61SO3dv0T7L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08RNJV14P?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08RNJV14P",
+      "keyword": "men lightweight jacket"
+    },
+    {
+      "id": "amazon_B07VBD87YB",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "TACVASEN Men's Bomber Jacket Lightweight Casual Spring Fall Windbreaker Zip Up Coat with Pocket",
+      "brand": "Amazon",
+      "price": 53.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71w+GPYTBBL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07VBD87YB?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07VBD87YB",
+      "keyword": "men lightweight jacket"
+    },
+    {
+      "id": "amazon_B0BTNY2CN6",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "MAGCOMSEN Men's Bomber Jacket Lightweight Casual Spring Fall Windbreaker Full Zip Light Coat Flight Golf Jackets",
+      "brand": "Amazon",
+      "price": 46.73,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81MRxMUeKNL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BTNY2CN6?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BTNY2CN6",
+      "keyword": "men lightweight jacket"
+    },
+    {
+      "id": "amazon_B0C3835SXP",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Levi Strauss Signature Gold mens Signature Trucker Jacket",
+      "brand": "Amazon",
+      "price": 59.4,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/715ERugqKJL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0C3835SXP?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0C3835SXP",
+      "keyword": "men denim jacket"
+    },
+    {
+      "id": "amazon_B09JYGM5D5",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Levi Strauss Signature Gold mens Signature Trucker Jacket",
+      "brand": "Amazon",
+      "price": 47.88,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71QjUIcfntL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09JYGM5D5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09JYGM5D5",
+      "keyword": "men denim jacket"
+    },
+    {
+      "id": "amazon_B0BZJMYLX8",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Wrangler mens Big & Tall Unlined Denim Jacketdenim-jackets",
+      "brand": "Amazon",
+      "price": 74.5,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91-nTsnvQ4L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BZJMYLX8?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BZJMYLX8",
+      "keyword": "men denim jacket"
+    },
+    {
+      "id": "amazon_B09JYSQMZS",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Levi Strauss Signature Gold mens Signature Trucker Jacket",
+      "brand": "Amazon",
+      "price": 52.71,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71QjUIcfntL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09JYSQMZS?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09JYSQMZS",
+      "keyword": "men denim jacket"
+    },
+    {
+      "id": "amazon_B0058SJP5A",
+      "source": "amazon_ca",
+      "category": "top",
+      "name": "Wrangler mens Big & Tall Unlined Denim Jacketdenim-jackets",
+      "brand": "Amazon",
+      "price": 78.25,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81YZgECx0RL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0058SJP5A?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0058SJP5A",
+      "keyword": "men denim jacket"
+    },
+    {
+      "id": "amazon_B07XH4F552",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Men's Slim-Fit Stretch Jean",
+      "brand": "Amazon",
+      "price": 36.49,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81dgvYKNQHL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07XH4F552?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07XH4F552",
+      "keyword": "men slim fit jeans"
+    },
+    {
+      "id": "amazon_B07BJKW53N",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Men's Slim-Fit Stretch Jean",
+      "brand": "Amazon",
+      "price": 36.49,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/91o+BmFUt7L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07BJKW53N?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07BJKW53N",
+      "keyword": "men slim fit jeans"
+    },
+    {
+      "id": "amazon_B09JZYXTC9",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Levi Strauss Signature Gold Men's Big and Tall Athletic Tech Jeans",
+      "brand": "Amazon",
+      "price": 42.02,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51jsgA+Y1ML._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09JZYXTC9?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09JZYXTC9",
+      "keyword": "men slim fit jeans"
+    },
+    {
+      "id": "amazon_B081RXQ2ZV",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Levi Strauss Signature Gold Men's Big and Tall Athletic Tech Jeans",
+      "brand": "Amazon",
+      "price": 45.02,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51eF0W+s42L._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B081RXQ2ZV?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B081RXQ2ZV",
+      "keyword": "men slim fit jeans"
+    },
+    {
+      "id": "amazon_B0B84WFNMZ",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Wrangler Authentics Mens Slim Fit Straight Leg JeanJeans",
+      "brand": "Amazon",
+      "price": 42.51,
+      "currency": "CAD",
+      "color": "blue",
+      "color_en": "blue",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51EJF4+DO6L._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B84WFNMZ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B84WFNMZ",
+      "keyword": "men slim fit jeans"
+    },
+    {
+      "id": "amazon_B07YH2QDQ7",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Rustler Mens Relaxed Fit JeanJeans",
+      "brand": "Amazon",
+      "price": 23.23,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/71lahZZwWML._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07YH2QDQ7?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07YH2QDQ7",
+      "keyword": "men black jeans"
+    },
+    {
+      "id": "amazon_B081RW52T9",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Levi Strauss Signature Gold Men's Big and Tall Athletic Tech Jeans",
+      "brand": "Amazon",
+      "price": 41.29,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/51eF0W+s42L._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B081RW52T9?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B081RW52T9",
+      "keyword": "men black jeans"
+    },
+    {
+      "id": "amazon_B07LGWLKDG",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Rustler Mens Classic Regular FitJeans",
+      "brand": "Amazon",
+      "price": 27.59,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/61ocQfqNIDL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07LGWLKDG?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07LGWLKDG",
+      "keyword": "men black jeans"
+    },
+    {
+      "id": "amazon_B074KKKM9Q",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Wrangler Authentics Mens Regular Fit Comfort Flex Waist JeanJeans",
+      "brand": "Amazon",
+      "price": 45.34,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/51O+VtjB2mL._AC_SL1080_.jpg",
+      "buy": "https://www.amazon.ca/dp/B074KKKM9Q?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B074KKKM9Q",
+      "keyword": "men black jeans"
+    },
+    {
+      "id": "amazon_B0CLQBFKKC",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Levi Strauss Signature Gold Mens Regular Fit Flex Jeans",
+      "brand": "Amazon",
+      "price": 41.67,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/51YtDOnVKzL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CLQBFKKC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CLQBFKKC",
+      "keyword": "men black jeans"
+    },
+    {
+      "id": "amazon_B0775PYG46",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Slim-Fit Wrinkle-Resistant Flat-Front Chino Pant",
+      "brand": "Amazon",
+      "price": 28.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71OR-bGAjeL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0775PYG46?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0775PYG46",
+      "keyword": "men casual pants"
+    },
+    {
+      "id": "amazon_B07F2N8BQ2",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Straight-Fit Wrinkle-Resistant Flat-Front Chino Pant",
+      "brand": "Amazon",
+      "price": 29.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61DROanaSCL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07F2N8BQ2?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07F2N8BQ2",
+      "keyword": "men casual pants"
+    },
+    {
+      "id": "amazon_B01JQTC832",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Classic-fit Wrinkle-Resistant Pleated Chino PantCasual Pants",
+      "brand": "Amazon",
+      "price": 27.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71ZGpGIBgKL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01JQTC832?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01JQTC832",
+      "keyword": "men casual pants"
+    },
+    {
+      "id": "amazon_B07BJT5J5Z",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Relaxed-Fit Casual Stretch Khaki",
+      "brand": "Amazon",
+      "price": 33.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81+DTBe9GHL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07BJT5J5Z?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07BJT5J5Z",
+      "keyword": "men casual pants"
+    },
+    {
+      "id": "amazon_B07BJKR9VB",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Slim-Fit Casual Stretch Khaki",
+      "brand": "Amazon",
+      "price": 35.0,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/7123czEPRXL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07BJKR9VB?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07BJKR9VB",
+      "keyword": "men casual pants"
+    },
+    {
+      "id": "amazon_B096YNWKSS",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Classic-Fit Expandable-Waist Pleated Dress Pant",
+      "brand": "Amazon",
+      "price": 39.4,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71MlrhLUJvL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B096YNWKSS?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B096YNWKSS",
+      "keyword": "men dress pants"
+    },
+    {
+      "id": "amazon_B096YNSCR5",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Men's Slim-fit Flat-Front Dress Pants_dnu",
+      "brand": "Amazon",
+      "price": 39.4,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71NPuz3i1vL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B096YNSCR5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B096YNSCR5",
+      "keyword": "men dress pants"
+    },
+    {
+      "id": "amazon_B073SLX239",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Classic-fit Wrinkle-Resistant Pleated Chino PantCasual Pants",
+      "brand": "Amazon",
+      "price": 27.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71IrPUn0vnL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B073SLX239?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B073SLX239",
+      "keyword": "men dress pants"
+    },
+    {
+      "id": "amazon_B0BQQX971Y",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Libin Mens Golf Pants Stretch Work Dress Pants 30\"/32\"/34\" Quick Dry Lightweight Casual Comfy Trousers with Pockets",
+      "brand": "Amazon",
+      "price": 46.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71n4aYYXM-L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BQQX971Y?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BQQX971Y",
+      "keyword": "men dress pants"
+    },
+    {
+      "id": "amazon_B07FH9V7JP",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Straight-Fit Wrinkle-Resistant Flat-Front Chino Pant",
+      "brand": "Amazon",
+      "price": 26.0,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61DROanaSCL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07FH9V7JP?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07FH9V7JP",
+      "keyword": "men dress pants"
+    },
+    {
+      "id": "amazon_B0775CT14D",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Slim-Fit Wrinkle-Resistant Flat-Front Chino Pant",
+      "brand": "Amazon",
+      "price": 28.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71OR-bGAjeL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0775CT14D?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0775CT14D",
+      "keyword": "men chino pants"
+    },
+    {
+      "id": "amazon_B07JGH75X8",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Athletic-Fit Casual Stretch Chino Pant (Available in Big & Tall)",
+      "brand": "Amazon",
+      "price": 30.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61cMq6RaP0L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07JGH75X8?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07JGH75X8",
+      "keyword": "men chino pants"
+    },
+    {
+      "id": "amazon_B0775PM9H6",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Slim-Fit Wrinkle-Resistant Flat-Front Chino Pant",
+      "brand": "Amazon",
+      "price": 31.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/714rUx8rGDL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0775PM9H6?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0775PM9H6",
+      "keyword": "men chino pants"
+    },
+    {
+      "id": "amazon_B0CYZT4KNY",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Comdecevis Men's Casual Cargo Pants Workout Joggers Stretch Sweatpants Hiking Drawstring Tactical Pants with Multi Pockets",
+      "brand": "Amazon",
+      "price": 34.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61+MofJkZsL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CYZT4KNY?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CYZT4KNY",
+      "keyword": "men cargo pants"
+    },
+    {
+      "id": "amazon_B088851X11",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Wrangler Mens Relaxed Fit Stretch Cargo Pant",
+      "brand": "Amazon",
+      "price": 44.46,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71jpUDOkZUL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B088851X11?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B088851X11",
+      "keyword": "men cargo pants"
+    },
+    {
+      "id": "amazon_B07F283XYW",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Slim-fit Cargo PantCasual Pants",
+      "brand": "Amazon",
+      "price": 32.3,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71XRNXtdxgL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07F283XYW?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07F283XYW",
+      "keyword": "men cargo pants"
+    },
+    {
+      "id": "amazon_B07F283YG7",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Slim-fit Cargo PantCasual Pants",
+      "brand": "Amazon",
+      "price": 30.8,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71sa1JpwjQL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07F283YG7?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07F283YG7",
+      "keyword": "men cargo pants"
+    },
+    {
+      "id": "amazon_B07F27X24D",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Amazon Essentials Mens Straight-Fit Stretch Cargo Pant (Available in Big & Tall)",
+      "brand": "Amazon",
+      "price": 29.2,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/716Yir6-kgL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07F27X24D?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07F27X24D",
+      "keyword": "men cargo pants"
+    },
+    {
+      "id": "amazon_B017071VP8",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "ITALYMORN Joggers for Men Slim Fit Casual Chino Jogging Pants Stretch Elastic Waist Cotton Pantalon Homme",
+      "brand": "Amazon",
+      "price": 37.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/6129F9+W3xL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B017071VP8?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B017071VP8",
+      "keyword": "men jogger pants"
+    },
+    {
+      "id": "amazon_B0B72171W1",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "JMIERR Mens Pants Joggers with Pockets Casual Sweatpants Pants Cotton Drawstring Chino Pants Twill Track Jogging Pant",
+      "brand": "Amazon",
+      "price": 37.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51PZdV12aKL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B72171W1?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B72171W1",
+      "keyword": "men jogger pants"
+    },
+    {
+      "id": "amazon_B0CC5TR8X3",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Libin Men's 4-Way Stretch Golf Joggers with Pockets, Slim Fit Work Dress Pants Athletic Casual Sweatpants for Men",
+      "brand": "Amazon",
+      "price": 46.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71ilJaHuJ7L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CC5TR8X3?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CC5TR8X3",
+      "keyword": "men jogger pants"
+    },
+    {
+      "id": "amazon_B0FWV4D2HC",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Head Mens Head Men's Athletic Gym Jogger PantCasual Pants",
+      "brand": "Amazon",
+      "price": 19.19,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61XqMx02KiL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0FWV4D2HC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0FWV4D2HC",
+      "keyword": "men jogger pants"
+    },
+    {
+      "id": "amazon_B08LTB5CR3",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Ultra Performance 3 Pack Fleece Active Tech Joggers for Men, Mens Sweatpants with Zipper Pockets",
+      "brand": "Amazon",
+      "price": 59.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81cuSaRamtL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08LTB5CR3?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08LTB5CR3",
+      "keyword": "men jogger pants"
+    },
+    {
+      "id": "amazon_B0GCBYZVXB",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "Sailwind Men's Casual 7\" Shorts Elastic Waist Drawstring Summer Beach Twill Golf Short",
+      "brand": "Amazon",
+      "price": 27.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61oL-jHwVLL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0GCBYZVXB?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0GCBYZVXB",
+      "keyword": "men shorts"
+    },
+    {
+      "id": "amazon_B0CSN5DGQ7",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "NY Threads Athletic Mens Shorts 2 Pack Quick Dry Running Gym Shorts Men with Pockets",
+      "brand": "Amazon",
+      "price": 24.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81kpJ0istFL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CSN5DGQ7?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CSN5DGQ7",
+      "keyword": "men shorts"
+    },
+    {
+      "id": "amazon_B0BQQLX268",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "JMIERR Men's Cargo Shorts Casual Drawstring Stretch Shorts with Pockets Relaxed Fit Twill Golf Beach Shorts",
+      "brand": "Amazon",
+      "price": 39.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51Jb15RPOfL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BQQLX268?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BQQLX268",
+      "keyword": "men shorts"
+    },
+    {
+      "id": "amazon_B0BLKN87V4",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "JMIERR Men's Drawstring Shorts Stretch Twill Chino Shorts Workout Short Casual Summer Beach Shorts",
+      "brand": "Amazon",
+      "price": 33.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61Bi8BVh3EL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0BLKN87V4?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0BLKN87V4",
+      "keyword": "men shorts"
+    },
+    {
+      "id": "amazon_B0B17YXKPQ",
+      "source": "amazon_ca",
+      "category": "bottom",
+      "name": "TACVASEN Men's Shorts Lightweight Quick Dry Stretch Cargo Shorts with 5 Pockets for Hiking Golf Fishing Camping Travel",
+      "brand": "Amazon",
+      "price": 35.18,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/711hzNZSnDL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B17YXKPQ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B17YXKPQ",
+      "keyword": "men shorts"
+    },
+    {
+      "id": "amazon_B099RPD9X8",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Casual Dress Sneakers Fashion Oxfords Skate Shoes for Men",
+      "brand": "Amazon",
+      "price": 54.99,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/61PbxQ5NXUL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B099RPD9X8?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B099RPD9X8",
+      "keyword": "men white sneakers"
+    },
+    {
+      "id": "amazon_B014GMTUGC",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Tommy Hilfiger Mens Pandora2 Sneaker",
+      "brand": "Amazon",
+      "price": 46.7,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/81yVI7h0ZtL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B014GMTUGC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B014GMTUGC",
+      "keyword": "men white sneakers"
+    },
+    {
+      "id": "amazon_B01M8KGHRI",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Tommy Hilfiger Mens Tmliston-whmsy Sneaker",
+      "brand": "Amazon",
+      "price": 59.35,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/61vSTO14r-L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01M8KGHRI?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01M8KGHRI",
+      "keyword": "men white sneakers"
+    },
+    {
+      "id": "amazon_B0B54R2NH9",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "POLO RALPH LAUREN Mens Ranger Fashion Boot",
+      "brand": "Amazon",
+      "price": 128.05,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/51XH+2dZ8gL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B54R2NH9?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B54R2NH9",
+      "keyword": "men white sneakers"
+    },
+    {
+      "id": "amazon_B0CDZK1DP5",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Cole Haan Mens Cole Haan Men's Grand+ Court Sneakers Sneaker",
+      "brand": "Amazon",
+      "price": 95.99,
+      "currency": "CAD",
+      "color": "white",
+      "color_en": "white",
+      "color_tone": "light",
+      "img": "https://m.media-amazon.com/images/I/61e+bVHkYML._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CDZK1DP5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CDZK1DP5",
+      "keyword": "men white sneakers"
+    },
+    {
+      "id": "amazon_B0D693G5HC",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Reebok Mens Energen Run 4 Running Shoes for Men, Lightweight Athletic Mens Sneakers Sneaker",
+      "brand": "Amazon",
+      "price": 43.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/81f-7zvjeaL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0D693G5HC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "sport",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0D693G5HC",
+      "keyword": "men running shoes"
+    },
+    {
+      "id": "amazon_B0CKMMBJQD",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "adidas Men's Run Falcon 5",
+      "brand": "Amazon",
+      "price": 45.0,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/516q+jjLYsL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CKMMBJQD?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "sport",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CKMMBJQD",
+      "keyword": "men running shoes"
+    },
+    {
+      "id": "amazon_B0D2JFR1JP",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Adidas Mens Duramo SL 2 Running Sneaker",
+      "brand": "Amazon",
+      "price": 56.97,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61HCsa4-xCL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0D2JFR1JP?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "sport",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0D2JFR1JP",
+      "keyword": "men running shoes"
+    },
+    {
+      "id": "amazon_B0D4FCMW75",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Puma Mens Softride Enzo 5 Cross Trainer Sneaker",
+      "brand": "Amazon",
+      "price": 56.98,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61kJZ+7JlkL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0D4FCMW75?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "sport",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0D4FCMW75",
+      "keyword": "men running shoes"
+    },
+    {
+      "id": "amazon_B08CK6NQ9J",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Mens Running Shoes Walking Sneakers Slip on Athletic Tennis Gym Breathable Workout Lightweight Shoe",
+      "brand": "Amazon",
+      "price": 44.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71EHEnx7m9L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B08CK6NQ9J?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "sport",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B08CK6NQ9J",
+      "keyword": "men running shoes"
+    },
+    {
+      "id": "amazon_B0B5P8LX17",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Levi's Mens Anikin C CVS Sneaker",
+      "brand": "Amazon",
+      "price": 30.12,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/51F7v++0FyL._AC_SL1000_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B5P8LX17?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B5P8LX17",
+      "keyword": "men canvas shoes"
+    },
+    {
+      "id": "amazon_B0B5P8VMC5",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Levi's Mens Anikin C CVS Sneaker",
+      "brand": "Amazon",
+      "price": 35.85,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71gjxFJMncL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0B5P8VMC5?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0B5P8VMC5",
+      "keyword": "men canvas shoes"
+    },
+    {
+      "id": "amazon_B0F9PL5JPL",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Men's Canvas Shoes All-Match Casual Breathable Fashion Sneakers Retro Men Canvas Shoes Simple Soft Vintage Lace-up Shoes",
+      "brand": "Amazon",
+      "price": 33.0,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/717gjjWt73L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0F9PL5JPL?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0F9PL5JPL",
+      "keyword": "men canvas shoes"
+    },
+    {
+      "id": "amazon_B09W57RPXB",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "yageyan Men Canvas Low top Shoes Classic Casual Sneakers Black and White Fashion Shoes",
+      "brand": "Amazon",
+      "price": 43.07,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71hs3Hkt6bL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B09W57RPXB?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B09W57RPXB",
+      "keyword": "men canvas shoes"
+    },
+    {
+      "id": "amazon_B0CPLD5WJZ",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Clarks Mens Eastridge Low Oxford",
+      "brand": "Amazon",
+      "price": 70.0,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/61oW-rOwBXL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CPLD5WJZ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CPLD5WJZ",
+      "keyword": "men leather shoes"
+    },
+    {
+      "id": "amazon_B0C6QVN5XQ",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Penny Loafers Slip-on Leather Business Formal Dress Shoes",
+      "brand": "Amazon",
+      "price": 58.99,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/71x8JCSNYCL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0C6QVN5XQ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0C6QVN5XQ",
+      "keyword": "men leather shoes"
+    },
+    {
+      "id": "amazon_B00SMJPSE4",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Clarks Mens 26110310 Oxford",
+      "brand": "Amazon",
+      "price": 65.98,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/61xKXBBEmaL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B00SMJPSE4?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B00SMJPSE4",
+      "keyword": "men leather shoes"
+    },
+    {
+      "id": "amazon_B01N2SBKU9",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Clarks Mens Derby Lace-up",
+      "brand": "Amazon",
+      "price": 114.54,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/71AA93kzoxL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B01N2SBKU9?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B01N2SBKU9",
+      "keyword": "men leather shoes"
+    },
+    {
+      "id": "amazon_B099RPGS9H",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Casual Dress Sneakers Fashion Oxfords Skate Shoes for Men",
+      "brand": "Amazon",
+      "price": 54.99,
+      "currency": "CAD",
+      "color": "black",
+      "color_en": "black",
+      "color_tone": "dark",
+      "img": "https://m.media-amazon.com/images/I/61PbxQ5NXUL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B099RPGS9H?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B099RPGS9H",
+      "keyword": "men leather shoes"
+    },
+    {
+      "id": "amazon_B07ZJL7R2R",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Dress Loafers Slip On Casual Driving Loafer",
+      "brand": "Amazon",
+      "price": 53.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/713YrZrWn-L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B07ZJL7R2R?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B07ZJL7R2R",
+      "keyword": "men loafers"
+    },
+    {
+      "id": "amazon_B077YZ1FTC",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Moccasin Loafers Casual Loafer Shoes Lightweight Driving Shoes",
+      "brand": "Amazon",
+      "price": 52.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71A7B8kTEaL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B077YZ1FTC?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B077YZ1FTC",
+      "keyword": "men loafers"
+    },
+    {
+      "id": "amazon_B0C6QVP51Z",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Penny Loafers Slip-on Leather Business Formal Dress Shoes",
+      "brand": "Amazon",
+      "price": 58.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71x8JCSNYCL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0C6QVP51Z?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0C6QVP51Z",
+      "keyword": "men loafers"
+    },
+    {
+      "id": "amazon_B0FXKX1ZVZ",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "QIJGS Mens Shoes Loafers Casual Slip on Sneaker Boat Shoe Lightweight Walking Sneakers Non Slip Breathable Business Shoe",
+      "brand": "Amazon",
+      "price": 29.69,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/717NwJBqAFL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0FXKX1ZVZ?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0FXKX1ZVZ",
+      "keyword": "men loafers"
+    },
+    {
+      "id": "amazon_B0CS2F5R17",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Bruno Marc Men's Dress Loafers Slip-on Formal Shoes",
+      "brand": "Amazon",
+      "price": 57.99,
+      "currency": "CAD",
+      "color": "neutral",
+      "color_en": "neutral",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71cLn5e3E7L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CS2F5R17?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "smart_casual",
+        "basic",
+        "clean"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CS2F5R17",
+      "keyword": "men loafers"
+    },
+    {
+      "id": "amazon_B0CFHJT2GM",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "KELODON Waterproof Steel Toe Boots For Men-6 Inch Leather Slip On Safety Work Boots Mens Steel Toe Shoes Indestructible Non Slip Resistant Ankle Industrial Construction Boot",
+      "brand": "Amazon",
+      "price": 58.88,
+      "currency": "CAD",
+      "color": "brown",
+      "color_en": "brown",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71OQarcjX2L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CFHJT2GM?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CFHJT2GM",
+      "keyword": "men boots"
+    },
+    {
+      "id": "amazon_B0DZ29NZ6Z",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Jousen Chelsea Boots Men Retro Casual Boots Fashion Slip On Boots Ankle Dress Boots for Men",
+      "brand": "Amazon",
+      "price": 68.99,
+      "currency": "CAD",
+      "color": "brown",
+      "color_en": "brown",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/813IqYTmXIL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0DZ29NZ6Z?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0DZ29NZ6Z",
+      "keyword": "men boots"
+    },
+    {
+      "id": "amazon_B0CLW35MM7",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "Columbia mens Transverse Hike Waterproof Hiking Shoe",
+      "brand": "Amazon",
+      "price": 104.0,
+      "currency": "CAD",
+      "color": "brown",
+      "color_en": "brown",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61qtk869pTL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CLW35MM7?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CLW35MM7",
+      "keyword": "men boots"
+    },
+    {
+      "id": "amazon_B0CQ4RFGLG",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "NORTIV 8 Men's Military Tactical Boot Cushioned Lightweight Boots for Work All Day Side Zipper Motorcycle Combat Booties Metrostrike",
+      "brand": "Amazon",
+      "price": 75.99,
+      "currency": "CAD",
+      "color": "brown",
+      "color_en": "brown",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/71Q8W8GBxzL._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0CQ4RFGLG?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0CQ4RFGLG",
+      "keyword": "men boots"
+    },
+    {
+      "id": "amazon_B0C5SYHRYM",
+      "source": "amazon_ca",
+      "category": "shoes",
+      "name": "CHUUMEE Men's Chelsea Boots",
+      "brand": "Amazon",
+      "price": 39.99,
+      "currency": "CAD",
+      "color": "brown",
+      "color_en": "brown",
+      "color_tone": "medium",
+      "img": "https://m.media-amazon.com/images/I/61NRCiaWa+L._AC_SL1500_.jpg",
+      "buy": "https://www.amazon.ca/dp/B0C5SYHRYM?tag=outfitai0f-20",
+      "tags": [
+        "casual",
+        "basic"
+      ],
+      "avoid_body": [],
+      "season": [
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fit": "regular",
+      "asin": "B0C5SYHRYM",
+      "keyword": "men boots"
+    }
+  ]
+}
