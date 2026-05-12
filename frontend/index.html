@@ -579,7 +579,7 @@ function previewImg(inputId,previewId,areaId){
   };
   reader.readAsDataURL(file);
 }
-function autoFill(){
+async function autoFill(){
   const data=window._recData;if(!data)return;
   const oid=parseInt(document.getElementById('fashnSel').value);
   const o=data.outfits.find(x=>x.id===oid);if(!o)return;
@@ -590,7 +590,14 @@ function autoFill(){
   area.querySelectorAll('.upload-icon,.upload-hint').forEach(el=>el.style.display='none');
   document.getElementById('garmentLabel').textContent=top.name;
   area.classList.add('filled');
-  window._garmentUrl=top.img;
+  try{
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(top.img);
+    const response = await fetch(proxyUrl);
+    const blob = await response.blob();
+    const b64 = await fileToBase64(blob);
+    window._garmentUrl = b64;
+  }catch(e){ window._garmentUrl = top.img; }
+  document.getElementById('garmentLabel').textContent = top.name;
 }
 function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(file);});}
 
