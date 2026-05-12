@@ -300,8 +300,8 @@ function normalizeProductFromBackend(p){
 // 备用：前端直接调 DeepSeek（后端不可用时）
 // ══════════════════════════════════════════════════════
 async function callDeepSeekDirect(userInfo, candidates){
-  const apiKey = document.getElementById('dsKey')?.value.trim();
-  if(!apiKey) throw new Error('请填写 DeepSeek API Key');
+  const apiKey = DEEPSEEK_KEY;
+
 
   const fmt = products => products.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${(p.tags||[]).join(',')}`).join('\n');
 
