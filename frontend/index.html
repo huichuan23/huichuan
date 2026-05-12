@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>会穿 · AI 男性穿搭助手</title>
+<title>浼氱┛ 路 AI 鐢锋€х┛鎼姪鎵?/title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f0;--card:#fff;--ink:#1a1a1a;--muted:#6b6b6b;--border:rgba(0,0,0,0.09);--safe-bg:#e8f5ee;--safe-c:#1d6b44;--tag-bg:#f0ede8;--accent:#c8a96e;}
@@ -145,23 +145,21 @@
 </head>
 <body>
 <header>
-  <span class="logo">会穿</span>
-  <span class="logo-sub">AI 男性穿搭助手 · 不踩雷</span>
+  <span class="logo">浼氱┛</span>
+  <span class="logo-sub">AI 鐢锋€х┛鎼姪鎵?路 涓嶈俯闆?/span>
 </header>
 <div class="wrap" id="app">
   <div style="text-align:center;padding:60px 0;color:var(--muted)">
     <div style="width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px"></div>
     <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-    加载中…
-  </div>
+    鍔犺浇涓€?  </div>
 </div>
 
 <script>
 const BACKEND = 'https://huichuan-production.up.railway.app';
 
-// ══════════════════════════════════════════════════════
-// 从后端加载商品数据
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 浠庡悗绔姞杞藉晢鍝佹暟鎹?// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 let DB = {tops:[], bottoms:[], shoes:[]};
 let dbStats = {total:0};
 
@@ -179,9 +177,9 @@ async function loadProducts(){
     DB.shoes   = (d3.products||[]).map(normalizeProduct);
     dbStats    = stats;
 
-    console.log(`✅ 后端数据：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
+    console.log(`鉁?鍚庣鏁版嵁锛氫笂琛?{DB.tops.length}浠讹紝瑁ゅ瓙${DB.bottoms.length}浠讹紝闉嬪瓙${DB.shoes.length}浠禶);
   }catch(e){
-    console.error('加载商品失败', e);
+    console.error('鍔犺浇鍟嗗搧澶辫触', e);
   }
 }
 
@@ -201,20 +199,19 @@ function normalizeProduct(p){
   };
 }
 
-// ══════════════════════════════════════════════════════
-// 体型计算
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 浣撳瀷璁＄畻
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 function bodyInfo(h,w){
   const b=+(w/Math.pow(h/100,2)).toFixed(1);
-  if(b<18.5)return{label:'偏瘦',bmi:b};
-  if(b<24)  return{label:'标准',bmi:b};
-  if(b<28)  return{label:'略微偏胖',bmi:b};
-  return         {label:'偏胖',bmi:b};
+  if(b<18.5)return{label:'鍋忕槮',bmi:b};
+  if(b<24)  return{label:'鏍囧噯',bmi:b};
+  if(b<28)  return{label:'鐣ュ井鍋忚儢',bmi:b};
+  return         {label:'鍋忚儢',bmi:b};
 }
 
-// ══════════════════════════════════════════════════════
-// 预过滤
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 棰勮繃婊?// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 function preFilter(products, body, budgetLimit){
   return products.filter(p=>{
     if(p.price > budgetLimit) return false;
@@ -223,9 +220,8 @@ function preFilter(products, body, budgetLimit){
   }).slice(0, 15);
 }
 
-// ══════════════════════════════════════════════════════
-// 调用后端 /api/recommend（后端调 DeepSeek）
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 璋冪敤鍚庣 /api/recommend锛堝悗绔皟 DeepSeek锛?// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 async function callBackendRecommend(userInfo, candidates){
   const body = {
     height:   userInfo.height,
@@ -248,23 +244,23 @@ async function callBackendRecommend(userInfo, candidates){
 
   if(!resp.ok){
     const e = await resp.json();
-    throw new Error(e.detail || `后端错误 ${resp.status}`);
+    throw new Error(e.detail || `鍚庣閿欒 ${resp.status}`);
   }
 
   const data = await resp.json();
 
-  // 后端返回的 outfit 里已经有 top/bottom/shoes 对象，转换成前端格式
+  // 鍚庣杩斿洖鐨?outfit 閲屽凡缁忔湁 top/bottom/shoes 瀵硅薄锛岃浆鎹㈡垚鍓嶇鏍煎紡
   const outfits = (data.outfits||[]).map(o => ({
     id:       o.id,
     name:     o.name,
-    safety:   o.safety || '高',
+    safety:   o.safety || '楂?,
     reason:   o.reason,
     top_id:   o.top?.id    || o.top_id,
     bottom_id:o.bottom?.id || o.bottom_id,
     shoes_id: o.shoes?.id  || o.shoes_id,
   }));
 
-  // 把后端返回的商品对象存入 DB，方便 findProduct 查找
+  // 鎶婂悗绔繑鍥炵殑鍟嗗搧瀵硅薄瀛樺叆 DB锛屾柟渚?findProduct 鏌ユ壘
   (data.outfits||[]).forEach(o => {
     if(o.top)    { const p = normalizeProductFromBackend(o.top);    if(!DB.tops.find(x=>x.id===p.id))    DB.tops.push(p); }
     if(o.bottom) { const p = normalizeProductFromBackend(o.bottom); if(!DB.bottoms.find(x=>x.id===p.id)) DB.bottoms.push(p); }
@@ -295,59 +291,51 @@ function normalizeProductFromBackend(p){
   };
 }
 
-// ══════════════════════════════════════════════════════
-// 备用：前端直接调 DeepSeek（后端不可用时）
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 澶囩敤锛氬墠绔洿鎺ヨ皟 DeepSeek锛堝悗绔笉鍙敤鏃讹級
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 async function callDeepSeekDirect(userInfo, candidates){
   const apiKey = document.getElementById('dsKey')?.value.trim();
-  if(!apiKey) throw new Error('请填写 DeepSeek API Key');
+  if(!apiKey) throw new Error('璇峰～鍐?DeepSeek API Key');
 
-  const fmt = products => products.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${(p.tags||[]).join(',')}`).join('\n');
+  const fmt = products => products.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 鏍囩:${(p.tags||[]).join(',')}`).join('\n');
 
-  const prompt = `你是一位专业男性穿搭顾问，请根据用户信息从候选商品中选出3套完整穿搭方案。
+  const prompt = `浣犳槸涓€浣嶄笓涓氱敺鎬х┛鎼【闂紝璇锋牴鎹敤鎴蜂俊鎭粠鍊欓€夊晢鍝佷腑閫夊嚭3濂楀畬鏁寸┛鎼柟妗堛€?
+銆愮敤鎴蜂俊鎭€?- 韬珮锛?{userInfo.height}cm锛屼綋閲嶏細${userInfo.weight}kg锛屼綋鍨嬶細${userInfo.body}
+- 鑲よ壊锛?{userInfo.skin}锛岃劯鍨嬶細${userInfo.face}
+- 鍦烘櫙锛?{userInfo.scene}锛岄鏍煎亸濂斤細${userInfo.style}
+- 鎺掓枼娆惧紡锛?{userInfo.dislike||'鏃?}
+- 宸叉湁鍗曞搧锛?{userInfo.existing||'鏃?}
+- 琛ュ厖鎻忚堪锛?{userInfo.desc||'鏃?}
+- 涓婅。棰勭畻锛欳A$${userInfo.budgets.top}锛岃￥瀛愰绠楋細CA$${userInfo.budgets.bottom}锛岄瀷瀛愰绠楋細CA$${userInfo.budgets.shoes}
 
-【用户信息】
-- 身高：${userInfo.height}cm，体重：${userInfo.weight}kg，体型：${userInfo.body}
-- 肤色：${userInfo.skin}，脸型：${userInfo.face}
-- 场景：${userInfo.scene}，风格偏好：${userInfo.style}
-- 排斥款式：${userInfo.dislike||'无'}
-- 已有单品：${userInfo.existing||'无'}
-- 补充描述：${userInfo.desc||'无'}
-- 上衣预算：CA$${userInfo.budgets.top}，裤子预算：CA$${userInfo.budgets.bottom}，鞋子预算：CA$${userInfo.budgets.shoes}
+銆愬€欓€変笂琛ｃ€?${fmt(candidates.tops)}
 
-【候选上衣】
-${fmt(candidates.tops)}
+銆愬€欓€夎￥瀛愩€?${fmt(candidates.bottoms)}
 
-【候选裤子】
-${fmt(candidates.bottoms)}
+銆愬€欓€夐瀷瀛愩€?${fmt(candidates.shoes)}
 
-【候选鞋子】
-${fmt(candidates.shoes)}
+銆愰€夋嫨瑙勫垯銆?1. 鍙兘浠庡€欓€夊晢鍝佷腑閫夛紝浣跨敤鍟嗗搧ID
+2. 涓夊绌挎惌鐨勪笂琛?瑁ゅ瓙/闉嬪瓙灏介噺涓嶉噸澶?3. 鑰冭檻棰滆壊鎼厤鍗忚皟鎬?4. 鑰冭檻鐢ㄦ埛鑲よ壊鍜岃劯鍨嬪棰滆壊銆侀鍙ｇ殑褰卞搷
+5. 濂楄1鏈€瀹夊叏锛屽瑁?鏈変釜鎬э紝濂楄3绋嶅井鍐掗櫓
 
-【选择规则】
-1. 只能从候选商品中选，使用商品ID
-2. 三套穿搭的上衣/裤子/鞋子尽量不重复
-3. 考虑颜色搭配协调性
-4. 考虑用户肤色和脸型对颜色、领口的影响
-5. 套装1最安全，套装2有个性，套装3稍微冒险
-
-【返回格式】严格JSON，不要任何其他文字：
-{"summary":"总体分析（2-3句）","tips":["建议1","建议2","建议3"],"outfits":[{"id":1,"name":"套装名称","safety":"高","reason":"推荐理由（3-4句）","top_id":"商品ID","bottom_id":"商品ID","shoes_id":"商品ID"}]}`;
+銆愯繑鍥炴牸寮忋€戜弗鏍糐SON锛屼笉瑕佷换浣曞叾浠栨枃瀛楋細
+{"summary":"鎬讳綋鍒嗘瀽锛?-3鍙ワ級","tips":["寤鸿1","寤鸿2","寤鸿3"],"outfits":[{"id":1,"name":"濂楄鍚嶇О","safety":"楂?,"reason":"鎺ㄨ崘鐞嗙敱锛?-4鍙ワ級","top_id":"鍟嗗搧ID","bottom_id":"鍟嗗搧ID","shoes_id":"鍟嗗搧ID"}]}`;
 
   const resp = await fetch('https://api.deepseek.com/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
     body:JSON.stringify({model:'deepseek-chat',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:2000,response_format:{type:'json_object'}})
   });
-  if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||`DeepSeek API 错误 ${resp.status}`);}
+  if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||`DeepSeek API 閿欒 ${resp.status}`);}
   const data = await resp.json();
   return JSON.parse(data.choices?.[0]?.message?.content||'{}');
 }
 
-// ══════════════════════════════════════════════════════
-// 渲染结果
-// ══════════════════════════════════════════════════════
-const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'}};
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 娓叉煋缁撴灉
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+const CAT={top:{label:'涓婅。',icon:'馃憰'},bottom:{label:'瑁ゅ瓙',icon:'馃憱'},shoes:{label:'闉嬪瓙',icon:'馃憻'}};
 
 function findProduct(id){
   return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);
@@ -376,100 +364,100 @@ function renderResult(aiResult, userInfo, allCandidates){
         <div class="item-name">${p.name}</div>
         <div class="item-brand">${p.brand}</div>
         <div class="item-price"><span class="cur">CA$</span>${p.price}</div>
-        <a class="buy-btn" href="${p.buy}" target="_blank" rel="noopener">购买 ↗</a>
+        <a class="buy-btn" href="${p.buy}" target="_blank" rel="noopener">璐拱 鈫?/a>
       </div>`).join('');
 
     return `<div class="card outfit">
       <div class="outfit-head">
-        <div><span class="outfit-num">套装 ${o.id}</span><span class="outfit-name">${o.name}</span></div>
-        <span class="safe-badge">安全度 ${o.safety}</span>
+        <div><span class="outfit-num">濂楄 ${o.id}</span><span class="outfit-name">${o.name}</span></div>
+        <span class="safe-badge">瀹夊叏搴?${o.safety}</span>
       </div>
-      <div class="outfit-reason">💡 ${o.reason}</div>
+      <div class="outfit-reason">馃挕 ${o.reason}</div>
       <div class="items">${items}</div>
       <div class="outfit-foot">
-        <span class="foot-label">三件合计</span>
+        <span class="foot-label">涓変欢鍚堣</span>
         <div class="foot-right">
-          <span class="foot-budget">预算 CA$${budgetTotal}</span>
+          <span class="foot-budget">棰勭畻 CA$${budgetTotal}</span>
           <span class="foot-price${total>budgetTotal?' over':''}">CA$${total.toFixed(2)}</span>
         </div>
       </div>
     </div>`;
   }).join('');
 
-  const outfitOpts = (aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
+  const outfitOpts = (aiResult.outfits||[]).map(o=>`<option value="${o.id}">濂楄${o.id}锛?{o.name}</option>`).join('');
 
   document.getElementById('result').innerHTML = `
-    <div class="db-badge">✅ Amazon.ca 真实商品数据（${dbStats.total || DB.tops.length+DB.bottoms.length+DB.shoes.length} 件）</div>
-    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">🤖 AI 穿搭分析</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
+    <div class="db-badge">鉁?Amazon.ca 鐪熷疄鍟嗗搧鏁版嵁锛?{dbStats.total || DB.tops.length+DB.bottoms.length+DB.shoes.length} 浠讹級</div>
+    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">馃 AI 绌挎惌鍒嗘瀽</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
     <div class="meta-row">
-      <span class="badge">🧍 ${userInfo.body}（BMI ${userInfo.bmi}）</span>
-      <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
+      <span class="badge">馃 ${userInfo.body}锛圔MI ${userInfo.bmi}锛?/span>
+      <span class="badge dark">馃憰 CA$${userInfo.budgets.top} 路 馃憱 CA$${userInfo.budgets.bottom} 路 馃憻 CA$${userInfo.budgets.shoes}</span>
     </div>
     <div class="tips">${tipsHTML}</div>
-    <p class="section-label">为你生成 ${(aiResult.outfits||[]).length} 套个性化穿搭方案</p>
+    <p class="section-label">涓轰綘鐢熸垚 ${(aiResult.outfits||[]).length} 濂椾釜鎬у寲绌挎惌鏂规</p>
     ${outfitsHTML}
 
     <div class="card tryon-section">
-      <div class="tryon-title">👗 AI 虚拟试穿</div>
-      <div class="tryon-sub">上传你的照片，AI 把推荐的衣服穿到你身上。</div>
+      <div class="tryon-title">馃憲 AI 铏氭嫙璇曠┛</div>
+      <div class="tryon-sub">涓婁紶浣犵殑鐓х墖锛孉I 鎶婃帹鑽愮殑琛ｆ湇绌垮埌浣犺韩涓娿€?/div>
       <div class="api-tabs">
-        <div class="api-tab active" onclick="switchTab('fashn')">🚀 Fashn.ai 试穿</div>
-        <div class="api-tab" onclick="switchTab('claude')">💬 AI 文字分析</div>
+        <div class="api-tab active" onclick="switchTab('fashn')">馃殌 Fashn.ai 璇曠┛</div>
+        <div class="api-tab" onclick="switchTab('claude')">馃挰 AI 鏂囧瓧鍒嗘瀽</div>
       </div>
       <div class="api-panel active" id="panel-fashn">
-        <div class="note-box">专业虚拟试穿 API。👉 <a href="https://fashn.ai" target="_blank">fashn.ai</a> → 注册 → Dashboard → 复制 API Key</div>
+        <div class="note-box">涓撲笟铏氭嫙璇曠┛ API銆傪煈?<a href="https://fashn.ai" target="_blank">fashn.ai</a> 鈫?娉ㄥ唽 鈫?Dashboard 鈫?澶嶅埗 API Key</div>
         <div class="input-label">Fashn.ai API Key</div>
         <input class="key-input" id="fashnKey" type="password" placeholder="fa-xxxxxxxxxxxxxxxx">
-        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
-        <div class="input-label" style="margin-bottom:6px">选择试穿套装</div>
+        <div class="key-hint" style="margin-bottom:16px">Key 浠呭湪鏈湴娴忚鍣ㄤ娇鐢?/div>
+        <div class="input-label" style="margin-bottom:6px">閫夋嫨璇曠┛濂楄</div>
         <select class="sel" id="fashnSel">${outfitOpts}</select>
         <div class="tryon-grid">
           <div>
-            <div class="input-label" style="margin-bottom:8px">你的照片（正面全身）</div>
+            <div class="input-label" style="margin-bottom:8px">浣犵殑鐓х墖锛堟闈㈠叏韬級</div>
             <div class="upload-area" id="personArea" onclick="document.getElementById('personInput').click()">
-              <div class="upload-icon">🧍</div><div class="upload-label">点击上传照片</div>
-              <div class="upload-hint">JPG/PNG，正面站立效果最佳</div>
+              <div class="upload-icon">馃</div><div class="upload-label">鐐瑰嚮涓婁紶鐓х墖</div>
+              <div class="upload-hint">JPG/PNG锛屾闈㈢珯绔嬫晥鏋滄渶浣?/div>
               <img class="upload-preview" id="personPreview">
             </div>
             <input class="upload-input" type="file" id="personInput" accept="image/jpeg,image/png" onchange="previewImg('personInput','personPreview','personArea')">
           </div>
           <div>
-            <div class="input-label" style="margin-bottom:8px">衣服图片</div>
+            <div class="input-label" style="margin-bottom:8px">琛ｆ湇鍥剧墖</div>
             <div class="upload-area" id="garmentArea" onclick="document.getElementById('garmentInput').click()">
-              <div class="upload-icon">👕</div><div class="upload-label" id="garmentLabel">点击上传衣服图</div>
-              <div class="upload-hint">或点下方自动填入</div>
+              <div class="upload-icon">馃憰</div><div class="upload-label" id="garmentLabel">鐐瑰嚮涓婁紶琛ｆ湇鍥?/div>
+              <div class="upload-hint">鎴栫偣涓嬫柟鑷姩濉叆</div>
               <img class="upload-preview" id="garmentPreview">
             </div>
             <input class="upload-input" type="file" id="garmentInput" accept="image/jpeg,image/png" onchange="previewImg('garmentInput','garmentPreview','garmentArea')">
           </div>
         </div>
-        <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入所选套装的上衣图片</button>
-        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">🤖 开始虚拟试穿</button>
+        <button class="auto-fill-btn" onclick="autoFill()">鈫?鑷姩濉叆鎵€閫夊瑁呯殑涓婅。鍥剧墖</button>
+        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">馃 寮€濮嬭櫄鎷熻瘯绌?/button>
         <div class="progress-wrap" id="fashnProgress">
-          <div class="progress-label">AI 处理中，通常 15-40 秒…</div>
+          <div class="progress-label">AI 澶勭悊涓紝閫氬父 15-40 绉掆€?/div>
           <div class="progress-bar-bg"><div class="progress-bar" id="fashnBar"></div></div>
-          <div class="progress-status" id="fashnStatus">提交任务…</div>
+          <div class="progress-status" id="fashnStatus">鎻愪氦浠诲姟鈥?/div>
         </div>
         <div class="tryon-result" id="fashnResult">
-          <div class="result-label-sm">✨ 虚拟试穿效果</div>
+          <div class="result-label-sm">鉁?铏氭嫙璇曠┛鏁堟灉</div>
           <div class="result-box">
             <div class="compare-row">
-              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="原图"><div class="compare-caption">原始照片</div></div>
-              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="效果"><div class="compare-caption">试穿效果</div></div>
+              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="鍘熷浘"><div class="compare-caption">鍘熷鐓х墖</div></div>
+              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="鏁堟灉"><div class="compare-caption">璇曠┛鏁堟灉</div></div>
             </div>
           </div>
         </div>
       </div>
       <div class="api-panel" id="panel-claude">
-        <div class="note-box">Claude AI 生成详细穿搭效果文字分析。👉 <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></div>
+        <div class="note-box">Claude AI 鐢熸垚璇︾粏绌挎惌鏁堟灉鏂囧瓧鍒嗘瀽銆傪煈?<a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></div>
         <div class="input-label">Claude API Key</div>
         <input class="key-input" id="claudeKey" type="password" placeholder="sk-ant-api03-...">
-        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
-        <div class="input-label" style="margin-bottom:6px">选择套装</div>
+        <div class="key-hint" style="margin-bottom:16px">Key 浠呭湪鏈湴娴忚鍣ㄤ娇鐢?/div>
+        <div class="input-label" style="margin-bottom:6px">閫夋嫨濂楄</div>
         <select class="sel" id="claudeSel">${outfitOpts}</select>
-        <button class="btn-tryon" id="claudeBtn" onclick="runClaude()">💬 生成穿搭效果分析</button>
+        <button class="btn-tryon" id="claudeBtn" onclick="runClaude()">馃挰 鐢熸垚绌挎惌鏁堟灉鍒嗘瀽</button>
         <div class="tryon-result" id="claudeResult" style="margin-top:16px">
-          <div class="result-label-sm">AI 穿搭效果分析</div>
+          <div class="result-label-sm">AI 绌挎惌鏁堟灉鍒嗘瀽</div>
           <div class="result-box"><div class="ai-text" id="claudeText"></div></div>
         </div>
       </div>
@@ -481,13 +469,12 @@ function renderResult(aiResult, userInfo, allCandidates){
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ══════════════════════════════════════════════════════
-// 主推荐流程
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 涓绘帹鑽愭祦绋?// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 async function getRecommend(){
   const h = parseInt(document.getElementById('height').value);
   const w = parseInt(document.getElementById('weight').value);
-  if(!h||!w){alert('请填写身高和体重');return;}
+  if(!h||!w){alert('璇峰～鍐欒韩楂樺拰浣撻噸');return;}
 
   const body = bodyInfo(h,w);
   const budgets = {
@@ -516,7 +503,7 @@ async function getRecommend(){
   };
 
   if(!candidates.tops.length||!candidates.bottoms.length||!candidates.shoes.length){
-    alert('预算范围内没有合适商品，请调高预算');
+    alert('棰勭畻鑼冨洿鍐呮病鏈夊悎閫傚晢鍝侊紝璇疯皟楂橀绠?);
     return;
   }
 
@@ -527,24 +514,23 @@ async function getRecommend(){
   try{
     let aiResult;
     try{
-      // 优先用后端
-      aiResult = await callBackendRecommend(userInfo, candidates);
+      // 浼樺厛鐢ㄥ悗绔?      aiResult = await callBackendRecommend(userInfo, candidates);
     }catch(backendErr){
-      console.warn('后端推荐失败，尝试前端直接调用 DeepSeek:', backendErr);
+      console.warn('鍚庣鎺ㄨ崘澶辫触锛屽皾璇曞墠绔洿鎺ヨ皟鐢?DeepSeek:', backendErr);
       aiResult = await callDeepSeekDirect(userInfo, candidates);
     }
     document.getElementById('aiStatus').classList.remove('show');
     renderResult(aiResult, userInfo, candidates);
   }catch(e){
     document.getElementById('aiStatus').classList.remove('show');
-    alert('AI 推荐失败：'+e.message);
+    alert('AI 鎺ㄨ崘澶辫触锛?+e.message);
     console.error(e);
   }finally{
     document.getElementById('mainBtn').disabled=false;
   }
 }
 
-// ── 预算滑块 ──────────────────────────────────────────
+// 鈹€鈹€ 棰勭畻婊戝潡 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 function updateSlider(cat,val){
   val=parseInt(val);
   const maxMap={top:200,bottom:200,shoes:250};
@@ -560,7 +546,7 @@ function updateTotal(){
   document.getElementById('totalDisplay').textContent=`CA$${t+b+s}`;
 }
 
-// ── 试穿相关 ──────────────────────────────────────────
+// 鈹€鈹€ 璇曠┛鐩稿叧 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 function switchTab(name){
   ['fashn','claude'].forEach((n,i)=>{
     document.querySelectorAll('.api-tab')[i].classList.toggle('active',n===name);
@@ -596,19 +582,19 @@ function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReade
 
 async function runFashn(){
   const key=document.getElementById('fashnKey').value.trim();
-  if(!key){alert('请填写 Fashn.ai API Key');return;}
+  if(!key){alert('璇峰～鍐?Fashn.ai API Key');return;}
   const personFile=document.getElementById('personInput').files[0];
-  if(!personFile){alert('请上传你的照片');return;}
+  if(!personFile){alert('璇蜂笂浼犱綘鐨勭収鐗?);return;}
   const garmentFile=document.getElementById('garmentInput').files[0];
-  if(!garmentFile&&!window._garmentUrl){alert('请上传衣服图片或点击"自动填入"');return;}
+  if(!garmentFile&&!window._garmentUrl){alert('璇蜂笂浼犺。鏈嶅浘鐗囨垨鐐瑰嚮"鑷姩濉叆"');return;}
   const btn=document.getElementById('fashnBtn');
-  btn.disabled=true;btn.textContent='⏳ 处理中…';
+  btn.disabled=true;btn.textContent='鈴?澶勭悊涓€?;
   const prog=document.getElementById('fashnProgress');
   const bar=document.getElementById('fashnBar');
   const status=document.getElementById('fashnStatus');
   prog.classList.add('show');
   let pct=0,mi=0;
-  const msgs=['上传图片…','AI分析人体轮廓…','生成试穿效果…','最后润色…'];
+  const msgs=['涓婁紶鍥剧墖鈥?,'AI鍒嗘瀽浜轰綋杞粨鈥?,'鐢熸垚璇曠┛鏁堟灉鈥?,'鏈€鍚庢鼎鑹测€?];
   const timer=setInterval(()=>{pct+=Math.random()*6;if(pct>88)pct=88;bar.style.width=pct+'%';if(mi<msgs.length&&pct>mi*25){status.textContent=msgs[mi];mi++;}},800);
   try{
     const personB64=await fileToBase64(personFile);
@@ -624,101 +610,98 @@ async function runFashn(){
       const poll=await fetch(`https://api.fashn.ai/v1/status/${predId}`,{headers:{'Authorization':`Bearer ${key}`}});
       const d=await poll.json();
       if(d.status==='completed'){output=d.output;break;}
-      if(d.status==='failed') throw new Error('处理失败：'+d.error);
+      if(d.status==='failed') throw new Error('澶勭悊澶辫触锛?+d.error);
     }
-    if(!output) throw new Error('处理超时，请重试');
+    if(!output) throw new Error('澶勭悊瓒呮椂锛岃閲嶈瘯');
     clearInterval(timer);bar.style.width='100%';
     const resultUrl=Array.isArray(output)?output[0]:output;
     document.getElementById('origImg').src=personB64;
     document.getElementById('outImg').src=resultUrl;
     document.getElementById('fashnResult').classList.add('show');
-  }catch(e){clearInterval(timer);alert('试穿失败：'+e.message);}
-  finally{btn.disabled=false;btn.textContent='🤖 开始虚拟试穿';
+  }catch(e){clearInterval(timer);alert('璇曠┛澶辫触锛?+e.message);}
+  finally{btn.disabled=false;btn.textContent='馃 寮€濮嬭櫄鎷熻瘯绌?;
     setTimeout(()=>{prog.classList.remove('show');bar.style.width='0';},2000);}
 }
 
 async function runClaude(){
   const key=document.getElementById('claudeKey').value.trim();
-  if(!key){alert('请填写 Claude API Key');return;}
+  if(!key){alert('璇峰～鍐?Claude API Key');return;}
   const data=window._recData;if(!data)return;
   const oid=parseInt(document.getElementById('claudeSel').value);
   const o=data.outfits.find(x=>x.id===oid);
   const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
   const btn=document.getElementById('claudeBtn');
-  btn.disabled=true;btn.textContent='💬 生成中…';
+  btn.disabled=true;btn.textContent='馃挰 鐢熸垚涓€?;
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:
-        `你是专业男性穿搭顾问。为以下穿搭写上身效果分析，语气像朋友聊天。
-穿搭：上衣→${top?.name}（${top?.color}）裤子→${bottom?.name}（${bottom?.color}）鞋子→${shoe?.name}（${shoe?.color}）
-分析：🎨整体视觉 📐体型修饰 ✨搭配亮点 🌍场景适配 💡上身小细节`}]})});
+        `浣犳槸涓撲笟鐢锋€х┛鎼【闂€備负浠ヤ笅绌挎惌鍐欎笂韬晥鏋滃垎鏋愶紝璇皵鍍忔湅鍙嬭亰澶┿€?绌挎惌锛氫笂琛ｂ啋${top?.name}锛?{top?.color}锛夎￥瀛愨啋${bottom?.name}锛?{bottom?.color}锛夐瀷瀛愨啋${shoe?.name}锛?{shoe?.color}锛?鍒嗘瀽锛氿煄ㄦ暣浣撹瑙?馃搻浣撳瀷淇グ 鉁ㄦ惌閰嶄寒鐐?馃實鍦烘櫙閫傞厤 馃挕涓婅韩灏忕粏鑺俙}]})});
     if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
     const j=await r.json();
-    document.getElementById('claudeText').textContent=j.content?.[0]?.text||'生成失败';
+    document.getElementById('claudeText').textContent=j.content?.[0]?.text||'鐢熸垚澶辫触';
     document.getElementById('claudeResult').classList.add('show');
-  }catch(e){alert('生成失败：'+e.message);}
-  finally{btn.disabled=false;btn.textContent='💬 生成穿搭效果分析';}
+  }catch(e){alert('鐢熸垚澶辫触锛?+e.message);}
+  finally{btn.disabled=false;btn.textContent='馃挰 鐢熸垚绌挎惌鏁堟灉鍒嗘瀽';}
 }
 
-// ══════════════════════════════════════════════════════
-// 初始化
-// ══════════════════════════════════════════════════════
+// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+// 鍒濆鍖?// 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
 async function init(){
   await loadProducts();
   document.getElementById('app').innerHTML = `
     <div class="card form-card">
-      <p class="section-title">基本信息</p>
+      <p class="section-title">鍩烘湰淇℃伅</p>
       <div class="fields">
-        <div class="field"><label>身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
-        <div class="field"><label>体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
-        <div class="field"><label>肤色</label>
+        <div class="field"><label>韬珮 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
+        <div class="field"><label>浣撻噸 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
+        <div class="field"><label>鑲よ壊</label>
           <select id="skin">
-            <option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option>
+            <option>鏅€氳偆鑹?/option><option>鍋忕櫧鑲よ壊</option><option>鍋忛粍鑲よ壊</option><option>鍋忔繁鑲よ壊</option>
           </select>
         </div>
-        <div class="field"><label>脸型</label>
+        <div class="field"><label>鑴稿瀷</label>
           <select id="face">
-            <option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option>
+            <option>鏅€氳劯鍨?/option><option>鍦嗚劯</option><option>闀胯劯</option><option>鏂硅劯</option><option>鐡滃瓙鑴?/option>
           </select>
         </div>
-        <div class="field"><label>场景</label>
+        <div class="field"><label>鍦烘櫙</label>
           <select id="scene">
-            <option>日常</option><option>上课</option><option selected>约会</option>
-            <option>通勤</option><option>运动</option><option>正式场合</option>
-            <option>周末出行</option><option>聚会</option>
+            <option>鏃ュ父</option><option>涓婅</option><option selected>绾︿細</option>
+            <option>閫氬嫟</option><option>杩愬姩</option><option>姝ｅ紡鍦哄悎</option>
+            <option>鍛ㄦ湯鍑鸿</option><option>鑱氫細</option>
           </select>
         </div>
-        <div class="field"><label>风格偏好</label>
+        <div class="field"><label>椋庢牸鍋忓ソ</label>
           <select id="style">
-            <option>简单百搭</option><option selected>干净清爽</option><option>韩系</option>
-            <option>日系</option><option>美式休闲</option><option>极简</option>
-            <option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option>
+            <option>绠€鍗曠櫨鎼?/option><option selected>骞插噣娓呯埥</option><option>闊╃郴</option>
+            <option>鏃ョ郴</option><option>缇庡紡浼戦棽</option><option>鏋佺畝</option>
+            <option>琛楀ご</option><option>瀛﹂櫌椋?/option><option>宸ヨ</option><option>鍟嗗姟浼戦棽</option>
           </select>
         </div>
       </div>
       <div class="fields-2">
-        <div class="field"><label>不喜欢的款式（可选）</label>
-          <input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…">
+        <div class="field"><label>涓嶅枩娆㈢殑娆惧紡锛堝彲閫夛級</label>
+          <input type="text" id="dislike" placeholder="渚嬶細涓嶅枩娆㈠崼琛ｃ€佽姳鍝ㄥ浘妗堚€?>
         </div>
-        <div class="field"><label>已有的主要单品（可选）</label>
-          <input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…">
+        <div class="field"><label>宸叉湁鐨勪富瑕佸崟鍝侊紙鍙€夛級</label>
+          <input type="text" id="existing" placeholder="渚嬶細鐧借壊杩愬姩闉嬨€侀粦鑹茬墰浠旇￥鈥?>
         </div>
       </div>
       <div class="field" style="margin-bottom:20px">
-        <label>补充描述（可选）</label>
-        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲；想要稍微有点韩系感但不要太夸张…"></textarea>
+        <label>琛ュ厖鎻忚堪锛堝彲閫夛級</label>
+        <textarea id="desc" placeholder="渚嬶細鎴戣劯姣旇緝鍦嗭紝鎯虫樉鐦︿竴鐐癸紱宸ヤ綔鐜姣旇緝浼戦棽锛涙兂瑕佺◢寰湁鐐归煩绯绘劅浣嗕笉瑕佸お澶稿紶鈥?></textarea>
       </div>
       <div class="budget-section">
-        <p class="section-title">分类预算设置</p>
+        <p class="section-title">鍒嗙被棰勭畻璁剧疆</p>
         <div class="budget-total-bar">
-          <span class="budget-total-label">套装预计总价</span>
+          <span class="budget-total-label">濂楄棰勮鎬讳环</span>
           <span class="budget-total-value" id="totalDisplay">CA$230</span>
         </div>
         <div class="budget-sliders">
           <div class="budget-slider-item">
             <div class="slider-header">
-              <div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label">上衣预算</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><span>馃憰</span><span class="slider-label">涓婅。棰勭畻</span></div>
               <span class="slider-value" id="topBudgetDisplay">CA$60</span>
             </div>
             <input type="range" id="topBudget" min="20" max="200" step="10" value="60" oninput="updateSlider('top',this.value)">
@@ -726,7 +709,7 @@ async function init(){
           </div>
           <div class="budget-slider-item">
             <div class="slider-header">
-              <div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label">裤子预算</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><span>馃憱</span><span class="slider-label">瑁ゅ瓙棰勭畻</span></div>
               <span class="slider-value" id="bottomBudgetDisplay">CA$80</span>
             </div>
             <input type="range" id="bottomBudget" min="20" max="200" step="10" value="80" oninput="updateSlider('bottom',this.value)">
@@ -734,7 +717,7 @@ async function init(){
           </div>
           <div class="budget-slider-item">
             <div class="slider-header">
-              <div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label">鞋子预算</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><span>馃憻</span><span class="slider-label">闉嬪瓙棰勭畻</span></div>
               <span class="slider-value" id="shoesBudgetDisplay">CA$90</span>
             </div>
             <input type="range" id="shoesBudget" min="20" max="250" step="10" value="90" oninput="updateSlider('shoes',this.value)">
@@ -742,20 +725,11 @@ async function init(){
           </div>
         </div>
       </div>
-      <div class="api-section">
-        <div class="api-section-title">🤖 DeepSeek API Key（备用，后端不可用时使用）</div>
-        <div class="api-row">
-          <input class="api-input" id="dsKey" type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
-        </div>
-        <div class="api-hint">
-          去 <a href="https://platform.deepseek.com/api-keys" target="_blank">platform.deepseek.com</a> 免费注册获取 · Key 仅在本地浏览器使用
-        </div>
-      </div>
-      <button class="btn" id="mainBtn" onclick="getRecommend()">🤖 AI 个性化穿搭推荐</button>
+      <button class="btn" id="mainBtn" onclick="getRecommend()">馃 AI 涓€у寲绌挎惌鎺ㄨ崘</button>
     </div>
     <div class="ai-status" id="aiStatus">
-      <div class="ai-status-icon">🤖</div>
-      <div class="ai-status-text">AI 正在从 289 件 Amazon 商品中为你挑选最佳搭配…</div>
+      <div class="ai-status-icon">馃</div>
+      <div class="ai-status-text">AI 姝ｅ湪浠?289 浠?Amazon 鍟嗗搧涓负浣犳寫閫夋渶浣虫惌閰嶁€?/div>
       <div class="ai-thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
     </div>
     <div class="result" id="result"></div>
@@ -767,3 +741,4 @@ init();
 </script>
 </body>
 </html>
+
