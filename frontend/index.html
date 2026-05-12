@@ -158,7 +158,6 @@
 
 <script>
 const BACKEND = 'https://huichuan-production.up.railway.app';
-const DEEPSEEK_KEY = 'sk-8e50ad8bbeab44a9b7e66ea86c57ac0d';
 
 // ══════════════════════════════════════════════════════
 // 从后端加载商品数据
@@ -300,7 +299,8 @@ function normalizeProductFromBackend(p){
 // 备用：前端直接调 DeepSeek（后端不可用时）
 // ══════════════════════════════════════════════════════
 async function callDeepSeekDirect(userInfo, candidates){
-  const apiKey = 'sk-8e50ad8bbeab44a9b7e66ea86c57ac0d';
+  const apiKey = document.getElementById('dsKey')?.value.trim();
+  if(!apiKey) throw new Error('请填写 DeepSeek API Key');
 
   const fmt = products => products.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${(p.tags||[]).join(',')}`).join('\n');
 
@@ -740,6 +740,15 @@ async function init(){
             <input type="range" id="shoesBudget" min="20" max="250" step="10" value="90" oninput="updateSlider('shoes',this.value)">
             <div class="slider-range"><span>CA$20</span><span>CA$250+</span></div>
           </div>
+        </div>
+      </div>
+      <div class="api-section">
+        <div class="api-section-title">🤖 DeepSeek API Key（备用，后端不可用时使用）</div>
+        <div class="api-row">
+          <input class="api-input" id="dsKey" type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+        </div>
+        <div class="api-hint">
+          去 <a href="https://platform.deepseek.com/api-keys" target="_blank">platform.deepseek.com</a> 免费注册获取 · Key 仅在本地浏览器使用
         </div>
       </div>
       <button class="btn" id="mainBtn" onclick="getRecommend()">🤖 AI 个性化穿搭推荐</button>
