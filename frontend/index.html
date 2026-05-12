@@ -296,53 +296,9 @@ function normalizeProductFromBackend(p){
   };
 }
 
-// ══════════════════════════════════════════════════════
-// 备用：前端直接调 DeepSeek（后端不可用时）
-// ══════════════════════════════════════════════════════
+// 备用逻辑已移除，推荐功能完全由后端处理
 async function callDeepSeekDirect(userInfo, candidates){
-  const apiKey = DEEPSEEK_KEY;
-
-
-  const fmt = products => products.map(p=>`[${p.id}] ${p.name} | ${p.color} | CA$${p.price} | 标签:${(p.tags||[]).join(',')}`).join('\n');
-
-  const prompt = `你是一位专业男性穿搭顾问，请根据用户信息从候选商品中选出3套完整穿搭方案。
-
-【用户信息】
-- 身高：${userInfo.height}cm，体重：${userInfo.weight}kg，体型：${userInfo.body}
-- 肤色：${userInfo.skin}，脸型：${userInfo.face}
-- 场景：${userInfo.scene}，风格偏好：${userInfo.style}
-- 排斥款式：${userInfo.dislike||'无'}
-- 已有单品：${userInfo.existing||'无'}
-- 补充描述：${userInfo.desc||'无'}
-- 上衣预算：CA$${userInfo.budgets.top}，裤子预算：CA$${userInfo.budgets.bottom}，鞋子预算：CA$${userInfo.budgets.shoes}
-
-【候选上衣】
-${fmt(candidates.tops)}
-
-【候选裤子】
-${fmt(candidates.bottoms)}
-
-【候选鞋子】
-${fmt(candidates.shoes)}
-
-【选择规则】
-1. 只能从候选商品中选，使用商品ID
-2. 三套穿搭的上衣/裤子/鞋子尽量不重复
-3. 考虑颜色搭配协调性
-4. 考虑用户肤色和脸型对颜色、领口的影响
-5. 套装1最安全，套装2有个性，套装3稍微冒险
-
-【返回格式】严格JSON，不要任何其他文字：
-{"summary":"总体分析（2-3句）","tips":["建议1","建议2","建议3"],"outfits":[{"id":1,"name":"套装名称","safety":"高","reason":"推荐理由（3-4句）","top_id":"商品ID","bottom_id":"商品ID","shoes_id":"商品ID"}]}`;
-
-  const resp = await fetch('https://api.deepseek.com/chat/completions',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
-    body:JSON.stringify({model:'deepseek-chat',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:2000,response_format:{type:'json_object'}})
-  });
-  if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||`DeepSeek API 错误 ${resp.status}`);}
-  const data = await resp.json();
-  return JSON.parse(data.choices?.[0]?.message?.content||'{}');
+  throw new Error('后端服务暂时不可用，请稍后重试');
 }
 
 // ══════════════════════════════════════════════════════
