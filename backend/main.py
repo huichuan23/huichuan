@@ -1,33 +1,14 @@
 import os
-import uuid
-from pathlib import Path
-
-from fastapi import FastAPI, UploadFile, File, HTTPException
+import base64
+import httpx
+from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from routers.recommend import router as recommend_router
 from routers.products import router as products_router
 from database import init_db
 
-app = FastAPI(title="会穿 · AI 男性穿搭助手 API", version="2.0.0")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-UPLOAD_DIR = Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-
-def get_base_url():
-    domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN") \
-          or os.environ.get("RAILWAY_STATIC_URL") \
-          or "huichuan-production.up.railway.app"
-    domain = domain.replace("https://", "").replace("http://", "").rstrip("/")
-    return f"https://{domain}"
+app = FastAPI(title="会穿 · AI 男性穿搭助手 API", version="2.1.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 @app.on_event("startup")
 def startup():
@@ -38,7 +19,7 @@ app.include_router(products_router, prefix="/api")
 
 @app.get("/")
 def root():
-    return {"status": "ok", "message": "会穿 API v2.0"}
+    return {"status": "ok", "message": "会穿 API v2.1"}
 
 @app.get("/health")
 def health():
@@ -51,8 +32,5 @@ async def upload_image(file: UploadFile = File(...)):
     content = await file.read()
     if len(content) > 10 * 1024 * 1024:
         raise HTTPException(400, "图片不能超过 10MB")
-    ext = "jpg" if file.content_type == "image/jpeg" else file.content_type.split("/")[1]
-    filename = f"{uuid.uuid4().hex}.{ext}"
-    with open(UPLOAD_DIR / filename, "wb") as f:
-        f.write(content)
-    return {"url": f"{get_base_url()}/uploads/{filename}"}
+    b64 = base64.b64encode(content).decode("utf-8")
+    return {"url": f"data:{file.content_type};base64,{b64}"}
