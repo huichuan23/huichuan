@@ -23,13 +23,6 @@
   .field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s;height:40px;}
   .field textarea{height:72px;padding:10px 12px;resize:none;line-height:1.5;}
   .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);}
-  .api-section{background:var(--tag-bg);border-radius:12px;padding:16px;margin-bottom:20px;}
-  .api-section-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:10px;}
-  .api-row{display:flex;gap:10px;align-items:center;}
-  .api-input{flex:1;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:12px;font-family:monospace;background:var(--card);color:var(--ink);outline:none;}
-  .api-input:focus{border-color:var(--ink);}
-  .api-hint{font-size:11px;color:var(--muted);margin-top:6px;}
-  .api-hint a{color:var(--ink);}
   .budget-section{margin-bottom:20px;}
   .budget-total-bar{display:flex;align-items:center;justify-content:space-between;background:var(--tag-bg);border-radius:10px;padding:10px 16px;margin-bottom:14px;}
   .budget-total-label{font-size:12px;color:var(--muted);}
@@ -131,6 +124,7 @@
   .compare-caption{font-size:11px;color:var(--muted);margin-top:4px;}
   .ai-text{font-size:14px;line-height:1.9;white-space:pre-wrap;}
   .db-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--safe-bg);color:var(--safe-c);border-radius:8px;font-size:12px;margin-bottom:16px;}
+  .error-box{background:#fff0f0;border:1px solid #ffcccc;border-radius:10px;padding:14px 18px;font-size:13px;color:#c0392b;margin-top:16px;}
   @media(max-width:640px){
     .budget-sliders,.fields-3{grid-template-columns:1fr;}
     .fields-2{grid-template-columns:1fr;}
@@ -158,53 +152,36 @@
 
 <script>
 const BACKEND = 'https://huichuan-production.up.railway.app';
-// DeepSeek Key 已移至 Railway 后端环境变量 DEEPSEEK_API_KEY，前端不再持有
 
-// ══════════════════════════════════════════════════════
-// 从后端加载商品数据
-// ══════════════════════════════════════════════════════
 let DB = {tops:[], bottoms:[], shoes:[]};
 let dbStats = {total:0};
 
 async function loadProducts(){
   try{
-    const r = await fetch(`${BACKEND}/api/products?limit=100&category=top`);
-    const r2 = await fetch(`${BACKEND}/api/products?limit=100&category=bottom`);
-    const r3 = await fetch(`${BACKEND}/api/products?limit=100&category=shoes`);
-    const sr = await fetch(`${BACKEND}/api/products/stats`);
-
-    const [d1, d2, d3, stats] = await Promise.all([r.json(), r2.json(), r3.json(), sr.json()]);
-
+    const [r1,r2,r3,rs] = await Promise.all([
+      fetch(`${BACKEND}/api/products?limit=100&category=top`),
+      fetch(`${BACKEND}/api/products?limit=100&category=bottom`),
+      fetch(`${BACKEND}/api/products?limit=100&category=shoes`),
+      fetch(`${BACKEND}/api/products/stats`),
+    ]);
+    const [d1,d2,d3,stats] = await Promise.all([r1.json(),r2.json(),r3.json(),rs.json()]);
     DB.tops    = (d1.products||[]).map(normalizeProduct);
     DB.bottoms = (d2.products||[]).map(normalizeProduct);
     DB.shoes   = (d3.products||[]).map(normalizeProduct);
     dbStats    = stats;
-
-    console.log(`✅ 后端数据：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
-  }catch(e){
-    console.error('加载商品失败', e);
-  }
+    console.log(`✅ 商品：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
+  }catch(e){ console.error('加载商品失败',e); }
 }
 
 function normalizeProduct(p){
   return {
-    id:         p.id,
-    name:       p.name,
-    brand:      p.brand || 'Amazon',
-    price:      p.price,
-    color:      p.color || '',
-    color_tone: p.color_tone || 'medium',
-    img:        p.img || '',
-    buy:        p.buy || '',
-    tags:       p.tags || [],
-    avoid_body: p.avoid_body || [],
-    category:   p.category,
+    id:p.id, name:p.name, brand:p.brand||'Amazon', price:p.price,
+    color:p.color||'', color_tone:p.color_tone||'medium',
+    img:p.img||'', buy:p.buy||'', tags:p.tags||[],
+    avoid_body:p.avoid_body||[], category:p.category,
   };
 }
 
-// ══════════════════════════════════════════════════════
-// 体型计算
-// ══════════════════════════════════════════════════════
 function bodyInfo(h,w){
   const b=+(w/Math.pow(h/100,2)).toFixed(1);
   if(b<18.5)return{label:'偏瘦',bmi:b};
@@ -213,117 +190,53 @@ function bodyInfo(h,w){
   return         {label:'偏胖',bmi:b};
 }
 
-// ══════════════════════════════════════════════════════
-// 预过滤
-// ══════════════════════════════════════════════════════
-function preFilter(products, body, budgetLimit){
+function preFilter(products,body,budgetLimit){
   return products.filter(p=>{
-    if(p.price > budgetLimit) return false;
-    if(p.avoid_body && p.avoid_body.includes(body.label)) return false;
+    if(p.price>budgetLimit)return false;
+    if(p.avoid_body&&p.avoid_body.includes(body.label))return false;
     return true;
-  }).slice(0, 15);
+  }).slice(0,15);
 }
 
-// ══════════════════════════════════════════════════════
-// 调用后端 /api/recommend（后端调 DeepSeek）
-// ══════════════════════════════════════════════════════
-async function callBackendRecommend(userInfo, candidates){
-  const body = {
-    height:   userInfo.height,
-    weight:   userInfo.weight,
-    skin:     userInfo.skin,
-    face:     userInfo.face,
-    scene:    userInfo.scene,
-    style:    userInfo.style,
-    dislike:  userInfo.dislike || '',
-    existing: userInfo.existing || '',
-    desc:     userInfo.desc || '',
-    budgets:  userInfo.budgets,
-  };
-
-  const resp = await fetch(`${BACKEND}/api/recommend`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(body),
+async function callBackendRecommend(userInfo){
+  const resp=await fetch(`${BACKEND}/api/recommend`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      height:userInfo.height, weight:userInfo.weight,
+      skin:userInfo.skin, face:userInfo.face,
+      scene:userInfo.scene, style:userInfo.style,
+      dislike:userInfo.dislike||'', existing:userInfo.existing||'',
+      desc:userInfo.desc||'', budgets:userInfo.budgets,
+    }),
   });
-
-  if(!resp.ok){
-    const e = await resp.json();
-    throw new Error(e.detail || `后端错误 ${resp.status}`);
-  }
-
-  const data = await resp.json();
-
-  // 后端返回的 outfit 里已经有 top/bottom/shoes 对象，转换成前端格式
-  const outfits = (data.outfits||[]).map(o => ({
-    id:       o.id,
-    name:     o.name,
-    safety:   o.safety || '高',
-    reason:   o.reason,
-    top_id:   o.top?.id    || o.top_id,
-    bottom_id:o.bottom?.id || o.bottom_id,
-    shoes_id: o.shoes?.id  || o.shoes_id,
+  if(!resp.ok){const e=await resp.json();throw new Error(e.detail||`后端错误 ${resp.status}`);}
+  const data=await resp.json();
+  const outfits=(data.outfits||[]).map(o=>({
+    id:o.id, name:o.name, safety:o.safety||'高', reason:o.reason,
+    top_id:o.top?.id||o.top_id, bottom_id:o.bottom?.id||o.bottom_id, shoes_id:o.shoes?.id||o.shoes_id,
   }));
-
-  // 把后端返回的商品对象存入 DB，方便 findProduct 查找
-  (data.outfits||[]).forEach(o => {
-    if(o.top)    { const p = normalizeProductFromBackend(o.top);    if(!DB.tops.find(x=>x.id===p.id))    DB.tops.push(p); }
-    if(o.bottom) { const p = normalizeProductFromBackend(o.bottom); if(!DB.bottoms.find(x=>x.id===p.id)) DB.bottoms.push(p); }
-    if(o.shoes)  { const p = normalizeProductFromBackend(o.shoes);  if(!DB.shoes.find(x=>x.id===p.id))  DB.shoes.push(p); }
+  (data.outfits||[]).forEach(o=>{
+    if(o.top)   {const p=normalizeProduct(o.top);   if(!DB.tops.find(x=>x.id===p.id))   DB.tops.push(p);}
+    if(o.bottom){const p=normalizeProduct(o.bottom);if(!DB.bottoms.find(x=>x.id===p.id))DB.bottoms.push(p);}
+    if(o.shoes) {const p=normalizeProduct(o.shoes); if(!DB.shoes.find(x=>x.id===p.id))  DB.shoes.push(p);}
   });
-
-  return {
-    summary: data.summary || '',
-    tips:    data.tips || [],
-    outfits,
-    body:    data.body,
-  };
+  return {summary:data.summary||'', tips:data.tips||[], outfits, body:data.body};
 }
 
-function normalizeProductFromBackend(p){
-  return {
-    id:         p.id,
-    name:       p.name,
-    brand:      p.brand || 'Amazon',
-    price:      p.price,
-    color:      p.color || '',
-    color_tone: p.color_tone || 'medium',
-    img:        p.img || '',
-    buy:        p.buy || '',
-    tags:       p.tags || [],
-    avoid_body: p.avoid_body || [],
-    category:   p.category || 'top',
-  };
-}
-
-// 备用逻辑已移除，推荐功能完全由后端处理
-async function callDeepSeekDirect(userInfo, candidates){
-  throw new Error('后端服务暂时不可用，请稍后重试');
-}
-
-// ══════════════════════════════════════════════════════
-// 渲染结果
-// ══════════════════════════════════════════════════════
 const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'}};
+function findProduct(id){return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);}
 
-function findProduct(id){
-  return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);
-}
+function renderResult(aiResult,userInfo){
+  const budgetTotal=userInfo.budgets.top+userInfo.budgets.bottom+userInfo.budgets.shoes;
+  const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
+  const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
 
-function renderResult(aiResult, userInfo, allCandidates){
-  const budgetTotal = userInfo.budgets.top + userInfo.budgets.bottom + userInfo.budgets.shoes;
-  const tipsHTML = (aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
-
-  const outfitsHTML = (aiResult.outfits||[]).map(o=>{
-    const top    = findProduct(o.top_id)    || allCandidates.tops[0];
-    const bottom = findProduct(o.bottom_id) || allCandidates.bottoms[0];
-    const shoe   = findProduct(o.shoes_id)  || allCandidates.shoes[0];
-    if(!top||!bottom||!shoe) return '';
-    const total = top.price+bottom.price+shoe.price;
-
-    const items = [
-      {cat:'top',p:top},{cat:'bottom',p:bottom},{cat:'shoes',p:shoe},
-    ].map(({cat,p})=>`
+  const outfitsHTML=(aiResult.outfits||[]).map(o=>{
+    const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
+    if(!top||!bottom||!shoe)return '';
+    const total=top.price+bottom.price+shoe.price;
+    const items=[{cat:'top',p:top},{cat:'bottom',p:bottom},{cat:'shoes',p:shoe}].map(({cat,p})=>`
       <div class="item">
         <div class="img-box">
           <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'">
@@ -335,7 +248,6 @@ function renderResult(aiResult, userInfo, allCandidates){
         <div class="item-price"><span class="cur">CA$</span>${p.price}</div>
         <a class="buy-btn" href="${p.buy}" target="_blank" rel="noopener">购买 ↗</a>
       </div>`).join('');
-
     return `<div class="card outfit">
       <div class="outfit-head">
         <div><span class="outfit-num">套装 ${o.id}</span><span class="outfit-name">${o.name}</span></div>
@@ -353,10 +265,8 @@ function renderResult(aiResult, userInfo, allCandidates){
     </div>`;
   }).join('');
 
-  const outfitOpts = (aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
-
-  document.getElementById('result').innerHTML = `
-    <div class="db-badge">✅ Amazon.ca 真实商品数据（${dbStats.total || DB.tops.length+DB.bottoms.length+DB.shoes.length} 件）</div>
+  document.getElementById('result').innerHTML=`
+    <div class="db-badge">✅ Amazon.ca 真实商品（${dbStats.total||DB.tops.length+DB.bottoms.length+DB.shoes.length} 件）</div>
     ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">🤖 AI 穿搭分析</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
     <div class="meta-row">
       <span class="badge">🧍 ${userInfo.body}（BMI ${userInfo.bmi}）</span>
@@ -365,7 +275,6 @@ function renderResult(aiResult, userInfo, allCandidates){
     <div class="tips">${tipsHTML}</div>
     <p class="section-label">为你生成 ${(aiResult.outfits||[]).length} 套个性化穿搭方案</p>
     ${outfitsHTML}
-
     <div class="card tryon-section">
       <div class="tryon-title">👗 AI 虚拟试穿</div>
       <div class="tryon-sub">上传你的照片，AI 把推荐的衣服穿到你身上。</div>
@@ -430,68 +339,41 @@ function renderResult(aiResult, userInfo, allCandidates){
           <div class="result-box"><div class="ai-text" id="claudeText"></div></div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 
-  window._recData = {outfits: aiResult.outfits, allCandidates};
+  window._recData={outfits:aiResult.outfits};
   document.getElementById('result').classList.add('show');
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ══════════════════════════════════════════════════════
-// 主推荐流程
-// ══════════════════════════════════════════════════════
 async function getRecommend(){
-  const h = parseInt(document.getElementById('height').value);
-  const w = parseInt(document.getElementById('weight').value);
+  const h=parseInt(document.getElementById('height').value);
+  const w=parseInt(document.getElementById('weight').value);
   if(!h||!w){alert('请填写身高和体重');return;}
-
-  const body = bodyInfo(h,w);
-  const budgets = {
-    top:    parseInt(document.getElementById('topBudget').value),
-    bottom: parseInt(document.getElementById('bottomBudget').value),
-    shoes:  parseInt(document.getElementById('shoesBudget').value),
+  const body=bodyInfo(h,w);
+  const budgets={
+    top:parseInt(document.getElementById('topBudget').value),
+    bottom:parseInt(document.getElementById('bottomBudget').value),
+    shoes:parseInt(document.getElementById('shoesBudget').value),
   };
-
-  const userInfo = {
-    height:h, weight:w,
-    body:body.label, bmi:body.bmi,
-    skin:    document.getElementById('skin').value,
-    face:    document.getElementById('face').value,
-    scene:   document.getElementById('scene').value,
-    style:   document.getElementById('style').value,
-    dislike: document.getElementById('dislike').value,
+  const userInfo={
+    height:h,weight:w,body:body.label,bmi:body.bmi,
+    skin:document.getElementById('skin').value,
+    face:document.getElementById('face').value,
+    scene:document.getElementById('scene').value,
+    style:document.getElementById('style').value,
+    dislike:document.getElementById('dislike').value,
     existing:document.getElementById('existing').value,
-    desc:    document.getElementById('desc').value,
+    desc:document.getElementById('desc').value,
     budgets,
   };
-
-  const candidates = {
-    tops:    preFilter(DB.tops,    body, budgets.top),
-    bottoms: preFilter(DB.bottoms, body, budgets.bottom),
-    shoes:   preFilter(DB.shoes,   body, budgets.shoes),
-  };
-
-  if(!candidates.tops.length||!candidates.bottoms.length||!candidates.shoes.length){
-    alert('预算范围内没有合适商品，请调高预算');
-    return;
-  }
-
   document.getElementById('mainBtn').disabled=true;
   document.getElementById('aiStatus').classList.add('show');
   document.getElementById('result').classList.remove('show');
-
   try{
-    let aiResult;
-    try{
-      // 优先用后端
-      aiResult = await callBackendRecommend(userInfo, candidates);
-    }catch(backendErr){
-      console.warn('后端推荐失败，尝试前端直接调用 DeepSeek:', backendErr);
-      aiResult = await callDeepSeekDirect(userInfo, candidates);
-    }
+    const aiResult=await callBackendRecommend(userInfo);
     document.getElementById('aiStatus').classList.remove('show');
-    renderResult(aiResult, userInfo, candidates);
+    renderResult(aiResult,userInfo);
   }catch(e){
     document.getElementById('aiStatus').classList.remove('show');
     alert('AI 推荐失败：'+e.message);
@@ -501,7 +383,6 @@ async function getRecommend(){
   }
 }
 
-// ── 预算滑块 ──────────────────────────────────────────
 function updateSlider(cat,val){
   val=parseInt(val);
   const maxMap={top:200,bottom:200,shoes:250};
@@ -517,7 +398,6 @@ function updateTotal(){
   document.getElementById('totalDisplay').textContent=`CA$${t+b+s}`;
 }
 
-// ── 试穿相关 ──────────────────────────────────────────
 function switchTab(name){
   ['fashn','claude'].forEach((n,i)=>{
     document.querySelectorAll('.api-tab')[i].classList.toggle('active',n===name);
@@ -540,26 +420,25 @@ async function autoFill(){
   const data=window._recData;if(!data)return;
   const oid=parseInt(document.getElementById('fashnSel').value);
   const o=data.outfits.find(x=>x.id===oid);if(!o)return;
-  const top=findProduct(o.top_id);if(!top)return;
+  const top=findProduct(o.top_id);if(!top||!top.img)return;
   const img=document.getElementById('garmentPreview');
   const area=document.getElementById('garmentArea');
   img.src=top.img;img.style.display='block';
   area.querySelectorAll('.upload-icon,.upload-hint').forEach(el=>el.style.display='none');
   document.getElementById('garmentLabel').textContent=top.name;
   area.classList.add('filled');
-  // 直接存商品图的 HTTPS URL（Fashn.ai 需要公开可访问的 URL，不接受 base64）
-  window._garmentUrl = top.img;
+  window._garmentUrl=top.img;
 }
-function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(file);});}
 
-// 上传图片到后端，返回公开 URL（Fashn.ai 需要公开 HTTPS URL，不接受 base64）
 async function uploadImageToBackend(file){
-  const formData = new FormData();
-  formData.append('file', file);
-  const r = await fetch(`${BACKEND}/api/upload-image`, {method:'POST', body:formData});
+  const formData=new FormData();
+  formData.append('file',file);
+  const r=await fetch(`${BACKEND}/api/upload-image`,{method:'POST',body:formData});
   if(!r.ok){const e=await r.json();throw new Error(e.detail||`上传失败 ${r.status}`);}
-  const d = await r.json();
-  return d.url; // 后端返回公开可访问的 URL
+  const d=await r.json();
+  if(!d.url)throw new Error('后端未返回图片URL');
+  console.log('上传成功，URL:', d.url);
+  return d.url;
 }
 
 async function runFashn(){
@@ -569,6 +448,7 @@ async function runFashn(){
   if(!personFile){alert('请上传你的照片');return;}
   const garmentFile=document.getElementById('garmentInput').files[0];
   if(!garmentFile&&!window._garmentUrl){alert('请上传衣服图片或点击"自动填入"');return;}
+
   const btn=document.getElementById('fashnBtn');
   btn.disabled=true;btn.textContent='⏳ 处理中…';
   const prog=document.getElementById('fashnProgress');
@@ -578,47 +458,83 @@ async function runFashn(){
   let pct=0,mi=0;
   const msgs=['上传图片到服务器…','AI分析人体轮廓…','生成试穿效果…','最后润色…'];
   const timer=setInterval(()=>{pct+=Math.random()*6;if(pct>88)pct=88;bar.style.width=pct+'%';if(mi<msgs.length&&pct>mi*25){status.textContent=msgs[mi];mi++;}},800);
-  try{
-    // 先把本地照片上传到后端，获取公开 URL
-    status.textContent='上传照片到服务器…';
-    const personUrl = await uploadImageToBackend(personFile);
 
-    // 衣服图：如果用户手动上传了文件就上传，否则用 autoFill 存的商品 URL
+  try{
+    status.textContent='上传人物照片…';
+    const personUrl=await uploadImageToBackend(personFile);
+
     let garmentUrl;
     if(garmentFile){
       status.textContent='上传衣服图片…';
-      garmentUrl = await uploadImageToBackend(garmentFile);
+      garmentUrl=await uploadImageToBackend(garmentFile);
     } else {
-      garmentUrl = window._garmentUrl; // 商品的 HTTPS URL，直接可用
+      garmentUrl=window._garmentUrl;
     }
 
-    // 调用 Fashn.ai，传公开 URL
+    // 验证URL格式
+    if(!personUrl.startsWith('https://')){
+      throw new Error(`人物照片URL格式错误: ${personUrl}`);
+    }
+
     status.textContent='提交试穿任务…';
-    const r=await fetch('https://api.fashn.ai/v1/run',{method:'POST',
+    // BUG FIX: category 使用 Fashn.ai v1.6 正确值 'upper_body'
+    const payload={
+      model_name:'tryon-v1.6',
+      inputs:{
+        model_image: personUrl,
+        garment_image: garmentUrl,
+        category: 'upper_body',
+        mode: 'balanced'
+      }
+    };
+    console.log('Fashn.ai 请求:', JSON.stringify(payload));
+
+    const r=await fetch('https://api.fashn.ai/v1/run',{
+      method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
-      body:JSON.stringify({model_name:'tryon-v1.6',inputs:{model_image:personUrl,garment_image:garmentUrl,category:'tops',mode:'balanced'}})});
-    if(!r.ok){const e=await r.json();throw new Error(e.error||e.detail||JSON.stringify(e)||`HTTP ${r.status}`);}
-    const {id:predId}=await r.json();
+      body:JSON.stringify(payload)
+    });
+
+    if(!r.ok){
+      const e=await r.json();
+      console.error('Fashn.ai 错误响应:', e);
+      throw new Error(e.error||e.detail||e.message||JSON.stringify(e)||`HTTP ${r.status}`);
+    }
+
+    const runData=await r.json();
+    console.log('Fashn.ai 任务创建:', runData);
+    const predId=runData.id;
+    if(!predId)throw new Error('未获取到任务ID: '+JSON.stringify(runData));
 
     // 轮询结果
+    status.textContent='等待 AI 处理…';
     let output=null;
     for(let i=0;i<40;i++){
       await new Promise(r=>setTimeout(r,3000));
-      const poll=await fetch(`https://api.fashn.ai/v1/status/${predId}`,{headers:{'Authorization':`Bearer ${key}`}});
+      const poll=await fetch(`https://api.fashn.ai/v1/status/${predId}`,{
+        headers:{'Authorization':`Bearer ${key}`}
+      });
       const d=await poll.json();
+      console.log(`轮询 ${i+1}:`, d.status);
       if(d.status==='completed'){output=d.output;break;}
-      if(d.status==='failed') throw new Error('处理失败：'+(d.error||'未知错误'));
+      if(d.status==='failed')throw new Error('处理失败：'+(d.error||'未知错误'));
     }
-    if(!output) throw new Error('处理超时，请重试');
+
+    if(!output)throw new Error('处理超时，请重试');
     clearInterval(timer);bar.style.width='100%';
     const resultUrl=Array.isArray(output)?output[0]:output;
-    // 原图显示用户上传的本地预览
     document.getElementById('origImg').src=URL.createObjectURL(personFile);
     document.getElementById('outImg').src=resultUrl;
     document.getElementById('fashnResult').classList.add('show');
-  }catch(e){clearInterval(timer);alert('试穿失败：'+e.message);console.error(e);}
-  finally{btn.disabled=false;btn.textContent='🤖 开始虚拟试穿';
-    setTimeout(()=>{prog.classList.remove('show');bar.style.width='0';},2000);}
+
+  }catch(e){
+    clearInterval(timer);
+    console.error('试穿失败:', e);
+    alert('试穿失败：'+e.message);
+  }finally{
+    btn.disabled=false;btn.textContent='🤖 开始虚拟试穿';
+    setTimeout(()=>{prog.classList.remove('show');bar.style.width='0';},2000);
+  }
 }
 
 async function runClaude(){
@@ -631,12 +547,14 @@ async function runClaude(){
   const btn=document.getElementById('claudeBtn');
   btn.disabled=true;btn.textContent='💬 生成中…';
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:
         `你是专业男性穿搭顾问。为以下穿搭写上身效果分析，语气像朋友聊天。
 穿搭：上衣→${top?.name}（${top?.color}）裤子→${bottom?.name}（${bottom?.color}）鞋子→${shoe?.name}（${shoe?.color}）
-分析：🎨整体视觉 📐体型修饰 ✨搭配亮点 🌍场景适配 💡上身小细节`}]})});
+分析：🎨整体视觉 📐体型修饰 ✨搭配亮点 🌍场景适配 💡上身小细节`}]})
+    });
     if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
     const j=await r.json();
     document.getElementById('claudeText').textContent=j.content?.[0]?.text||'生成失败';
@@ -645,53 +563,26 @@ async function runClaude(){
   finally{btn.disabled=false;btn.textContent='💬 生成穿搭效果分析';}
 }
 
-// ══════════════════════════════════════════════════════
-// 初始化
-// ══════════════════════════════════════════════════════
 async function init(){
   await loadProducts();
-  document.getElementById('app').innerHTML = `
+  document.getElementById('app').innerHTML=`
     <div class="card form-card">
       <p class="section-title">基本信息</p>
       <div class="fields">
         <div class="field"><label>身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
         <div class="field"><label>体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
-        <div class="field"><label>肤色</label>
-          <select id="skin">
-            <option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option>
-          </select>
-        </div>
-        <div class="field"><label>脸型</label>
-          <select id="face">
-            <option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option>
-          </select>
-        </div>
-        <div class="field"><label>场景</label>
-          <select id="scene">
-            <option>日常</option><option>上课</option><option selected>约会</option>
-            <option>通勤</option><option>运动</option><option>正式场合</option>
-            <option>周末出行</option><option>聚会</option>
-          </select>
-        </div>
-        <div class="field"><label>风格偏好</label>
-          <select id="style">
-            <option>简单百搭</option><option selected>干净清爽</option><option>韩系</option>
-            <option>日系</option><option>美式休闲</option><option>极简</option>
-            <option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option>
-          </select>
-        </div>
+        <div class="field"><label>肤色</label><select id="skin"><option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option></select></div>
+        <div class="field"><label>脸型</label><select id="face"><option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option></select></div>
+        <div class="field"><label>场景</label><select id="scene"><option>日常</option><option>上课</option><option selected>约会</option><option>通勤</option><option>运动</option><option>正式场合</option><option>周末出行</option><option>聚会</option></select></div>
+        <div class="field"><label>风格偏好</label><select id="style"><option>简单百搭</option><option selected>干净清爽</option><option>韩系</option><option>日系</option><option>美式休闲</option><option>极简</option><option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option></select></div>
       </div>
       <div class="fields-2">
-        <div class="field"><label>不喜欢的款式（可选）</label>
-          <input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…">
-        </div>
-        <div class="field"><label>已有的主要单品（可选）</label>
-          <input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…">
-        </div>
+        <div class="field"><label>不喜欢的款式（可选）</label><input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…"></div>
+        <div class="field"><label>已有的主要单品（可选）</label><input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…"></div>
       </div>
       <div class="field" style="margin-bottom:20px">
         <label>补充描述（可选）</label>
-        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲；想要稍微有点韩系感但不要太夸张…"></textarea>
+        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲…"></textarea>
       </div>
       <div class="budget-section">
         <p class="section-title">分类预算设置</p>
@@ -701,41 +592,30 @@ async function init(){
         </div>
         <div class="budget-sliders">
           <div class="budget-slider-item">
-            <div class="slider-header">
-              <div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label">上衣预算</span></div>
-              <span class="slider-value" id="topBudgetDisplay">CA$60</span>
-            </div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label">上衣预算</span></div><span class="slider-value" id="topBudgetDisplay">CA$60</span></div>
             <input type="range" id="topBudget" min="20" max="200" step="10" value="60" oninput="updateSlider('top',this.value)">
             <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
           </div>
           <div class="budget-slider-item">
-            <div class="slider-header">
-              <div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label">裤子预算</span></div>
-              <span class="slider-value" id="bottomBudgetDisplay">CA$80</span>
-            </div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label">裤子预算</span></div><span class="slider-value" id="bottomBudgetDisplay">CA$80</span></div>
             <input type="range" id="bottomBudget" min="20" max="200" step="10" value="80" oninput="updateSlider('bottom',this.value)">
             <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
           </div>
           <div class="budget-slider-item">
-            <div class="slider-header">
-              <div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label">鞋子预算</span></div>
-              <span class="slider-value" id="shoesBudgetDisplay">CA$90</span>
-            </div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label">鞋子预算</span></div><span class="slider-value" id="shoesBudgetDisplay">CA$90</span></div>
             <input type="range" id="shoesBudget" min="20" max="250" step="10" value="90" oninput="updateSlider('shoes',this.value)">
             <div class="slider-range"><span>CA$20</span><span>CA$250+</span></div>
           </div>
         </div>
       </div>
-
       <button class="btn" id="mainBtn" onclick="getRecommend()">🤖 AI 个性化穿搭推荐</button>
     </div>
     <div class="ai-status" id="aiStatus">
       <div class="ai-status-icon">🤖</div>
-      <div class="ai-status-text">AI 正在从 289 件 Amazon 商品中为你挑选最佳搭配…</div>
+      <div class="ai-status-text">AI 正在从商品库中为你挑选最佳搭配…</div>
       <div class="ai-thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
     </div>
-    <div class="result" id="result"></div>
-  `;
+    <div class="result" id="result"></div>`;
   updateTotal();
 }
 
