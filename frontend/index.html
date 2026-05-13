@@ -471,19 +471,13 @@ async function runFashn(){
       garmentUrl=window._garmentUrl;
     }
 
-    // 验证URL格式
-    if(!personUrl.startsWith('https://')){
-      throw new Error(`人物照片URL格式错误: ${personUrl}`);
-    }
-
     status.textContent='提交试穿任务…';
-    // BUG FIX: category 使用 Fashn.ai v1.6 正确值 'upper_body'
     const payload={
       model_name:'tryon-v1.6',
       inputs:{
         model_image: personUrl,
         garment_image: garmentUrl,
-        category: 'upper_body',
+        category: 'tops',
         mode: 'balanced'
       }
     };
