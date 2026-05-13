@@ -596,7 +596,7 @@ async function runFashn(){
     status.textContent='提交试穿任务…';
     const r=await fetch('https://api.fashn.ai/v1/run',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
-      body:JSON.stringify({model_image:personUrl,garment_image:garmentUrl,category:'tops',mode:'balanced'})});
+      body:JSON.stringify({body:JSON.stringify({model_name:'tryon-v1.6',inputs:{model_image:personUrl,garment_image:garmentUrl,category:'tops',mode:'balanced'}})});})});
     if(!r.ok){const e=await r.json();throw new Error(e.error||e.detail||JSON.stringify(e)||`HTTP ${r.status}`);}
     const {id:predId}=await r.json();
 
