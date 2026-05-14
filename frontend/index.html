@@ -468,37 +468,6 @@ function openBodyCamera(side){
   openCamera();
 }
 
-// 覆盖 snapPhoto 让拍照结果能填入体型照片
-const _origSnap = snapPhoto;
-snapPhoto = function(){
-  const side = window._cameraSide;
-  if(!side){ _origSnap && _origSnap(); return; }
-  const video=document.getElementById('cameraVideo');
-  const canvas=document.getElementById('cameraCanvas');
-  canvas.width=video.videoWidth; canvas.height=video.videoHeight;
-  canvas.getContext('2d').drawImage(video,0,0);
-  canvas.toBlob(blob=>{
-    if(!blob)return;
-    const inputId = side==='front'?'frontPhotoInput':'sidePhotoInput';
-    const previewId = side==='front'?'frontPreview':'sidePreview';
-    const boxId = side==='front'?'frontPhotoBox':'sidePhotoBox';
-    const file=new File([blob],'body-photo.jpg',{type:'image/jpeg'});
-    const dt=new DataTransfer(); dt.items.add(file);
-    document.getElementById(inputId).files=dt.files;
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const img=document.getElementById(previewId);
-      const box=document.getElementById(boxId);
-      img.src=e.target.result;img.style.display='block';
-      box.querySelectorAll('div').forEach(el=>el.style.display='none');
-      box.classList.add('filled');
-    };
-    reader.readAsDataURL(blob);
-    window._cameraSide=null;
-    closeCamera();
-  },'image/jpeg',0.92);
-};
-
 async function analyzeBody(){
   const frontFile=document.getElementById('frontPhotoInput').files[0];
   if(!frontFile){alert('请先上传正面全身照');return;}
@@ -863,7 +832,7 @@ init();
     <canvas id="cameraCanvas" style="display:none"></canvas>
     <div class="camera-actions">
       <button class="camera-cancel" onclick="closeCamera()">取消</button>
-      <button class="camera-snap" onclick="snapPhoto()">📸 拍摄</button>
+      <button class="camera-snap" onclick="doSnap()">📸 拍摄</button>
     </div>
   </div>
 </div>
@@ -892,30 +861,48 @@ function closeCamera(){
   document.getElementById('cameraVideo').srcObject = null;
 }
 
-function snapPhoto(){
+function doSnap(){
   const video = document.getElementById('cameraVideo');
   const canvas = document.getElementById('cameraCanvas');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video, 0, 0);
+  const side = window._cameraSide;
   canvas.toBlob(blob => {
     if(!blob) return;
-    // 把拍到的照片塞进 personInput 的 File 列表，并预览
-    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    document.getElementById('personInput').files = dt.files;
-
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.getElementById('personPreview');
-      const area = document.getElementById('personArea');
-      img.src = e.target.result;
-      img.style.display = 'block';
-      area.querySelectorAll('.upload-icon,.upload-label,.upload-hint').forEach(el=>el.style.display='none');
-      area.classList.add('filled');
-    };
-    reader.readAsDataURL(blob);
+    if(side === 'front' || side === 'side'){
+      // 体型照片
+      const inputId  = side==='front' ? 'frontPhotoInput' : 'sidePhotoInput';
+      const previewId= side==='front' ? 'frontPreview'    : 'sidePreview';
+      const boxId    = side==='front' ? 'frontPhotoBox'   : 'sidePhotoBox';
+      const file = new File([blob], 'body-photo.jpg', { type: 'image/jpeg' });
+      const dt = new DataTransfer(); dt.items.add(file);
+      document.getElementById(inputId).files = dt.files;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById(previewId);
+        const box = document.getElementById(boxId);
+        img.src = e.target.result; img.style.display = 'block';
+        box.querySelectorAll('div').forEach(el=>el.style.display='none');
+        box.classList.add('filled');
+      };
+      reader.readAsDataURL(blob);
+      window._cameraSide = null;
+    } else {
+      // 试穿人物照片
+      const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+      const dt = new DataTransfer(); dt.items.add(file);
+      document.getElementById('personInput').files = dt.files;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById('personPreview');
+        const area = document.getElementById('personArea');
+        img.src = e.target.result; img.style.display = 'block';
+        area.querySelectorAll('.upload-icon,.upload-label,.upload-hint').forEach(el=>el.style.display='none');
+        area.classList.add('filled');
+      };
+      reader.readAsDataURL(blob);
+    }
     closeCamera();
   }, 'image/jpeg', 0.92);
 }
