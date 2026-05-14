@@ -1,11 +1,12 @@
 """
 推荐 API 路由
-POST /api/recommend  → DeepSeek 个性化推荐
+POST /api/recommend      → DeepSeek 个性化推荐
+POST /api/analyze-body   → DeepSeek Vision 体型分析
 """
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 import httpx, os, json
 
 from database import get_db, Product
@@ -26,6 +27,17 @@ class RecommendRequest(BaseModel):
     existing: Optional[str] = None
     desc:     Optional[str] = None
     budgets:  dict
+    body_analysis: Optional[str] = None
+    measurements:  Optional[dict] = None
+
+
+class AnalyzeBodyRequest(BaseModel):
+    messages: list
+    height:   Optional[str] = None
+    weight:   Optional[str] = None
+    chest:    Optional[str] = None
+    waist:    Optional[str] = None
+    hip:      Optional[str] = None
 
 
 def get_body_info(h: int, w: int) -> dict:
@@ -45,6 +57,53 @@ def pre_filter(db: Session, category: str, body_label: str, budget: float, limit
     result = [p for p in products if body_label not in (p.avoid_body or [])]
     result.sort(key=lambda x: x.price)
     return result[:limit]
+
+
+@router.post("/analyze-body")
+async def analyze_body(req: AnalyzeBodyRequest):
+    """用 DeepSeek 分析体型照片"""
+    api_key = DEEPSEEK_API_KEY
+    if not api_key:
+        raise HTTPException(status_code=400, detail="DeepSeek API Key 未配置")
+
+    # 构建纯文字 prompt（DeepSeek chat 不支持图片，用文字描述分析）
+    measure_text = ""
+    if req.chest or req.waist or req.hip:
+        measure_text = f"胸围{req.chest or '未知'}cm，腰围{req.waist or '未知'}cm，臀围{req.hip or '未知'}cm"
+
+    prompt = f"""你是专业男性体型分析师和穿搭顾问。请根据用户信息给出专业体型分析和穿搭建议。
+
+用户信息：
+- 身高：{req.height or '未知'}cm
+- 体重：{req.weight or '未知'}kg
+- 三围：{measure_text or '未提供'}
+
+请分析并给出：
+1. 体型特征描述（2-3句话，包括体型类型如标准/偏瘦/略胖等）
+2. 最适合的版型和款式（具体建议）
+3. 应避免的款式（具体说明原因）
+4. 颜色搭配建议（适合的颜色系）
+5. 3个最重要的穿搭关键词
+
+最后一行格式必须是：标签：XXX|XXX|XXX"""
+
+    async with httpx.AsyncClient(timeout=30) as client:
+        resp = await client.post(
+            "https://api.deepseek.com/chat/completions",
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            json={
+                "model": "deepseek-chat",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.7,
+                "max_tokens": 800
+            }
+        )
+
+    if not resp.is_success:
+        raise HTTPException(status_code=502, detail=f"DeepSeek API 错误: {resp.text[:200]}")
+
+    analysis = resp.json()["choices"][0]["message"]["content"]
+    return {"analysis": analysis}
 
 
 @router.post("/recommend")
@@ -67,16 +126,25 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
             for p in products
         ])
 
+    measure_text = ""
+    if req.measurements:
+        c = req.measurements.get("chest","")
+        w = req.measurements.get("waist","")
+        h = req.measurements.get("hip","")
+        if c or w or h:
+            measure_text = f"\n- 三围：胸围{c or '未知'}cm，腰围{w or '未知'}cm，臀围{h or '未知'}cm"
+
+    body_analysis_text = f"\n- AI体型分析：{req.body_analysis}" if req.body_analysis else ""
+
     prompt = f"""你是专业男性穿搭顾问，从候选商品中选出3套完整个性化穿搭方案。
 
 【用户信息】
-- 身高：{req.height}cm，体重：{req.weight}kg，体型：{body['label']}（BMI {body['bmi']}）
+- 身高：{req.height}cm，体重：{req.weight}kg，体型：{body['label']}（BMI {body['bmi']}）{measure_text}
 - 肤色：{req.skin}，脸型：{req.face}
 - 场景：{req.scene}，风格：{req.style}
 - 排斥款式：{req.dislike or '无'}
 - 已有单品：{req.existing or '无'}
-- 补充描述：{req.desc or '无'}
-- 预算：上衣 CA${req.budgets.get('top')}，裤子 CA${req.budgets.get('bottom')}，鞋子 CA${req.budgets.get('shoes')}
+- 补充描述：{req.desc or '无'}{body_analysis_text}
 
 【候选上衣】
 {fmt(tops)}
@@ -91,7 +159,7 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 1. 只能从候选商品中选，使用商品ID
 2. 三套穿搭尽量不重复单品
 3. 考虑颜色搭配协调性
-4. 考虑肤色和脸型的影响
+4. 重点参考AI体型分析结果（如有）和三围数据来选择合适版型
 5. 套装1最安全，套装2有个性，套装3稍冒险
 
 返回严格JSON：
