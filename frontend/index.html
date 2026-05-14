@@ -104,6 +104,20 @@
   .upload-hint{font-size:11px;color:var(--muted);}
   .upload-preview{width:100%;height:140px;object-fit:contain;border-radius:8px;display:none;}
   .upload-input{display:none;}
+  .photo-btns{display:flex;gap:8px;margin-top:8px;}
+  .photo-btn{flex:1;height:36px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;background:var(--bg);color:var(--ink);transition:background .15s;}
+  .photo-btn:hover{background:#ede9e3;}
+  .photo-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .photo-btn.primary:hover{opacity:.85;}
+  .camera-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;}
+  .camera-modal.show{display:flex;}
+  .camera-box{background:var(--card);border-radius:16px;padding:20px;width:90%;max-width:480px;}
+  .camera-title{font-size:15px;font-weight:500;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+  .camera-close{cursor:pointer;font-size:20px;color:var(--muted);}
+  #cameraVideo{width:100%;border-radius:10px;background:#000;}
+  .camera-actions{display:flex;gap:10px;margin-top:12px;}
+  .camera-snap{flex:1;height:44px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;}
+  .camera-cancel{height:44px;padding:0 20px;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;}
   .auto-fill-btn{width:100%;height:38px;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:14px;transition:background .15s;}
   .auto-fill-btn:hover{background:#ede9e3;}
   .btn-tryon{width:100%;height:48px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;}
@@ -298,6 +312,10 @@ function renderResult(aiResult,userInfo){
               <img class="upload-preview" id="personPreview">
             </div>
             <input class="upload-input" type="file" id="personInput" accept="image/jpeg,image/png" onchange="previewImg('personInput','personPreview','personArea')">
+            <div class="photo-btns">
+              <button class="photo-btn" onclick="document.getElementById('personInput').click()">📁 从相册选择</button>
+              <button class="photo-btn primary" onclick="openCamera()">📷 拍照</button>
+            </div>
           </div>
           <div>
             <div class="input-label" style="margin-bottom:8px">衣服图片</div>
@@ -614,6 +632,75 @@ async function init(){
 }
 
 init();
+</script>
+
+<!-- 拍照 Modal -->
+<div class="camera-modal" id="cameraModal">
+  <div class="camera-box">
+    <div class="camera-title">
+      <span>📷 拍照</span>
+      <span class="camera-close" onclick="closeCamera()">✕</span>
+    </div>
+    <video id="cameraVideo" autoplay playsinline></video>
+    <canvas id="cameraCanvas" style="display:none"></canvas>
+    <div class="camera-actions">
+      <button class="camera-cancel" onclick="closeCamera()">取消</button>
+      <button class="camera-snap" onclick="snapPhoto()">📸 拍摄</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let cameraStream = null;
+
+async function openCamera(){
+  const modal = document.getElementById('cameraModal');
+  const video = document.getElementById('cameraVideo');
+  modal.classList.add('show');
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
+    video.srcObject = cameraStream;
+  } catch(e) {
+    alert('无法访问摄像头：' + e.message + '\n请检查浏览器权限设置。');
+    modal.classList.remove('show');
+  }
+}
+
+function closeCamera(){
+  if(cameraStream){ cameraStream.getTracks().forEach(t=>t.stop()); cameraStream=null; }
+  document.getElementById('cameraModal').classList.remove('show');
+  document.getElementById('cameraVideo').srcObject = null;
+}
+
+function snapPhoto(){
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('cameraCanvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  canvas.toBlob(blob => {
+    if(!blob) return;
+    // 把拍到的照片塞进 personInput 的 File 列表，并预览
+    const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('personInput').files = dt.files;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('personPreview');
+      const area = document.getElementById('personArea');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      area.querySelectorAll('.upload-icon,.upload-label,.upload-hint').forEach(el=>el.style.display='none');
+      area.classList.add('filled');
+    };
+    reader.readAsDataURL(blob);
+    closeCamera();
+  }, 'image/jpeg', 0.92);
+}
 </script>
 </body>
 </html>
