@@ -139,6 +139,31 @@
   .ai-text{font-size:14px;line-height:1.9;white-space:pre-wrap;}
   .db-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--safe-bg);color:var(--safe-c);border-radius:8px;font-size:12px;margin-bottom:16px;}
   .error-box{background:#fff0f0;border:1px solid #ffcccc;border-radius:10px;padding:14px 18px;font-size:13px;color:#c0392b;margin-top:16px;}
+  /* 体型分析区域 */
+  .body-analysis-section{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:24px 28px;margin-bottom:20px;}
+  .body-photo-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .body-photo-box{border:1.5px dashed var(--border);border-radius:12px;background:var(--bg);min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .15s;text-align:center;padding:12px;}
+  .body-photo-box:hover{border-color:var(--ink);}
+  .body-photo-box.filled{border-style:solid;border-color:#aaa;}
+  .body-preview{width:100%;max-height:130px;object-fit:contain;border-radius:8px;display:none;}
+  .measure-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .measure-item label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500;}
+  .measure-item input{width:100%;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;}
+  .measure-item input:focus{border-color:var(--ink);}
+  .analyze-btn{width:100%;height:44px;background:linear-gradient(135deg,#1a1a1a,#444);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;margin-bottom:14px;transition:opacity .15s;}
+  .analyze-btn:hover{opacity:.85;}.analyze-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .analysis-result{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:12px;padding:16px 20px;margin-bottom:16px;display:none;}
+  .analysis-result.show{display:block;}
+  .analysis-result-title{font-size:11px;opacity:.5;letter-spacing:.5px;margin-bottom:8px;}
+  .analysis-result-text{font-size:13px;line-height:1.8;opacity:.9;}
+  .analysis-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .analysis-tag{background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:11px;}
+  .step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+  .step{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+  .step.active{color:var(--ink);font-weight:500;}
+  .step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+  .step.active .step-num{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .step-line{flex:1;height:1px;background:var(--border);}
   @media(max-width:640px){
     .budget-sliders,.fields-3{grid-template-columns:1fr;}
     .fields-2{grid-template-columns:1fr;}
@@ -146,6 +171,7 @@
     .item{border-right:none;border-bottom:1px solid var(--border);}
     .item:last-child{border-bottom:none;}
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
+    .body-photo-row,.measure-grid{grid-template-columns:1fr;}
     .form-card,.tryon-section{padding:20px;}
     .api-tabs{flex-direction:column;}
   }
@@ -222,6 +248,8 @@ async function callBackendRecommend(userInfo){
       scene:userInfo.scene, style:userInfo.style,
       dislike:userInfo.dislike||'', existing:userInfo.existing||'',
       desc:userInfo.desc||'', budgets:userInfo.budgets,
+      body_analysis: userInfo.bodyAnalysis||'',
+      measurements: userInfo.measurements||{},
     }),
   });
   if(!resp.ok){const e=await resp.json();throw new Error(e.detail||`后端错误 ${resp.status}`);}
@@ -384,6 +412,12 @@ async function getRecommend(){
     existing:document.getElementById('existing').value,
     desc:document.getElementById('desc').value,
     budgets,
+    bodyAnalysis: window._bodyAnalysis||'',
+    measurements: {
+      chest: document.getElementById('chest')?.value||'',
+      waist: document.getElementById('waist')?.value||'',
+      hip:   document.getElementById('hip')?.value||'',
+    },
   };
   document.getElementById('mainBtn').disabled=true;
   document.getElementById('aiStatus').classList.add('show');
@@ -414,6 +448,133 @@ function updateTotal(){
   const b=parseInt(document.getElementById('bottomBudget').value);
   const s=parseInt(document.getElementById('shoesBudget').value);
   document.getElementById('totalDisplay').textContent=`CA$${t+b+s}`;
+}
+
+function previewBodyPhoto(inputId, previewId, boxId){
+  const file=document.getElementById(inputId).files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById(previewId);
+    const box=document.getElementById(boxId);
+    img.src=e.target.result;img.style.display='block';
+    box.querySelectorAll('div').forEach(el=>el.style.display='none');
+    box.classList.add('filled');
+  };
+  reader.readAsDataURL(file);
+}
+
+function openBodyCamera(side){
+  window._cameraSide = side;
+  openCamera();
+}
+
+// 覆盖 snapPhoto 让拍照结果能填入体型照片
+const _origSnap = snapPhoto;
+snapPhoto = function(){
+  const side = window._cameraSide;
+  if(!side){ _origSnap && _origSnap(); return; }
+  const video=document.getElementById('cameraVideo');
+  const canvas=document.getElementById('cameraCanvas');
+  canvas.width=video.videoWidth; canvas.height=video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+  canvas.toBlob(blob=>{
+    if(!blob)return;
+    const inputId = side==='front'?'frontPhotoInput':'sidePhotoInput';
+    const previewId = side==='front'?'frontPreview':'sidePreview';
+    const boxId = side==='front'?'frontPhotoBox':'sidePhotoBox';
+    const file=new File([blob],'body-photo.jpg',{type:'image/jpeg'});
+    const dt=new DataTransfer(); dt.items.add(file);
+    document.getElementById(inputId).files=dt.files;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=document.getElementById(previewId);
+      const box=document.getElementById(boxId);
+      img.src=e.target.result;img.style.display='block';
+      box.querySelectorAll('div').forEach(el=>el.style.display='none');
+      box.classList.add('filled');
+    };
+    reader.readAsDataURL(blob);
+    window._cameraSide=null;
+    closeCamera();
+  },'image/jpeg',0.92);
+};
+
+async function analyzeBody(){
+  const frontFile=document.getElementById('frontPhotoInput').files[0];
+  if(!frontFile){alert('请先上传正面全身照');return;}
+  const btn=document.getElementById('analyzeBtn');
+  btn.disabled=true; btn.textContent='🔍 AI 分析中…';
+  try{
+    // 把照片转 base64
+    const toB64 = f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});
+    const frontB64=await toB64(frontFile);
+    const sideFile=document.getElementById('sidePhotoInput').files[0];
+    const sideB64=sideFile?await toB64(sideFile):null;
+
+    const chest=document.getElementById('chest').value;
+    const waist=document.getElementById('waist').value;
+    const hip=document.getElementById('hip').value;
+    const h=document.getElementById('height').value||'未填';
+    const w=document.getElementById('weight').value||'未填';
+
+    const measureText = (chest||waist||hip)?`胸围${chest||'未填'}cm，腰围${waist||'未填'}cm，臀围${hip||'未填'}cm`:'未提供';
+
+    const messages=[{
+      role:'user',
+      content:[
+        {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frontB64.split(',')[1]}},
+        ...(sideB64?[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:sideB64.split(',')[1]}}]:[]),
+        {type:'text',text:`你是专业男性体型分析师。请分析这位用户的体型，给出穿搭建议。
+用户信息：身高${h}cm，体重${w}kg，三围：${measureText}
+请分析：
+1. 体型特征（倒三角/标准/略胖/偏瘦等，2-3句话）
+2. 适合的版型和款式（具体说明）
+3. 应避免的款式（具体说明）
+4. 颜色搭配建议
+5. 3个最重要的穿搭关键词标签
+
+输出格式：先写分析文字（3-4句话），然后换行写标签，格式：标签：XXX|XXX|XXX`}
+      ]
+    }];
+
+    const resp=await fetch(`${BACKEND}/api/analyze-body`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages, height:h, weight:w, chest, waist, hip})
+    });
+
+    let analysisText='';
+    if(resp.ok){
+      const d=await resp.json();
+      analysisText=d.analysis||'';
+    } else {
+      // 后端不可用时提示用户
+      throw new Error('体型分析服务暂时不可用');
+    }
+
+    // 解析标签
+    const tagMatch=analysisText.match(/标签[：:]\s*(.+)/);
+    const tags=tagMatch?tagMatch[1].split('|').map(t=>t.trim()).filter(Boolean):[];
+    const mainText=analysisText.replace(/标签[：:].*$/,'').trim();
+
+    document.getElementById('bodyAnalysisText').textContent=mainText;
+    document.getElementById('bodyAnalysisTags').innerHTML=tags.map(t=>`<span class="analysis-tag">${t}</span>`).join('');
+    document.getElementById('bodyAnalysisResult').classList.add('show');
+
+    // 存储分析结果供推荐使用
+    window._bodyAnalysis=mainText;
+
+    // 更新步骤指示
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('step2').classList.add('active');
+    btn.textContent='✅ 分析完成，可重新分析';
+
+  }catch(e){
+    alert('分析失败：'+e.message);
+    btn.textContent='🔍 AI 分析我的体型';
+  }finally{
+    btn.disabled=false;
+  }
 }
 
 function switchTab(name){
@@ -578,8 +739,65 @@ async function runClaude(){
 async function init(){
   await loadProducts();
   document.getElementById('app').innerHTML=`
+    <!-- 步骤指示器 -->
+    <div class="step-indicator">
+      <div class="step active" id="step1"><div class="step-num">1</div><span>体型分析</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step2"><div class="step-num">2</div><span>填写偏好</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step3"><div class="step-num">3</div><span>获取推荐</span></div>
+    </div>
+
+    <!-- 体型分析卡片 -->
+    <div class="body-analysis-section" id="bodyAnalysisCard">
+      <p class="section-title">第一步：上传全身照 · AI 分析体型</p>
+      <div class="body-photo-row">
+        <div>
+          <div class="input-label" style="margin-bottom:8px">正面全身照</div>
+          <div class="body-photo-box" id="frontPhotoBox" onclick="document.getElementById('frontPhotoInput').click()">
+            <div style="font-size:24px">🧍</div>
+            <div style="font-size:13px;font-weight:500">点击上传正面照</div>
+            <div style="font-size:11px;color:var(--muted)">站直，全身入镜</div>
+            <img class="body-preview" id="frontPreview">
+          </div>
+          <input type="file" id="frontPhotoInput" accept="image/jpeg,image/png" style="display:none" onchange="previewBodyPhoto('frontPhotoInput','frontPreview','frontPhotoBox')">
+          <div class="photo-btns" style="margin-top:8px">
+            <button class="photo-btn" onclick="document.getElementById('frontPhotoInput').click()">📁 相册</button>
+            <button class="photo-btn primary" onclick="openBodyCamera('front')">📷 拍照</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-label" style="margin-bottom:8px">侧面全身照（可选）</div>
+          <div class="body-photo-box" id="sidePhotoBox" onclick="document.getElementById('sidePhotoInput').click()">
+            <div style="font-size:24px">🚶</div>
+            <div style="font-size:13px;font-weight:500">点击上传侧面照</div>
+            <div style="font-size:11px;color:var(--muted)">帮助 AI 判断体型</div>
+            <img class="body-preview" id="sidePreview">
+          </div>
+          <input type="file" id="sidePhotoInput" accept="image/jpeg,image/png" style="display:none" onchange="previewBodyPhoto('sidePhotoInput','sidePreview','sidePhotoBox')">
+          <div class="photo-btns" style="margin-top:8px">
+            <button class="photo-btn" onclick="document.getElementById('sidePhotoInput').click()">📁 相册</button>
+            <button class="photo-btn primary" onclick="openBodyCamera('side')">📷 拍照</button>
+          </div>
+        </div>
+      </div>
+      <p class="section-title" style="margin-bottom:10px">身体三围（可选，帮助精准推荐）</p>
+      <div class="measure-grid">
+        <div class="measure-item"><label>胸围 (cm)</label><input type="number" id="chest" placeholder="例：90"></div>
+        <div class="measure-item"><label>腰围 (cm)</label><input type="number" id="waist" placeholder="例：75"></div>
+        <div class="measure-item"><label>臀围 (cm)</label><input type="number" id="hip" placeholder="例：95"></div>
+      </div>
+      <div class="analysis-result" id="bodyAnalysisResult">
+        <div class="analysis-result-title">🤖 AI 体型分析</div>
+        <div class="analysis-result-text" id="bodyAnalysisText"></div>
+        <div class="analysis-tags" id="bodyAnalysisTags"></div>
+      </div>
+      <button class="analyze-btn" id="analyzeBtn" onclick="analyzeBody()">🔍 AI 分析我的体型</button>
+      <div style="font-size:11px;color:var(--muted);text-align:center">照片仅用于本地分析，不会上传或保存</div>
+    </div>
+
     <div class="card form-card">
-      <p class="section-title">基本信息</p>
+      <p class="section-title">第二步：基本信息与偏好</p>
       <div class="fields">
         <div class="field"><label>身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
         <div class="field"><label>体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
