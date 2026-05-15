@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>会穿 · AI 男性穿搭助手</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -164,6 +164,45 @@
   .step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
   .step.active .step-num{background:var(--ink);color:#fff;border-color:var(--ink);}
   .step-line{flex:1;height:1px;background:var(--border);}
+  /* ── Tinder 滑卡 ── */
+  .swipe-container{position:relative;width:100%;min-height:520px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
+  .swipe-card{position:absolute;width:100%;max-width:420px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
+  .swipe-card.dragging{cursor:grabbing;box-shadow:0 16px 48px rgba(0,0,0,.18);transition:none;}
+  .swipe-card.fly-left{animation:flyLeft .35s ease forwards;}
+  .swipe-card.fly-right{animation:flyRight .35s ease forwards;}
+  @keyframes flyLeft{to{transform:translateX(-140%) rotate(-18deg);opacity:0;}}
+  @keyframes flyRight{to{transform:translateX(140%) rotate(18deg);opacity:0;}}
+  .swipe-stamp{position:absolute;top:22px;padding:6px 18px;border-radius:8px;font-size:18px;font-weight:700;letter-spacing:1px;opacity:0;transition:opacity .1s;pointer-events:none;z-index:10;}
+  .swipe-stamp.like{left:18px;background:#e8f5ee;color:#1d6b44;border:2px solid #1d6b44;}
+  .swipe-stamp.nope{right:18px;background:#fef0f0;color:#c0392b;border:2px solid #c0392b;}
+  .card-outfit-img{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px;}
+  .card-outfit-img .ci{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center;}
+  .card-outfit-img .ci img{width:100%;height:100%;object-fit:contain;}
+  .card-outfit-info{padding:0 16px 12px;}
+  .card-outfit-name{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .card-outfit-reason{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+  .card-outfit-prices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .card-price-tag{background:var(--tag-bg);border-radius:6px;padding:3px 8px;font-size:12px;font-weight:500;}
+  .card-outfit-total{font-size:16px;font-weight:700;font-family:'Noto Serif SC',serif;}
+  .card-outfit-total.over{color:#c0392b;}
+  .swipe-actions{display:flex;gap:16px;justify-content:center;margin-bottom:20px;}
+  .swipe-btn{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:var(--card);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .swipe-btn:hover{transform:scale(1.12);}
+  .swipe-btn.nope{border-color:#e74c3c;color:#e74c3c;}
+  .swipe-btn.like{border-color:#27ae60;color:#27ae60;}
+  .swipe-btn.tryon{border-color:var(--ink);color:var(--ink);}
+  .swipe-counter{text-align:center;font-size:12px;color:var(--muted);margin-bottom:12px;}
+  .liked-section{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:20px;margin-bottom:20px;}
+  .liked-title{font-size:13px;font-weight:500;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+  .liked-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .liked-item{background:var(--bg);border-radius:10px;padding:10px;font-size:11px;cursor:pointer;border:1px solid var(--border);transition:border-color .15s;}
+  .liked-item:hover{border-color:var(--ink);}
+  .liked-item-name{font-weight:500;margin-bottom:2px;font-size:12px;}
+  .liked-item-price{color:var(--muted);}
+  .done-card{text-align:center;padding:40px 20px;background:var(--card);border-radius:20px;border:1px solid var(--border);}
+  .done-icon{font-size:40px;margin-bottom:12px;}
+  .done-title{font-size:17px;font-weight:600;margin-bottom:6px;}
+  .done-sub{font-size:13px;color:var(--muted);margin-bottom:18px;}
   @media(max-width:640px){
     .budget-sliders,.fields-3{grid-template-columns:1fr;}
     .fields-2{grid-template-columns:1fr;}
@@ -172,6 +211,11 @@
     .item:last-child{border-bottom:none;}
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
     .body-photo-row,.measure-grid{grid-template-columns:1fr;}
+    .swipe-card{max-width:100%;}
+    .swipe-btn{width:52px;height:52px;font-size:20px;}
+    .liked-grid{grid-template-columns:repeat(2,1fr);}
+    header{padding:20px 16px 12px;}
+    .logo{font-size:22px;}
     .form-card,.tryon-section{padding:20px;}
     .api-tabs{flex-direction:column;}
   }
@@ -274,38 +318,15 @@ function renderResult(aiResult,userInfo){
   const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
   const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
 
-  const outfitsHTML=(aiResult.outfits||[]).map(o=>{
+  // Tinder 滑卡数据
+  window._swipeOutfits = (aiResult.outfits||[]).map(o=>{
     const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
-    if(!top||!bottom||!shoe)return '';
-    const total=top.price+bottom.price+shoe.price;
-    const items=[{cat:'top',p:top},{cat:'bottom',p:bottom},{cat:'shoes',p:shoe}].map(({cat,p})=>`
-      <div class="item">
-        <div class="img-box">
-          <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'">
-          <span style="display:none">${CAT[cat].icon}</span>
-        </div>
-        <div class="item-cat">${CAT[cat].label}</div>
-        <div class="item-name">${p.name}</div>
-        <div class="item-brand">${p.brand}</div>
-        <div class="item-price"><span class="cur">CA$</span>${p.price}</div>
-        <a class="buy-btn" href="${p.buy}" target="_blank" rel="noopener">购买 ↗</a>
-      </div>`).join('');
-    return `<div class="card outfit">
-      <div class="outfit-head">
-        <div><span class="outfit-num">套装 ${o.id}</span><span class="outfit-name">${o.name}</span></div>
-        <span class="safe-badge">安全度 ${o.safety}</span>
-      </div>
-      <div class="outfit-reason">💡 ${o.reason}</div>
-      <div class="items">${items}</div>
-      <div class="outfit-foot">
-        <span class="foot-label">三件合计</span>
-        <div class="foot-right">
-          <span class="foot-budget">预算 CA$${budgetTotal}</span>
-          <span class="foot-price${total>budgetTotal?' over':''}">CA$${total.toFixed(2)}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+    if(!top||!bottom||!shoe)return null;
+    return {outfit:o, top, bottom, shoe, total:top.price+bottom.price+shoe.price};
+  }).filter(Boolean);
+  window._swipeIdx    = 0;
+  window._likedOutfits= [];
+  const outfitsHTML = ''; // 由 initSwipe() 渲染
 
   document.getElementById('result').innerHTML=`
     <div class="db-badge">✅ Amazon.ca 真实商品（${dbStats.total||DB.tops.length+DB.bottoms.length+DB.shoes.length} 件）</div>
@@ -315,8 +336,18 @@ function renderResult(aiResult,userInfo){
       <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
     </div>
     <div class="tips">${tipsHTML}</div>
-    <p class="section-label">为你生成 ${(aiResult.outfits||[]).length} 套个性化穿搭方案</p>
-    ${outfitsHTML}
+    <p class="section-label">滑动选择你喜欢的穿搭 💫</p>
+    <div class="swipe-counter" id="swipeCounter">第 1 套 / 共 ${(aiResult.outfits||[]).length} 套</div>
+    <div class="swipe-container" id="swipeContainer"></div>
+    <div class="swipe-actions">
+      <button class="swipe-btn nope" onclick="swipeCard('left')" title="不喜欢">✕</button>
+      <button class="swipe-btn tryon" onclick="quickTryon()" title="虚拟试穿">👗</button>
+      <button class="swipe-btn like" onclick="swipeCard('right')" title="喜欢">♥</button>
+    </div>
+    <div class="liked-section" id="likedSection" style="display:none">
+      <div class="liked-title"><span>❤️ 我喜欢的穿搭</span><span id="likedCount" style="color:var(--muted)">0套</span></div>
+      <div class="liked-grid" id="likedGrid"></div>
+    </div>
     <div class="card tryon-section">
       <div class="tryon-title">👗 AI 虚拟试穿</div>
       <div class="tryon-sub">上传你的照片，AI 把推荐的衣服穿到你身上。</div>
@@ -331,16 +362,16 @@ function renderResult(aiResult,userInfo){
         <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
         <div class="input-label" style="margin-bottom:6px">选择试穿套装</div>
         <select class="sel" id="fashnSel">${outfitOpts}</select>
+        <div class="note-box" style="background:#e8f5ee;color:#1d6b44">✅ 自动使用第一步上传的体型照片，无需重新拍照</div>
         <div class="tryon-grid">
           <div>
-            <div class="input-label" style="margin-bottom:8px">你的照片（正面全身）</div>
-            <div class="upload-area" id="personArea" onclick="document.getElementById('personInput').click()">
-              <div class="upload-icon">🧍</div><div class="upload-label">点击上传照片</div>
-              <div class="upload-hint">JPG/PNG，正面站立效果最佳</div>
-              <img class="upload-preview" id="personPreview">
+            <div class="input-label" style="margin-bottom:8px">你的照片</div>
+            <div class="upload-area filled" id="personArea" style="cursor:default">
+              <img class="upload-preview" id="personPreview" style="display:block">
+              <div class="upload-hint" id="personHint" style="display:none">第一步未上传照片，请点此上传</div>
             </div>
             <input class="upload-input" type="file" id="personInput" accept="image/jpeg,image/png" onchange="previewImg('personInput','personPreview','personArea')">
-            <div class="photo-btns">
+            <div class="photo-btns" id="personBtns" style="display:none">
               <button class="photo-btn" onclick="document.getElementById('personInput').click()">📁 从相册选择</button>
               <button class="photo-btn primary" onclick="openCamera()">📷 拍照</button>
             </div>
@@ -355,7 +386,7 @@ function renderResult(aiResult,userInfo){
             <input class="upload-input" type="file" id="garmentInput" accept="image/jpeg,image/png" onchange="previewImg('garmentInput','garmentPreview','garmentArea')">
           </div>
         </div>
-        <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入所选套装的上衣图片</button>
+        <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入当前套装的上衣图片</button>
         <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">🤖 开始虚拟试穿</button>
         <div class="progress-wrap" id="fashnProgress">
           <div class="progress-label">AI 处理中，通常 15-40 秒…</div>
@@ -390,6 +421,11 @@ function renderResult(aiResult,userInfo){
   window._recData={outfits:aiResult.outfits};
   document.getElementById('result').classList.add('show');
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+  // 初始化滑卡 + 同步体型照片到试穿区
+  setTimeout(()=>{
+    initSwipe();
+    syncBodyPhotoToTryon();
+  }, 100);
 }
 
 async function getRecommend(){
@@ -419,6 +455,7 @@ async function getRecommend(){
       hip:   document.getElementById('hip')?.value||'',
     },
   };
+  window._lastUserInfo = userInfo;
   document.getElementById('mainBtn').disabled=true;
   document.getElementById('aiStatus').classList.add('show');
   document.getElementById('result').classList.remove('show');
@@ -433,6 +470,255 @@ async function getRecommend(){
   }finally{
     document.getElementById('mainBtn').disabled=false;
   }
+}
+
+// ── 同步体型照片到试穿区 ────────────────────────────────
+function syncBodyPhotoToTryon(){
+  const frontFile = document.getElementById('frontPhotoInput')?.files[0];
+  const personPreview = document.getElementById('personPreview');
+  const personArea = document.getElementById('personArea');
+  const personHint = document.getElementById('personHint');
+  const personBtns = document.getElementById('personBtns');
+  if(!personPreview) return;
+
+  if(frontFile){
+    // 直接用体型照片
+    const reader = new FileReader();
+    reader.onload = e => {
+      personPreview.src = e.target.result;
+      personPreview.style.display = 'block';
+      if(personArea) personArea.style.cursor = 'default';
+      // 也把文件塞进 personInput
+      const dt = new DataTransfer(); dt.items.add(frontFile);
+      const pi = document.getElementById('personInput');
+      if(pi) pi.files = dt.files;
+    };
+    reader.readAsDataURL(frontFile);
+  } else {
+    // 没有体型照片，显示上传按钮
+    personPreview.style.display = 'none';
+    if(personHint){ personHint.style.display='block'; }
+    if(personBtns){ personBtns.style.display='flex'; }
+    if(personArea){ personArea.style.cursor='pointer';
+      personArea.onclick = ()=>document.getElementById('personInput').click(); }
+  }
+}
+
+// ── Tinder 滑卡逻辑 ─────────────────────────────────────
+function buildCard(item, idx, total){
+  const {outfit,top,bottom,shoe} = item;
+  const over = item.total > (window._budgetTotal||999);
+  return `
+  <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
+    <div class="swipe-stamp like">❤️ 喜欢</div>
+    <div class="swipe-stamp nope">✕ 跳过</div>
+    <div style="padding:14px 16px 6px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:11px;color:var(--muted)">套装 ${idx+1} / ${total}</div>
+        <div style="font-size:15px;font-weight:600">${outfit.name}</div>
+      </div>
+      <span class="safe-badge">安全 ${outfit.safety||'高'}</span>
+    </div>
+    <div class="card-outfit-img">
+      <div class="ci"><img src="${top.img}" onerror="this.src=''" alt="上衣"></div>
+      <div class="ci"><img src="${bottom.img}" onerror="this.src=''" alt="裤子"></div>
+      <div class="ci"><img src="${shoe.img}" onerror="this.src=''" alt="鞋子"></div>
+    </div>
+    <div class="card-outfit-info">
+      <div class="card-outfit-reason">💡 ${outfit.reason||''}</div>
+      <div class="card-outfit-prices">
+        <span class="card-price-tag">👕 CA$${top.price}</span>
+        <span class="card-price-tag">👖 CA$${bottom.price}</span>
+        <span class="card-price-tag">👟 CA$${shoe.price}</span>
+      </div>
+      <div class="card-outfit-total${over?' over':''}">合计 CA$${item.total.toFixed(2)}${over?' ⚠️超预算':''}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px 16px 14px;">
+      <a href="${top.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">上衣 ↗</a>
+      <a href="${bottom.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">裤子 ↗</a>
+      <a href="${shoe.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">鞋子 ↗</a>
+    </div>
+  </div>`;
+}
+
+function initSwipe(){
+  const outfits = window._swipeOutfits || [];
+  if(!outfits.length) return;
+  window._budgetTotal = (window._lastUserInfo?.budgets?.top||0)
+    + (window._lastUserInfo?.budgets?.bottom||0)
+    + (window._lastUserInfo?.budgets?.shoes||0);
+
+  const container = document.getElementById('swipeContainer');
+  if(!container) return;
+
+  // 渲染所有卡片（后面的在下面）
+  container.innerHTML = '';
+  [...outfits].reverse().forEach((item,ri)=>{
+    const idx = outfits.length - 1 - ri;
+    const div = document.createElement('div');
+    div.innerHTML = buildCard(item, idx, outfits.length);
+    const card = div.firstElementChild;
+    // 堆叠效果
+    const offset = (outfits.length - 1 - idx) * 4;
+    card.style.transform = `scale(${1 - offset*0.02}) translateY(${offset*2}px)`;
+    card.style.zIndex = idx + 1;
+    container.appendChild(card);
+    bindSwipe(card, idx);
+  });
+  updateSwipeCounter();
+}
+
+function updateSwipeCounter(){
+  const outfits = window._swipeOutfits || [];
+  const idx = window._swipeIdx || 0;
+  const el = document.getElementById('swipeCounter');
+  if(!el) return;
+  if(idx >= outfits.length){
+    el.textContent = '已看完全部套装';
+    const container = document.getElementById('swipeContainer');
+    if(container){
+      container.innerHTML = `<div class="done-card">
+        <div class="done-icon">🎉</div>
+        <div class="done-title">全部看完了！</div>
+        <div class="done-sub">已喜欢 ${window._likedOutfits.length} 套</div>
+        <button class="btn" style="width:auto;padding:0 24px" onclick="restartSwipe()">重新看一遍</button>
+      </div>`;
+    }
+  } else {
+    el.textContent = `第 ${idx+1} 套 / 共 ${outfits.length} 套`;
+  }
+}
+
+function restartSwipe(){
+  window._swipeIdx = 0;
+  initSwipe();
+}
+
+function swipeCard(dir){
+  const idx = window._swipeIdx;
+  const outfits = window._swipeOutfits || [];
+  if(idx >= outfits.length) return;
+
+  const card = document.getElementById(`card-${idx}`);
+  if(!card) return;
+
+  // 显示 stamp
+  const stamp = card.querySelector(dir==='right'?'.swipe-stamp.like':'.swipe-stamp.nope');
+  if(stamp) stamp.style.opacity = '1';
+
+  card.classList.add(dir==='right'?'fly-right':'fly-left');
+
+  if(dir==='right'){
+    window._likedOutfits.push(outfits[idx]);
+    updateLikedSection();
+    // 自动填入试穿套装
+    const fashnSel = document.getElementById('fashnSel');
+    if(fashnSel) fashnSel.value = outfits[idx].outfit.id;
+    autoFill();
+  }
+
+  card.addEventListener('animationend', ()=>{
+    card.remove();
+    window._swipeIdx++;
+    updateSwipeCounter();
+    // 更新下一张卡片的堆叠效果
+    const nextCard = document.getElementById(`card-${window._swipeIdx}`);
+    if(nextCard){
+      nextCard.style.transform = 'scale(1) translateY(0)';
+      nextCard.style.transition = 'transform .3s';
+    }
+  }, {once:true});
+}
+
+function quickTryon(){
+  const idx = window._swipeIdx;
+  const outfits = window._swipeOutfits || [];
+  if(idx >= outfits.length) return;
+  const o = outfits[idx].outfit;
+  const fashnSel = document.getElementById('fashnSel');
+  if(fashnSel) fashnSel.value = o.id;
+  autoFill();
+  // 滚动到试穿区
+  const tryonEl = document.querySelector('.tryon-section');
+  if(tryonEl) tryonEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function updateLikedSection(){
+  const liked = window._likedOutfits || [];
+  const sec = document.getElementById('likedSection');
+  const grid = document.getElementById('likedGrid');
+  const cnt = document.getElementById('likedCount');
+  if(!sec) return;
+  sec.style.display = liked.length ? 'block' : 'none';
+  if(cnt) cnt.textContent = liked.length + '套';
+  if(!grid) return;
+  grid.innerHTML = liked.map((item,i)=>`
+    <div class="liked-item" onclick="showLikedDetail(${i})">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:6px">
+        <img src="${item.top.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">
+        <img src="${item.bottom.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">
+        <img src="${item.shoe.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">
+      </div>
+      <div class="liked-item-name">${item.outfit.name}</div>
+      <div class="liked-item-price">CA$${item.total.toFixed(2)}</div>
+    </div>`).join('');
+}
+
+function showLikedDetail(i){
+  const item = (window._likedOutfits||[])[i];
+  if(!item) return;
+  const fashnSel = document.getElementById('fashnSel');
+  if(fashnSel) fashnSel.value = item.outfit.id;
+  autoFill();
+  const tryonEl = document.querySelector('.tryon-section');
+  if(tryonEl) tryonEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function bindSwipe(card, idx){
+  let startX=0, startY=0, curX=0, isDragging=false;
+
+  const onStart = e => {
+    if(window._swipeIdx !== idx) return;
+    isDragging = true;
+    startX = (e.touches?e.touches[0].clientX:e.clientX);
+    startY = (e.touches?e.touches[0].clientY:e.clientY);
+    card.classList.add('dragging');
+  };
+  const onMove = e => {
+    if(!isDragging) return;
+    curX = (e.touches?e.touches[0].clientX:e.clientX) - startX;
+    const rot = curX * 0.08;
+    card.style.transform = `translateX(${curX}px) rotate(${rot}deg)`;
+    const likeStamp = card.querySelector('.swipe-stamp.like');
+    const nopeStamp = card.querySelector('.swipe-stamp.nope');
+    if(likeStamp) likeStamp.style.opacity = Math.min(curX/80, 1);
+    if(nopeStamp) nopeStamp.style.opacity = Math.min(-curX/80, 1);
+  };
+  const onEnd = () => {
+    if(!isDragging) return;
+    isDragging = false;
+    card.classList.remove('dragging');
+    if(curX > 80)       swipeCard('right');
+    else if(curX < -80) swipeCard('left');
+    else {
+      card.style.transform = '';
+      card.style.transition = 'transform .3s';
+      setTimeout(()=>card.style.transition='', 300);
+      const likeStamp = card.querySelector('.swipe-stamp.like');
+      const nopeStamp = card.querySelector('.swipe-stamp.nope');
+      if(likeStamp) likeStamp.style.opacity = '0';
+      if(nopeStamp) nopeStamp.style.opacity = '0';
+    }
+    curX = 0;
+  };
+
+  card.addEventListener('mousedown', onStart);
+  card.addEventListener('mousemove', onMove);
+  card.addEventListener('mouseup', onEnd);
+  card.addEventListener('mouseleave', onEnd);
+  card.addEventListener('touchstart', onStart, {passive:true});
+  card.addEventListener('touchmove', onMove, {passive:true});
+  card.addEventListener('touchend', onEnd);
 }
 
 function updateSlider(cat,val){
@@ -592,8 +878,13 @@ async function uploadImageToBackend(file){
 async function runFashn(){
   const key=document.getElementById('fashnKey').value.trim();
   if(!key){alert('请填写 Fashn.ai API Key');return;}
-  const personFile=document.getElementById('personInput').files[0];
-  if(!personFile){alert('请上传你的照片');return;}
+  // 优先用 personInput，其次用体型照片
+  let personFile=document.getElementById('personInput').files[0];
+  if(!personFile){
+    const frontFile=document.getElementById('frontPhotoInput')?.files[0];
+    if(frontFile){ personFile=frontFile; }
+    else{ alert('请上传你的照片或在第一步上传体型照片');return; }
+  }
   const garmentFile=document.getElementById('garmentInput').files[0];
   if(!garmentFile&&!window._garmentUrl){alert('请上传衣服图片或点击"自动填入"');return;}
 
