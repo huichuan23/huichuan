@@ -141,6 +141,21 @@
   .ai-text{font-size:14px;line-height:1.9;white-space:pre-wrap;}
   .db-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--safe-bg);color:var(--safe-c);border-radius:8px;font-size:12px;margin-bottom:16px;}
   .error-box{background:#fff0f0;border:1px solid #ffcccc;border-radius:10px;padding:14px 18px;font-size:13px;color:#c0392b;margin-top:16px;}
+  .feedback-card{padding:24px 28px;margin-top:20px;}
+  .feedback-title{font-size:18px;font-weight:600;margin-bottom:6px;}
+  .feedback-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+  .feedback-grid{display:grid;grid-template-columns:180px 1fr;gap:12px;margin-bottom:12px;}
+  .feedback-card select,.feedback-card input,.feedback-card textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:14px;outline:none;}
+  .feedback-card select,.feedback-card input{height:42px;padding:0 12px;}
+  .feedback-card textarea{min-height:96px;padding:12px;resize:vertical;line-height:1.7;}
+  .feedback-card select:focus,.feedback-card input:focus,.feedback-card textarea:focus{border-color:var(--ink);}
+  .feedback-actions{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;}
+  .feedback-btn{height:42px;padding:0 22px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;}
+  .feedback-btn:hover{opacity:.86;}
+  .feedback-btn:disabled{opacity:.45;cursor:not-allowed;}
+  .feedback-status{font-size:12px;color:var(--muted);}
+  .feedback-status.ok{color:var(--safe-c);}
+  .feedback-status.err{color:#c0392b;}
   /* 体型分析区域 */
   .body-analysis-section{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:24px 28px;margin-bottom:20px;}
   .body-photo-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
@@ -256,6 +271,8 @@
     .swipe-card{max-width:100%;}
     .swipe-btn{width:52px;height:52px;font-size:20px;}
     .liked-grid{grid-template-columns:repeat(2,1fr);}
+    .feedback-grid{grid-template-columns:1fr;}
+    .feedback-card{padding:20px;}
     header{padding:20px 16px 12px;}
     .logo{font-size:22px;}
     .form-card,.tryon-section{padding:20px;}
@@ -1866,6 +1883,52 @@ async function runClaude(){
   finally{btn.disabled=false;btn.textContent='💬 生成穿搭效果分析';}
 }
 
+async function submitFeedback(){
+  const typeEl = document.getElementById('feedbackType');
+  const contactEl = document.getElementById('feedbackContact');
+  const messageEl = document.getElementById('feedbackMessage');
+  const statusEl = document.getElementById('feedbackStatus');
+  const btn = document.getElementById('feedbackBtn');
+  const message = (messageEl?.value || '').trim();
+
+  if(!message){
+    statusEl.textContent = '请先写一点反馈内容';
+    statusEl.className = 'feedback-status err';
+    messageEl?.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = '正在提交...';
+  statusEl.className = 'feedback-status';
+
+  try{
+    const resp = await fetch(`${BACKEND}/api/feedback`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        feedback_type: typeEl?.value || 'general',
+        contact: contactEl?.value || '',
+        message,
+        page: location.href,
+        user_agent: navigator.userAgent,
+      }),
+    });
+    if(!resp.ok){
+      const err = await resp.json().catch(()=>({}));
+      throw new Error(err.detail || `提交失败 ${resp.status}`);
+    }
+    messageEl.value = '';
+    statusEl.textContent = '收到啦，谢谢你的反馈';
+    statusEl.className = 'feedback-status ok';
+  }catch(err){
+    statusEl.textContent = err.message || '提交失败，请稍后再试';
+    statusEl.className = 'feedback-status err';
+  }finally{
+    btn.disabled = false;
+  }
+}
+
 async function init(){
   await loadProducts();
   document.getElementById('app').innerHTML=`
@@ -2130,7 +2193,25 @@ async function init(){
       <div class="ai-status-text" id="aiStatusText">AI 正在分析你的体型…</div>
       <div class="ai-thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
     </div>
-    <div class="result" id="result"></div>`;
+    <div class="result" id="result"></div>
+    <div class="card feedback-card">
+      <div class="feedback-title">写下你的反馈</div>
+      <div class="feedback-sub">推荐哪里不准、哪里不好用、想加什么功能，都可以直接告诉我。</div>
+      <div class="feedback-grid">
+        <select id="feedbackType" aria-label="反馈类型">
+          <option value="general">一般反馈</option>
+          <option value="bug">功能问题</option>
+          <option value="recommendation">推荐不准</option>
+          <option value="feature">想加功能</option>
+        </select>
+        <input id="feedbackContact" type="text" placeholder="联系方式（可选）" maxlength="200">
+      </div>
+      <textarea id="feedbackMessage" maxlength="2000" placeholder="例如：推荐的裤子预算太高，或者我想加保存穿搭功能"></textarea>
+      <div class="feedback-actions">
+        <button class="feedback-btn" id="feedbackBtn" onclick="submitFeedback()">提交反馈</button>
+        <span class="feedback-status" id="feedbackStatus"></span>
+      </div>
+    </div>`;
   updateTotal();
   // 表单渲染完后应用语言
   setTimeout(applyLang, 100);
