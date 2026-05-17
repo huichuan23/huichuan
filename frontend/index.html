@@ -531,8 +531,8 @@ async function getRecommend(){
       // 优先用后端
       aiResult = await callBackendRecommend(userInfo, candidates);
     }catch(backendErr){
-      console.warn('后端推荐失败，尝试前端直接调用 DeepSeek:', backendErr);
-      aiResult = await callDeepSeekDirect(userInfo, candidates);
+      console.warn('后端推荐失败:', backendErr);
+      throw backendErr;
     }
     document.getElementById('aiStatus').classList.remove('show');
     renderResult(aiResult, userInfo, candidates);
