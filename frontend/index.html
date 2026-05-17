@@ -164,6 +164,21 @@
   .step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
   .step.active .step-num{background:var(--ink);color:#fff;border-color:var(--ink);}
   .step-line{flex:1;height:1px;background:var(--border);}
+  /* ── 身体问题多选 ── */
+  .body-issues-section{margin-bottom:16px;}
+  .body-issues-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:10px;text-transform:uppercase;}
+  .body-issues-group{margin-bottom:12px;}
+  .body-issues-group-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;}
+  .body-issues-grid{display:flex;flex-wrap:wrap;gap:6px;}
+  .body-issue-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--ink);transition:all .15s;font-family:inherit;}
+  .body-issue-btn:hover{border-color:var(--ink);}
+  .body-issue-btn.selected{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .body-issue-btn.advantage{border-color:#1d6b44;color:#1d6b44;}
+  .body-issue-btn.advantage.selected{background:#1d6b44;color:#fff;}
+  .body-rules-preview{background:var(--tag-bg);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:12px;line-height:1.8;display:none;}
+  .body-rules-preview.show{display:block;}
+  .rule-item{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;}
+  .rule-icon{flex-shrink:0;}
   /* ── Tinder 滑卡 ── */
   .swipe-container{position:relative;width:100%;min-height:520px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
   .swipe-card{position:absolute;width:100%;max-width:420px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
@@ -293,6 +308,8 @@ async function callBackendRecommend(userInfo){
       dislike:userInfo.dislike||'', existing:userInfo.existing||'',
       desc:userInfo.desc||'', budgets:userInfo.budgets,
       body_analysis: userInfo.bodyAnalysis||'',
+      body_issues: userInfo.bodyIssues||[],
+      body_issue_rules: userInfo.bodyIssueRules||'',
       measurements: userInfo.measurements||{},
     }),
   });
@@ -449,10 +466,14 @@ async function getRecommend(){
     desc:document.getElementById('desc').value,
     budgets,
     bodyAnalysis: window._bodyAnalysis||'',
+    bodyIssues: Array.from(window._selectedIssues||[]),
+    bodyIssueRules: window._bodyIssueRules||'',
     measurements: {
       chest: document.getElementById('chest')?.value||'',
       waist: document.getElementById('waist')?.value||'',
       hip:   document.getElementById('hip')?.value||'',
+      thigh: document.getElementById('thigh')?.value||'',
+      calf:  document.getElementById('calf')?.value||'',
     },
   };
   window._lastUserInfo = userInfo;
@@ -470,6 +491,312 @@ async function getRecommend(){
   }finally{
     document.getElementById('mainBtn').disabled=false;
   }
+}
+
+// ── 身体问题规则引擎 ─────────────────────────────────────
+
+const BODY_RULES = {
+  // 上半身问题
+  shoulder_narrow: {
+    label: '肩膀窄',
+    avoid_tops: ['无袖','背心','V领过深'],
+    prefer_tops: ['宽肩设计','横条纹','垫肩','层叠穿搭','oversize'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户肩膀较窄，上衣优先选择有宽肩感的款式如横条纹、层叠、oversize，避免无袖和深V领',
+  },
+  shoulder_wide: {
+    label: '肩膀宽',
+    avoid_tops: ['横条纹','宽肩设计','加厚肩部'],
+    prefer_tops: ['V领','深色系上衣','竖条纹','修身'],
+    avoid_bottoms: [],
+    prefer_bottoms: ['宽松','阔腿'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['白色上衣'], prefer:['深色上衣']},
+    prompt: '用户肩膀较宽，上衣选深色系和竖条纹视觉收窄，避免横条纹和加厚肩部设计，下装可选宽松款平衡比例',
+  },
+  belly: {
+    label: '小肚腩',
+    avoid_tops: ['紧身T恤','tucked in短上衣','浅色紧身'],
+    prefer_tops: ['宽松版型','深色系','oversize','长款上衣'],
+    avoid_bottoms: ['高腰紧身'],
+    prefer_bottoms: ['直筒','宽松'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['白色紧身上衣'], prefer:['黑色','深灰','深蓝上衣']},
+    prompt: '用户腹部偏圆，上衣必须选宽松版型和深色系，长度要遮过腰线，避免紧身和浅色上衣，裤子选直筒不要过紧',
+  },
+  chest_flat: {
+    label: '胸肌不明显',
+    avoid_tops: ['过于宽松的T恤','垂感强'],
+    prefer_tops: ['略修身','层叠穿搭','有结构感'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户胸部较平，选略修身版型增加轮廓感，可用层叠穿搭增加上身厚度',
+  },
+  back_wide: {
+    label: '背部宽厚',
+    avoid_tops: ['横条纹','浅色系上衣','宽松背部'],
+    prefer_tops: ['深色系','竖条纹','修身'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['白色','浅色上衣'], prefer:['深色上衣']},
+    prompt: '用户背部较宽，上衣选深色系视觉收窄背部，避免横条纹',
+  },
+  arm_thick: {
+    label: '手臂粗',
+    avoid_tops: ['无袖','紧身袖','短袖过紧'],
+    prefer_tops: ['宽松袖','七分袖','长袖宽松'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户手臂偏粗，避免无袖和紧身袖，选宽松袖口或七分袖视觉遮盖',
+  },
+  neck_short: {
+    label: '脖子短',
+    avoid_tops: ['高领','厚围巾','堆领'],
+    prefer_tops: ['V领','开领','低圆领'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脖子较短，必须避免高领和堆领，优先选V领或低圆领拉长脖子视觉效果',
+  },
+  // 下半身问题
+  thigh_thick: {
+    label: '大腿粗',
+    avoid_tops: [],
+    prefer_tops: ['长款上衣'],
+    avoid_bottoms: ['skinny','紧身裤','修身裤'],
+    prefer_bottoms: ['straight','直筒裤','宽松裤','wide leg','阔腿裤'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['浅色裤子'], prefer:['深色裤子','黑色','深蓝裤子']},
+    prompt: '用户大腿偏粗，裤子必须选直筒或宽松版型，严禁推荐skinny和修身裤，裤子优选深色系视觉收窄',
+  },
+  calf_thick: {
+    label: '小腿粗',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: ['紧身裤','九分裤'],
+    prefer_bottoms: ['直筒长裤','宽松裤'],
+    avoid_shoes: ['踝靴','短靴'],
+    prefer_shoes: ['运动鞋','低帮鞋','深色鞋'],
+    colors: {avoid:['浅色裤'], prefer:['深色裤']},
+    prompt: '用户小腿偏粗，选长裤遮盖，避免在小腿处截断视线的九分裤和踝靴，鞋子选低帮款',
+  },
+  leg_short: {
+    label: '腿短',
+    avoid_tops: ['超长款上衣','宽松长卫衣'],
+    prefer_tops: ['短款','正常长度'],
+    avoid_bottoms: ['低腰裤'],
+    prefer_bottoms: ['九分裤','高腰裤','竖条纹裤'],
+    avoid_shoes: ['厚底鞋'],
+    prefer_shoes: ['增高鞋','简洁运动鞋'],
+    colors: {avoid:['上下同色大反差'], prefer:['上下相近色系']},
+    prompt: '用户腿部偏短，上衣不要过长遮住腿，裤子选九分裤或高腰款视觉拉长腿部，上下装颜色接近避免截断',
+  },
+  o_leg: {
+    label: 'O型腿',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: ['紧身裤','短裤'],
+    prefer_bottoms: ['宽松直筒裤','深色长裤'],
+    avoid_shoes: [],
+    prefer_shoes: ['深色鞋'],
+    colors: {avoid:['浅色紧身裤'], prefer:['深色宽松裤']},
+    prompt: '用户O型腿，必须选宽松直筒深色长裤遮盖，严禁推荐紧身裤和短裤',
+  },
+  x_leg: {
+    label: 'X型腿',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: ['超宽松阔腿裤'],
+    prefer_bottoms: ['直筒裤','修身直筒'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色裤子']},
+    prompt: '用户X型腿，选直筒裤修正视觉，避免过于宽松的阔腿裤',
+  },
+  hip_flat: {
+    label: '臀部扁平',
+    avoid_tops: ['超长款遮臀上衣'],
+    prefer_tops: ['正常长度'],
+    avoid_bottoms: ['过于宽松'],
+    prefer_bottoms: ['略修身直筒','有立体感裤型'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户臀部较平，避免过于宽松掩盖轮廓，选有立体感的直筒款',
+  },
+  hip_big: {
+    label: '臀部丰满',
+    avoid_tops: ['短款上衣'],
+    prefer_tops: ['长款遮臀','深色系'],
+    avoid_bottoms: ['浅色紧身裤','低腰裤'],
+    prefer_bottoms: ['深色宽松','直筒'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['浅色裤子'], prefer:['深色裤子']},
+    prompt: '用户臀部丰满，上衣选长款遮臀，裤子选深色宽松直筒，避免浅色紧身裤',
+  },
+  // 优势
+  leg_long: {
+    label: '腿长',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: [],
+    prefer_bottoms: ['九分裤','阔腿裤','修身裤'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户腿部修长，可大胆尝试九分裤、阔腿裤展示腿型，这是优势要发挥',
+  },
+  waist_thin: {
+    label: '腰细',
+    avoid_tops: [],
+    prefer_tops: ['可tucked in','修身'],
+    avoid_bottoms: [],
+    prefer_bottoms: ['高腰','修身'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户腰部纤细，可以tucked in展示腰线，高腰裤搭配更显比例好',
+  },
+  shoulder_good: {
+    label: '肩型好',
+    avoid_tops: [],
+    prefer_tops: ['修身','展现肩部线条'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户肩型优秀，可选修身款展现肩部线条，这是核心优势',
+  },
+  body_fit: {
+    label: '身材匀称',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户身材匀称，大部分款式都适合，重点根据风格偏好推荐',
+  },
+  tall: {
+    label: '个子高',
+    avoid_tops: [],
+    prefer_tops: ['长款','oversize均可驾驭'],
+    avoid_bottoms: [],
+    prefer_bottoms: ['宽腿','阔腿均可'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户身高优势明显，长款外套、阔腿裤等都能很好驾驭',
+  },
+};
+
+// 当前选中的身体问题
+window._selectedIssues = new Set();
+
+function toggleIssue(btn){
+  const issue = btn.dataset.issue;
+  if(window._selectedIssues.has(issue)){
+    window._selectedIssues.delete(issue);
+    btn.classList.remove('selected');
+  } else {
+    window._selectedIssues.add(issue);
+    btn.classList.add('selected');
+  }
+  updateBodyRules();
+}
+
+function updateBodyRules(){
+  const issues = Array.from(window._selectedIssues);
+  const preview = document.getElementById('bodyRulesPreview');
+  if(!preview) return;
+
+  // 同时根据三围自动推断
+  const thigh = parseInt(document.getElementById('thigh')?.value)||0;
+  const waist = parseInt(document.getElementById('waist')?.value)||0;
+  const hip   = parseInt(document.getElementById('hip')?.value)||0;
+
+  const autoIssues = [];
+  if(thigh > 60) autoIssues.push('大腿偏粗（根据腿围数据）');
+  if(waist > 90) autoIssues.push('腰围偏大（根据三围数据）');
+  if(hip > 105)  autoIssues.push('臀围偏大（根据三围数据）');
+
+  if(issues.length === 0 && autoIssues.length === 0){
+    preview.classList.remove('show');
+    return;
+  }
+
+  const rules = [];
+  issues.forEach(issue => {
+    const r = BODY_RULES[issue];
+    if(!r) return;
+    const avoidParts = [...r.avoid_tops, ...r.avoid_bottoms, ...r.avoid_shoes].filter(Boolean);
+    const preferParts = [...r.prefer_tops, ...r.prefer_bottoms].filter(Boolean);
+    if(avoidParts.length){
+      rules.push(`<div class="rule-item"><span class="rule-icon">⚠️</span><span><b>${r.label}</b>：避免 ${avoidParts.slice(0,3).join('、')}</span></div>`);
+    }
+    if(preferParts.length){
+      rules.push(`<div class="rule-item"><span class="rule-icon">✅</span><span><b>${r.label}</b>：推荐 ${preferParts.slice(0,3).join('、')}</span></div>`);
+    }
+  });
+
+  autoIssues.forEach(a => {
+    rules.push(`<div class="rule-item"><span class="rule-icon">📏</span><span>${a}</span></div>`);
+  });
+
+  preview.innerHTML = '<div style="font-weight:500;margin-bottom:8px;font-size:12px">🎯 AI 将根据以下规则为你选品：</div>' + rules.join('');
+  preview.classList.add('show');
+
+  // 存储供推荐使用
+  window._bodyIssueRules = generateIssuePrompt(issues);
+}
+
+function generateIssuePrompt(issues){
+  if(!issues.length) return '';
+  const prompts = issues.map(i => BODY_RULES[i]?.prompt).filter(Boolean);
+  const avoidBottoms = new Set();
+  const preferBottoms = new Set();
+  const avoidTops = new Set();
+  const preferTops = new Set();
+  const avoidShoes = new Set();
+
+  issues.forEach(i => {
+    const r = BODY_RULES[i];
+    if(!r) return;
+    r.avoid_bottoms.forEach(x => avoidBottoms.add(x));
+    r.prefer_bottoms.forEach(x => preferBottoms.add(x));
+    r.avoid_tops.forEach(x => avoidTops.add(x));
+    r.prefer_tops.forEach(x => preferTops.add(x));
+    r.avoid_shoes.forEach(x => avoidShoes.add(x));
+  });
+
+  return {
+    prompts,
+    avoid_bottoms: [...avoidBottoms],
+    prefer_bottoms: [...preferBottoms],
+    avoid_tops: [...avoidTops],
+    prefer_tops: [...preferTops],
+    avoid_shoes: [...avoidShoes],
+  };
 }
 
 // ── 同步体型照片到试穿区 ────────────────────────────────
@@ -1043,10 +1370,54 @@ async function init(){
       </div>
       <p class="section-title" style="margin-bottom:10px">身体三围（可选，帮助精准推荐）</p>
       <div class="measure-grid">
-        <div class="measure-item"><label>胸围 (cm)</label><input type="number" id="chest" placeholder="例：90"></div>
-        <div class="measure-item"><label>腰围 (cm)</label><input type="number" id="waist" placeholder="例：75"></div>
-        <div class="measure-item"><label>臀围 (cm)</label><input type="number" id="hip" placeholder="例：95"></div>
+        <div class="measure-item"><label>胸围 (cm)</label><input type="number" id="chest" placeholder="例：90" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label>腰围 (cm)</label><input type="number" id="waist" placeholder="例：75" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label>臀围 (cm)</label><input type="number" id="hip" placeholder="例：95" oninput="updateBodyRules()"></div>
       </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div class="measure-item"><label>大腿围 (cm)</label><input type="number" id="thigh" placeholder="例：58" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label>小腿围 (cm)</label><input type="number" id="calf" placeholder="例：37" oninput="updateBodyRules()"></div>
+      </div>
+
+      <div class="body-issues-section">
+        <div class="body-issues-title">身体困扰（可多选，AI 会针对性推荐）</div>
+        <div class="body-issues-group">
+          <div class="body-issues-group-label">上半身</div>
+          <div class="body-issues-grid">
+            <button class="body-issue-btn" data-issue="shoulder_narrow" onclick="toggleIssue(this)">肩膀窄</button>
+            <button class="body-issue-btn" data-issue="shoulder_wide" onclick="toggleIssue(this)">肩膀宽</button>
+            <button class="body-issue-btn" data-issue="belly" onclick="toggleIssue(this)">小肚腩</button>
+            <button class="body-issue-btn" data-issue="chest_flat" onclick="toggleIssue(this)">胸肌不明显</button>
+            <button class="body-issue-btn" data-issue="back_wide" onclick="toggleIssue(this)">背部宽厚</button>
+            <button class="body-issue-btn" data-issue="arm_thick" onclick="toggleIssue(this)">手臂粗</button>
+            <button class="body-issue-btn" data-issue="neck_short" onclick="toggleIssue(this)">脖子短</button>
+          </div>
+        </div>
+        <div class="body-issues-group">
+          <div class="body-issues-group-label">下半身</div>
+          <div class="body-issues-grid">
+            <button class="body-issue-btn" data-issue="thigh_thick" onclick="toggleIssue(this)">大腿粗</button>
+            <button class="body-issue-btn" data-issue="calf_thick" onclick="toggleIssue(this)">小腿粗</button>
+            <button class="body-issue-btn" data-issue="leg_short" onclick="toggleIssue(this)">腿短</button>
+            <button class="body-issue-btn" data-issue="o_leg" onclick="toggleIssue(this)">O型腿</button>
+            <button class="body-issue-btn" data-issue="x_leg" onclick="toggleIssue(this)">X型腿</button>
+            <button class="body-issue-btn" data-issue="hip_flat" onclick="toggleIssue(this)">臀部扁平</button>
+            <button class="body-issue-btn" data-issue="hip_big" onclick="toggleIssue(this)">臀部丰满</button>
+          </div>
+        </div>
+        <div class="body-issues-group">
+          <div class="body-issues-group-label">✅ 我的优势（加分项）</div>
+          <div class="body-issues-grid">
+            <button class="body-issue-btn advantage" data-issue="leg_long" onclick="toggleIssue(this)">腿长</button>
+            <button class="body-issue-btn advantage" data-issue="waist_thin" onclick="toggleIssue(this)">腰细</button>
+            <button class="body-issue-btn advantage" data-issue="shoulder_good" onclick="toggleIssue(this)">肩型好</button>
+            <button class="body-issue-btn advantage" data-issue="body_fit" onclick="toggleIssue(this)">身材匀称</button>
+            <button class="body-issue-btn advantage" data-issue="tall" onclick="toggleIssue(this)">个子高</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="body-rules-preview" id="bodyRulesPreview"></div>
       <div class="analysis-result" id="bodyAnalysisResult">
         <div class="analysis-result-title">🤖 AI 体型分析</div>
         <div class="analysis-result-text" id="bodyAnalysisText"></div>
