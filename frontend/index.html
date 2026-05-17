@@ -423,6 +423,225 @@ window._lang = localStorage.getItem('huichuan_lang') || 'zh';
 
 function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
 
+const UI_TEXT = {
+  zh: {
+    realProducts: 'Amazon.ca 真实商品',
+    pieces: '件',
+    aiAnalysisTitle: '🤖 AI 穿搭分析',
+    outfit: '套装',
+    set: '套',
+    setCounter: (idx,total)=>`第 ${idx} 套 / 共 ${total} 套`,
+    allDoneCounter: '已看完全部套装',
+    likedCount: n=>`${n}套`,
+    like: '❤️ 喜欢',
+    skip: '✕ 跳过',
+    safety: '安全',
+    high: '高',
+    total: '合计',
+    overBudget: ' ⚠️超预算',
+    top: '上衣',
+    bottom: '裤子',
+    shoes: '鞋子',
+    chooseTryon: '选择试穿套装',
+    chooseOutfit: '选择套装',
+    yourPhoto: '你的照片',
+    garmentPhoto: '衣服图片',
+    uploadGarment: '点击上传衣服图',
+    autoFillHint: '或点下方自动填入',
+    apiKeyLocal: 'Key 仅在本地浏览器使用',
+    missingPhoto: '第一步未上传照片，请点此上传',
+    fromGallery: '📁 从相册选择',
+    camera: '📷 拍照',
+    tryonResultLabel: '✅ 虚拟试穿效果',
+    originalPhoto: '原始照片',
+    tryonEffect: '试穿效果',
+    claudeResultLabel: 'AI 穿搭效果分析',
+    feedbackTitle: '写下你的反馈',
+    feedbackSub: '推荐哪里不准、哪里不好用、想加什么功能，都可以直接告诉我。',
+    feedbackContact: '联系方式（可选）',
+    feedbackMessage: '例如：推荐的裤子预算太高，或者我想加保存穿搭功能',
+    feedbackSubmit: '提交反馈',
+    feedbackEmpty: '请先写一点反馈内容',
+    feedbackSending: '正在提交...',
+    feedbackOk: '收到啦，谢谢你的反馈',
+    feedbackFail: '提交失败，请稍后再试',
+  },
+  en: {
+    realProducts: 'Real Amazon.ca items',
+    pieces: 'items',
+    aiAnalysisTitle: '🤖 AI Outfit Analysis',
+    outfit: 'Outfit',
+    set: 'outfits',
+    setCounter: (idx,total)=>`Outfit ${idx} / ${total}`,
+    allDoneCounter: 'You have reviewed all outfits',
+    likedCount: n=>`${n} liked`,
+    like: '❤️ Like',
+    skip: '✕ Skip',
+    safety: 'Safe',
+    high: 'High',
+    total: 'Total',
+    overBudget: ' ⚠️Over budget',
+    top: 'Top',
+    bottom: 'Bottoms',
+    shoes: 'Shoes',
+    chooseTryon: 'Choose Try-On Outfit',
+    chooseOutfit: 'Choose Outfit',
+    yourPhoto: 'Your Photo',
+    garmentPhoto: 'Garment Photo',
+    uploadGarment: 'Upload Garment Image',
+    autoFillHint: 'Or auto-fill below',
+    apiKeyLocal: 'Key is only used in this browser',
+    missingPhoto: 'No photo from Step 1. Click here to upload',
+    fromGallery: '📁 Gallery',
+    camera: '📷 Camera',
+    tryonResultLabel: '✅ Try-On Result',
+    originalPhoto: 'Original Photo',
+    tryonEffect: 'Try-On Effect',
+    claudeResultLabel: 'AI Outfit Analysis',
+    feedbackTitle: 'Write Feedback',
+    feedbackSub: 'Tell me what feels inaccurate, confusing, or what feature you want next.',
+    feedbackContact: 'Contact info (optional)',
+    feedbackMessage: 'Example: the pants budget is too high, or I want a save outfit feature',
+    feedbackSubmit: 'Submit Feedback',
+    feedbackEmpty: 'Please write a little feedback first',
+    feedbackSending: 'Submitting...',
+    feedbackOk: 'Got it. Thanks for your feedback',
+    feedbackFail: 'Submit failed. Please try again later',
+  }
+};
+function ui(key, ...args){
+  const value = (UI_TEXT[window._lang] && UI_TEXT[window._lang][key]) || UI_TEXT.zh[key] || key;
+  return typeof value === 'function' ? value(...args) : value;
+}
+
+const SELECT_OPTIONS = {
+  age: [
+    ['18-22岁','18-22'], ['23-28岁','23-28'], ['29-35岁','29-35'],
+    ['36-45岁','36-45'], ['45岁以上','45+'],
+  ],
+  skin: [
+    ['普通肤色','Neutral Skin Tone'], ['偏白肤色','Fair Skin Tone'],
+    ['偏黄肤色','Warm/Yellow Skin Tone'], ['偏深肤色','Deep Skin Tone'],
+  ],
+  face: [
+    ['普通脸型','Regular Face Shape'], ['圆脸','Round Face'],
+    ['长脸','Long Face'], ['方脸','Square Face'], ['瓜子脸','Oval Face'],
+  ],
+  scene: [
+    ['日常','Daily'], ['上课','Class'], ['约会','Date'],
+    ['通勤','Commute'], ['运动','Sport'], ['正式场合','Formal'],
+    ['周末出行','Weekend'], ['聚会','Party'],
+  ],
+  style: [
+    ['简单百搭','Simple & Versatile'], ['干净清爽','Clean & Fresh'],
+    ['韩系','Korean'], ['日系','Japanese'], ['美式休闲','American Casual'],
+    ['极简','Minimal'], ['街头','Streetwear'], ['学院风','Preppy'],
+    ['工装','Workwear'], ['商务休闲','Business Casual'],
+  ],
+  feedbackType: [
+    ['general','General feedback','一般反馈'], ['bug','Bug','功能问题'],
+    ['recommendation','Recommendation issue','推荐不准'], ['feature','Feature request','想加功能'],
+  ],
+};
+
+const ISSUE_LABEL_TEXTS = {
+  shoulder_narrow:['肩膀窄','Narrow shoulders'],
+  shoulder_wide:['肩膀宽/虎背','Broad shoulders'],
+  round_shoulder:['含胸驼背','Rounded shoulders'],
+  belly:['小肚腩','Belly'],
+  belly_lower:['小腹突出','Lower belly'],
+  love_handle:['腰侧赘肉','Love handles'],
+  arm_thick:['手臂粗','Thick arms'],
+  neck_short:['脖子短','Short neck'],
+  neck_thin:['脖子细长','Long thin neck'],
+  chest_flat:['胸肌不明显','Flat chest'],
+  back_wide:['背部宽厚','Wide back'],
+  chest_wide:['胸腔宽大','Broad chest'],
+  thigh_thick:['大腿粗','Thick thighs'],
+  thigh_inner:['大腿内侧肉多','Inner thigh bulk'],
+  calf_thick:['小腿粗','Thick calves'],
+  o_leg:['O型腿','Bow legs'],
+  x_leg:['X型腿','X legs'],
+  knee_out:['膝盖外扩','Outward knees'],
+  hip_flat:['臀部扁平','Flat hips'],
+  hip_big:['臀部丰满','Full hips'],
+  hip_wide:['胯部较宽','Wide hips'],
+  ankle_thick:['脚踝粗','Thick ankles'],
+  foot_big:['脚偏大','Large feet'],
+  leg_short:['腿短','Short legs'],
+  upper_long:['上身长下身短','Long torso'],
+  lower_long:['下身长上身短','Long legs / short torso'],
+  head_big:['头偏大','Large head'],
+  face_big:['脸偏大','Large face'],
+  skinny_fat:['泡芙体型（外瘦内胖）','Skinny fat'],
+  top_heavy:['上重下轻','Top-heavy'],
+  bottom_heavy:['下重上轻（梨形）','Bottom-heavy / pear shape'],
+  leg_long:['腿长','Long legs'],
+  waist_thin:['腰细','Slim waist'],
+  shoulder_good:['肩型好','Good shoulder line'],
+  body_fit:['身材匀称','Balanced body'],
+  tall:['个子高','Tall'],
+  abs:['腹肌明显','Visible abs'],
+  arm_muscle:['手臂有肌肉感','Muscular arms'],
+  face_small:['脸小','Small face'],
+  skin_white:['肤色白','Fair skin'],
+  hip_ratio:['臀腰比好','Good waist-hip ratio'],
+};
+const GROUP_LABELS = {
+  肩膀:['Shoulders','肩膀'],
+  腹部:['Abdomen','腹部'],
+  '手臂/脖子':['Arms / Neck','手臂/脖子'],
+  胸背:['Chest / Back','胸背'],
+  大腿:['Thighs','大腿'],
+  '小腿/腿型':['Calves / Legs','小腿/腿型'],
+  臀部:['Hips','臀部'],
+  '脚踝/脚':['Ankles / Feet','脚踝/脚'],
+  比例:['Proportion','比例'],
+  头脸:['Head / Face','头脸'],
+  整体体型:['Overall Body','整体体型'],
+  身材优势:['Body Strengths','身材优势'],
+};
+
+function applySelectOptions(){
+  Object.entries(SELECT_OPTIONS).forEach(([id, options])=>{
+    const select = document.getElementById(id);
+    if(!select) return;
+    const current = select.value;
+    select.innerHTML = options.map(([value, en, zh], idx)=>{
+      const label = window._lang === 'en' ? en : (zh || value);
+      const selected = current ? value === current : idx === 0;
+      return `<option value="${value}"${selected?' selected':''}>${label}</option>`;
+    }).join('');
+  });
+}
+
+function applyExtraTranslations(){
+  applySelectOptions();
+  document.querySelectorAll('.body-issue-btn[data-issue]').forEach(btn=>{
+    const label = ISSUE_LABEL_TEXTS[btn.dataset.issue];
+    if(label) btn.textContent = window._lang === 'en' ? label[1] : label[0];
+  });
+  document.querySelectorAll('.body-detail-group-label').forEach(el=>{
+    const current = el.textContent.trim();
+    const entry = Object.entries(GROUP_LABELS).find(([zh, pair])=>current === zh || current === pair[0]);
+    if(entry) el.textContent = window._lang === 'en' ? entry[1][0] : entry[0];
+  });
+  const feedbackTitle = document.querySelector('.feedback-title');
+  if(feedbackTitle) feedbackTitle.textContent = ui('feedbackTitle');
+  const feedbackSub = document.querySelector('.feedback-sub');
+  if(feedbackSub) feedbackSub.textContent = ui('feedbackSub');
+  const feedbackContact = document.getElementById('feedbackContact');
+  if(feedbackContact) feedbackContact.placeholder = ui('feedbackContact');
+  const feedbackMessage = document.getElementById('feedbackMessage');
+  if(feedbackMessage) feedbackMessage.placeholder = ui('feedbackMessage');
+  const feedbackBtn = document.getElementById('feedbackBtn');
+  if(feedbackBtn) feedbackBtn.textContent = ui('feedbackSubmit');
+  [['chest','90'],['waist','75'],['hip','95'],['thigh','58'],['calf','37']].forEach(([id, value])=>{
+    const input = document.getElementById(id);
+    if(input) input.placeholder = window._lang === 'en' ? `e.g. ${value}` : `例：${value}`;
+  });
+}
+
 function toggleLang(){
   window._lang = window._lang === 'zh' ? 'en' : 'zh';
   localStorage.setItem('huichuan_lang', window._lang);
@@ -527,6 +746,7 @@ function applyLang(){
   const result = document.getElementById('result');
   if(app) replaceText(app);
   if(result) replaceText(result);
+  applyExtraTranslations();
 }
 
 // 页面加载后应用语言
@@ -594,6 +814,7 @@ async function callBackendRecommend(userInfo){
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       height:userInfo.height, weight:userInfo.weight,
+      language: window._lang,
       age:userInfo.age||'23-28岁',
       skin:userInfo.skin, face:userInfo.face,
       scene:userInfo.scene, style:userInfo.style,
@@ -621,11 +842,15 @@ async function callBackendRecommend(userInfo){
 
 const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'}};
 function findProduct(id){return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);}
+function displayBodyLabel(label){
+  if(window._lang !== 'en') return label;
+  return {偏瘦:'Slim', 标准:'Standard', 略微偏胖:'Slightly Stocky', 偏胖:'Stocky'}[label] || label;
+}
 
 function renderResult(aiResult,userInfo){
   const budgetTotal=userInfo.budgets.top+userInfo.budgets.bottom+userInfo.budgets.shoes;
   const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
-  const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
+  const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">${ui('outfit')} ${o.id}: ${o.name}</option>`).join('');
 
   // Tinder 滑卡数据
   window._swipeOutfits = (aiResult.outfits||[]).map(o=>{
@@ -638,76 +863,76 @@ function renderResult(aiResult,userInfo){
   const outfitsHTML = ''; // 由 initSwipe() 渲染
 
   document.getElementById('result').innerHTML=`
-    <div class="db-badge">✅ Amazon.ca 真实商品（${dbStats.total||DB.tops.length+DB.bottoms.length+DB.shoes.length} 件）</div>
-    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">🤖 AI 穿搭分析</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
+    <div class="db-badge">✅ ${ui('realProducts')} (${dbStats.total||DB.tops.length+DB.bottoms.length+DB.shoes.length} ${ui('pieces')})</div>
+    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">${ui('aiAnalysisTitle')}</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
     <div class="meta-row">
-      <span class="badge">🧍 ${userInfo.body}（BMI ${userInfo.bmi}）</span>
+      <span class="badge">🧍 ${displayBodyLabel(userInfo.body)} (BMI ${userInfo.bmi})</span>
       <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
     </div>
     <div class="tips">${tipsHTML}</div>
     <p class="section-label"><span data-i18n="swiperLabel">滑动选择你喜欢的穿搭 💫</span></p>
-    <div class="swipe-counter" id="swipeCounter">第 1 套 / 共 ${(aiResult.outfits||[]).length} 套</div>
+    <div class="swipe-counter" id="swipeCounter">${ui('setCounter', 1, (aiResult.outfits||[]).length)}</div>
     <div class="swipe-container" id="swipeContainer"></div>
     <div class="swipe-actions">
-      <button class="swipe-btn nope" onclick="swipeCard('left')" title="不喜欢">✕</button>
-      <button class="swipe-btn tryon" onclick="quickTryon()" title="虚拟试穿">👗</button>
-      <button class="swipe-btn like" onclick="swipeCard('right')" title="喜欢">♥</button>
+      <button class="swipe-btn nope" onclick="swipeCard('left')" title="${ui('skip')}">✕</button>
+      <button class="swipe-btn tryon" onclick="quickTryon()" title="${t('tryonTitle')}">👗</button>
+      <button class="swipe-btn like" onclick="swipeCard('right')" title="${ui('like')}">♥</button>
     </div>
     <div class="liked-section" id="likedSection" style="display:none">
-      <div class="liked-title"><span>❤️ 我喜欢的穿搭</span><span id="likedCount" style="color:var(--muted)">0套</span></div>
+      <div class="liked-title"><span>${t('likedTitle')}</span><span id="likedCount" style="color:var(--muted)">${ui('likedCount', 0)}</span></div>
       <div class="liked-grid" id="likedGrid"></div>
     </div>
     <div class="card tryon-section">
-      <div class="tryon-title">👗 AI 虚拟试穿</div>
-      <div class="tryon-sub">上传你的照片，AI 把推荐的衣服穿到你身上。</div>
+      <div class="tryon-title">${t('tryonTitle')}</div>
+      <div class="tryon-sub">${t('tryonSub')}</div>
       <div class="api-tabs">
-        <div class="api-tab active" onclick="switchTab('fashn')">🚀 Fashn.ai 试穿</div>
-        <div class="api-tab" onclick="switchTab('claude')">💬 AI 文字分析</div>
+        <div class="api-tab active" onclick="switchTab('fashn')">${t('fashnTab')}</div>
+        <div class="api-tab" onclick="switchTab('claude')">${t('claudeTab')}</div>
       </div>
       <div class="api-panel active" id="panel-fashn">
         <div class="note-box">专业虚拟试穿 API。👉 <a href="https://fashn.ai" target="_blank">fashn.ai</a> → 注册 → Dashboard → 复制 API Key</div>
         <div class="input-label">Fashn.ai API Key</div>
         <input class="key-input" id="fashnKey" type="password" placeholder="fa-xxxxxxxxxxxxxxxx">
-        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
-        <div class="input-label" style="margin-bottom:6px">选择试穿套装</div>
+        <div class="key-hint" style="margin-bottom:16px">${ui('apiKeyLocal')}</div>
+        <div class="input-label" style="margin-bottom:6px">${ui('chooseTryon')}</div>
         <select class="sel" id="fashnSel">${outfitOpts}</select>
-        <div class="note-box" style="background:#e8f5ee;color:#1d6b44">✅ 自动使用第一步上传的体型照片，无需重新拍照</div>
+        <div class="note-box" style="background:#e8f5ee;color:#1d6b44">${t('autoPhotoHint')}</div>
         <div class="tryon-grid">
           <div>
-            <div class="input-label" style="margin-bottom:8px">你的照片</div>
+            <div class="input-label" style="margin-bottom:8px">${ui('yourPhoto')}</div>
             <div class="upload-area filled" id="personArea" style="cursor:default">
               <img class="upload-preview" id="personPreview" style="display:block">
-              <div class="upload-hint" id="personHint" style="display:none">第一步未上传照片，请点此上传</div>
+              <div class="upload-hint" id="personHint" style="display:none">${ui('missingPhoto')}</div>
             </div>
             <input class="upload-input" type="file" id="personInput" accept="image/jpeg,image/png" onchange="previewImg('personInput','personPreview','personArea')">
             <div class="photo-btns" id="personBtns" style="display:none">
-              <button class="photo-btn" onclick="document.getElementById('personInput').click()">📁 从相册选择</button>
-              <button class="photo-btn primary" onclick="openCamera()">📷 拍照</button>
+              <button class="photo-btn" onclick="document.getElementById('personInput').click()">${ui('fromGallery')}</button>
+              <button class="photo-btn primary" onclick="openCamera()">${ui('camera')}</button>
             </div>
           </div>
           <div>
-            <div class="input-label" style="margin-bottom:8px">衣服图片</div>
+            <div class="input-label" style="margin-bottom:8px">${ui('garmentPhoto')}</div>
             <div class="upload-area" id="garmentArea" onclick="document.getElementById('garmentInput').click()">
-              <div class="upload-icon">👕</div><div class="upload-label" id="garmentLabel">点击上传衣服图</div>
-              <div class="upload-hint">或点下方自动填入</div>
+              <div class="upload-icon">👕</div><div class="upload-label" id="garmentLabel">${ui('uploadGarment')}</div>
+              <div class="upload-hint">${ui('autoFillHint')}</div>
               <img class="upload-preview" id="garmentPreview">
             </div>
             <input class="upload-input" type="file" id="garmentInput" accept="image/jpeg,image/png" onchange="previewImg('garmentInput','garmentPreview','garmentArea')">
           </div>
         </div>
-        <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入当前套装的上衣图片</button>
-        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">🤖 开始虚拟试穿</button>
+        <button class="auto-fill-btn" onclick="autoFill()">${t('autoFillBtn')}</button>
+        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">${t('startTryonBtn')}</button>
         <div class="progress-wrap" id="fashnProgress">
           <div class="progress-label"><span data-i18n="processing">AI 处理中，通常 15-40 秒…</span></div>
           <div class="progress-bar-bg"><div class="progress-bar" id="fashnBar"></div></div>
           <div class="progress-status" id="fashnStatus">提交任务…</div>
         </div>
         <div class="tryon-result" id="fashnResult">
-          <div class="result-label-sm">✨ 虚拟试穿效果</div>
+          <div class="result-label-sm">${ui('tryonResultLabel')}</div>
           <div class="result-box">
             <div class="compare-row">
-              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="原图"><div class="compare-caption">原始照片</div></div>
-              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="效果"><div class="compare-caption">试穿效果</div></div>
+              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="${ui('originalPhoto')}"><div class="compare-caption">${ui('originalPhoto')}</div></div>
+              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="${ui('tryonEffect')}"><div class="compare-caption">${ui('tryonEffect')}</div></div>
             </div>
           </div>
         </div>
@@ -716,12 +941,12 @@ function renderResult(aiResult,userInfo){
         <div class="note-box">Claude AI 生成详细穿搭效果文字分析。👉 <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></div>
         <div class="input-label">Claude API Key</div>
         <input class="key-input" id="claudeKey" type="password" placeholder="sk-ant-api03-...">
-        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
-        <div class="input-label" style="margin-bottom:6px">选择套装</div>
+        <div class="key-hint" style="margin-bottom:16px">${ui('apiKeyLocal')}</div>
+        <div class="input-label" style="margin-bottom:6px">${ui('chooseOutfit')}</div>
         <select class="sel" id="claudeSel">${outfitOpts}</select>
         <button class="btn-tryon" id="claudeBtn" onclick="runClaude()">💬 生成穿搭效果分析</button>
         <div class="tryon-result" id="claudeResult" style="margin-top:16px">
-          <div class="result-label-sm">AI 穿搭效果分析</div>
+          <div class="result-label-sm">${ui('claudeResultLabel')}</div>
           <div class="result-box"><div class="ai-text" id="claudeText"></div></div>
         </div>
       </div>
@@ -740,7 +965,7 @@ function renderResult(aiResult,userInfo){
 async function getRecommend(){
   const h=parseInt(document.getElementById('height').value);
   const w=parseInt(document.getElementById('weight').value);
-  if(!h||!w){alert('请填写身高和体重');return;}
+  if(!h||!w){alert(window._lang === 'en' ? 'Please enter height and weight' : '请填写身高和体重');return;}
 
   const body=bodyInfo(h,w);
   const budgets={
@@ -782,7 +1007,7 @@ async function getRecommend(){
 
     if((frontFile || hasMeasurements) && !bodyAnalysis){
       setStep(1);
-      if(statusEl) statusEl.textContent = '🔍 AI 正在分析你的体型…';
+      if(statusEl) statusEl.textContent = t('statusAnalyzing');
 
       try{
         const toB64 = f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});
@@ -796,6 +1021,7 @@ async function getRecommend(){
               {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frontB64.split(',')[1]}},
               {type:'text',text:'分析体型'}
             ]}] : [],
+            language: window._lang,
             height: h+'', weight: w+'',
             chest: measurements.chest, waist: measurements.waist,
             hip: measurements.hip, thigh: measurements.thigh, calf: measurements.calf,
@@ -827,7 +1053,7 @@ async function getRecommend(){
 
     // 第二步：构建用户信息
     setStep(2);
-    if(statusEl) statusEl.textContent = '📊 整理你的身体特征和偏好…';
+    if(statusEl) statusEl.textContent = t('statusOrganizing');
     await new Promise(r=>setTimeout(r,300));
 
     const userInfo={
@@ -850,13 +1076,13 @@ async function getRecommend(){
 
     // 第三步：AI 推荐
     setStep(3);
-    if(statusEl) statusEl.textContent = '🤖 AI 正在从商品库中为你挑选穿搭…';
+    if(statusEl) statusEl.textContent = t('statusPicking');
 
     const aiResult = await callBackendRecommend(userInfo);
 
     // 完成
     setStep(4);
-    if(statusEl) statusEl.textContent = '✅ 推荐完成！';
+    if(statusEl) statusEl.textContent = t('statusDone');
     await new Promise(r=>setTimeout(r,400));
 
     document.getElementById('aiStatus').classList.remove('show');
@@ -1334,7 +1560,7 @@ function removeIssue(issue){
 }
 
 // 已选标签汇总显示
-const ISSUE_LABELS = {
+const ISSUE_LABELS_ZH = {
   shoulder_narrow:'肩膀窄', shoulder_wide:'肩膀宽/虎背', round_shoulder:'含胸驼背',
   belly:'小肚腩', belly_lower:'小腹突出', love_handle:'腰侧赘肉',
   arm_thick:'手臂粗', neck_short:'脖子短', neck_thin:'脖子细长',
@@ -1352,6 +1578,11 @@ const ISSUE_LABELS = {
 };
 
 const ADVANTAGE_ISSUES = new Set(['leg_long','waist_thin','shoulder_good','body_fit','tall','abs','arm_muscle','face_small','skin_white','hip_ratio']);
+function issueText(issue){
+  const pair = ISSUE_LABEL_TEXTS[issue];
+  if(pair) return window._lang === 'en' ? pair[1] : pair[0];
+  return ISSUE_LABELS_ZH[issue] || issue;
+}
 
 function updateSelectedSummary(){
   const el = document.getElementById('selectedSummary');
@@ -1360,7 +1591,7 @@ function updateSelectedSummary(){
   if(!issues.length){ el.innerHTML=''; return; }
   el.innerHTML = issues.map(i => {
     const isAdv = ADVANTAGE_ISSUES.has(i);
-    return `<span class="selected-tag${isAdv?' adv':''}">${ISSUE_LABELS[i]||i}<span class="selected-tag-x" onclick="removeIssue('${i}')">×</span></span>`;
+    return `<span class="selected-tag${isAdv?' adv':''}">${issueText(i)}<span class="selected-tag-x" onclick="removeIssue('${i}')">×</span></span>`;
   }).join('');
 }
 
@@ -1476,19 +1707,19 @@ function buildCard(item, idx, total){
   const over = item.total > (window._budgetTotal||999);
   return `
   <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
-    <div class="swipe-stamp like">❤️ 喜欢</div>
-    <div class="swipe-stamp nope">✕ 跳过</div>
+    <div class="swipe-stamp like">${ui('like')}</div>
+    <div class="swipe-stamp nope">${ui('skip')}</div>
     <div style="padding:14px 16px 6px;display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:11px;color:var(--muted)">套装 ${idx+1} / ${total}</div>
+        <div style="font-size:11px;color:var(--muted)">${ui('setCounter', idx+1, total)}</div>
         <div style="font-size:15px;font-weight:600">${outfit.name}</div>
       </div>
-      <span class="safe-badge">安全 ${outfit.safety||'高'}</span>
+      <span class="safe-badge">${ui('safety')} ${outfit.safety||ui('high')}</span>
     </div>
     <div class="card-outfit-img">
-      <div class="ci"><img src="${top.img}" onerror="this.src=''" alt="上衣"></div>
-      <div class="ci"><img src="${bottom.img}" onerror="this.src=''" alt="裤子"></div>
-      <div class="ci"><img src="${shoe.img}" onerror="this.src=''" alt="鞋子"></div>
+      <div class="ci"><img src="${top.img}" onerror="this.src=''" alt="${ui('top')}"></div>
+      <div class="ci"><img src="${bottom.img}" onerror="this.src=''" alt="${ui('bottom')}"></div>
+      <div class="ci"><img src="${shoe.img}" onerror="this.src=''" alt="${ui('shoes')}"></div>
     </div>
     <div class="card-outfit-info">
       <div class="card-outfit-reason">💡 ${outfit.reason||''}</div>
@@ -1497,12 +1728,12 @@ function buildCard(item, idx, total){
         <span class="card-price-tag">👖 CA$${bottom.price}</span>
         <span class="card-price-tag">👟 CA$${shoe.price}</span>
       </div>
-      <div class="card-outfit-total${over?' over':''}">合计 CA$${item.total.toFixed(2)}${over?' ⚠️超预算':''}</div>
+      <div class="card-outfit-total${over?' over':''}">${ui('total')} CA$${item.total.toFixed(2)}${over?ui('overBudget'):''}</div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px 16px 14px;">
-      <a href="${top.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">上衣 ↗</a>
-      <a href="${bottom.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">裤子 ↗</a>
-      <a href="${shoe.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">鞋子 ↗</a>
+      <a href="${top.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui('top')} ↗</a>
+      <a href="${bottom.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui('bottom')} ↗</a>
+      <a href="${shoe.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui('shoes')} ↗</a>
     </div>
   </div>`;
 }
@@ -1540,18 +1771,18 @@ function updateSwipeCounter(){
   const el = document.getElementById('swipeCounter');
   if(!el) return;
   if(idx >= outfits.length){
-    el.textContent = '已看完全部套装';
+    el.textContent = ui('allDoneCounter');
     const container = document.getElementById('swipeContainer');
     if(container){
       container.innerHTML = `<div class="done-card">
         <div class="done-icon">🎉</div>
-        <div class="done-title">全部看完了！</div>
-        <div class="done-sub">已喜欢 ${window._likedOutfits.length} 套</div>
-        <button class="btn" style="width:auto;padding:0 24px" onclick="restartSwipe()">重新看一遍</button>
+        <div class="done-title">${t('doneTitle')}</div>
+        <div class="done-sub">${ui('likedCount', window._likedOutfits.length)}</div>
+        <button class="btn" style="width:auto;padding:0 24px" onclick="restartSwipe()">${t('restartBtn')}</button>
       </div>`;
     }
   } else {
-    el.textContent = `第 ${idx+1} 套 / 共 ${outfits.length} 套`;
+    el.textContent = ui('setCounter', idx+1, outfits.length);
   }
 }
 
@@ -1616,7 +1847,7 @@ function updateLikedSection(){
   const cnt = document.getElementById('likedCount');
   if(!sec) return;
   sec.style.display = liked.length ? 'block' : 'none';
-  if(cnt) cnt.textContent = liked.length + '套';
+  if(cnt) cnt.textContent = ui('likedCount', liked.length);
   if(!grid) return;
   grid.innerHTML = liked.map((item,i)=>`
     <div class="liked-item" onclick="showLikedDetail(${i})">
@@ -1895,14 +2126,14 @@ async function submitFeedback(){
   const message = (messageEl?.value || '').trim();
 
   if(!message){
-    statusEl.textContent = '请先写一点反馈内容';
+    statusEl.textContent = ui('feedbackEmpty');
     statusEl.className = 'feedback-status err';
     messageEl?.focus();
     return;
   }
 
   btn.disabled = true;
-  statusEl.textContent = '正在提交...';
+  statusEl.textContent = ui('feedbackSending');
   statusEl.className = 'feedback-status';
 
   try{
@@ -1922,10 +2153,10 @@ async function submitFeedback(){
       throw new Error(err.detail || `提交失败 ${resp.status}`);
     }
     messageEl.value = '';
-    statusEl.textContent = '收到啦，谢谢你的反馈';
+    statusEl.textContent = ui('feedbackOk');
     statusEl.className = 'feedback-status ok';
   }catch(err){
-    statusEl.textContent = err.message || '提交失败，请稍后再试';
+    statusEl.textContent = err.message || ui('feedbackFail');
     statusEl.className = 'feedback-status err';
   }finally{
     btn.disabled = false;
@@ -1960,31 +2191,31 @@ async function init(){
       <p class="section-title"><span data-i18n="bodyCardTitle">上传全身照（可选，提升推荐精准度）</span></p>
       <div class="body-photo-row">
         <div>
-          <div class="input-label" style="margin-bottom:8px">正面全身照</div>
+          <div class="input-label" style="margin-bottom:8px" data-i18n="frontPhotoLabel">正面全身照</div>
           <div class="body-photo-box" id="frontPhotoBox" onclick="document.getElementById('frontPhotoInput').click()">
             <div style="font-size:24px">🧍</div>
-            <div style="font-size:13px;font-weight:500">点击上传正面照</div>
-            <div style="font-size:11px;color:var(--muted)">站直，全身入镜</div>
+            <div style="font-size:13px;font-weight:500" data-i18n="frontPhotoLabel">点击上传正面照</div>
+            <div style="font-size:11px;color:var(--muted)" data-i18n="frontPhotoHint">站直，全身入镜</div>
             <img class="body-preview" id="frontPreview">
           </div>
           <input type="file" id="frontPhotoInput" accept="image/jpeg,image/png" style="display:none" onchange="previewBodyPhoto('frontPhotoInput','frontPreview','frontPhotoBox')">
           <div class="photo-btns" style="margin-top:8px">
-            <button class="photo-btn" onclick="document.getElementById('frontPhotoInput').click()">📁 相册</button>
-            <button class="photo-btn primary" onclick="openBodyCamera('front')">📷 拍照</button>
+            <button class="photo-btn" onclick="document.getElementById('frontPhotoInput').click()" data-i18n="albumBtn">📁 相册</button>
+            <button class="photo-btn primary" onclick="openBodyCamera('front')" data-i18n="cameraBtn">📷 拍照</button>
           </div>
         </div>
         <div>
-          <div class="input-label" style="margin-bottom:8px">侧面全身照（可选）</div>
+          <div class="input-label" style="margin-bottom:8px" data-i18n="sidePhotoLabel">侧面全身照（可选）</div>
           <div class="body-photo-box" id="sidePhotoBox" onclick="document.getElementById('sidePhotoInput').click()">
             <div style="font-size:24px">🚶</div>
-            <div style="font-size:13px;font-weight:500">点击上传侧面照</div>
-            <div style="font-size:11px;color:var(--muted)">帮助 AI 判断体型</div>
+            <div style="font-size:13px;font-weight:500" data-i18n="sidePhotoLabel">点击上传侧面照</div>
+            <div style="font-size:11px;color:var(--muted)" data-i18n="sidePhotoHint">帮助 AI 判断体型</div>
             <img class="body-preview" id="sidePreview">
           </div>
           <input type="file" id="sidePhotoInput" accept="image/jpeg,image/png" style="display:none" onchange="previewBodyPhoto('sidePhotoInput','sidePreview','sidePhotoBox')">
           <div class="photo-btns" style="margin-top:8px">
-            <button class="photo-btn" onclick="document.getElementById('sidePhotoInput').click()">📁 相册</button>
-            <button class="photo-btn primary" onclick="openBodyCamera('side')">📷 拍照</button>
+            <button class="photo-btn" onclick="document.getElementById('sidePhotoInput').click()" data-i18n="albumBtn">📁 相册</button>
+            <button class="photo-btn primary" onclick="openBodyCamera('side')" data-i18n="cameraBtn">📷 拍照</button>
           </div>
         </div>
       </div>
@@ -2009,7 +2240,7 @@ async function init(){
             <button class="body-part-btn" id="partBtn-upper" onclick="togglePart('upper')" data-i18n="upperBtn">👆 上半身</button>
             <button class="body-part-btn" id="partBtn-lower" onclick="togglePart('lower')" data-i18n="lowerBtn">👇 下半身</button>
             <button class="body-part-btn" id="partBtn-overall" onclick="togglePart('overall')" data-i18n="overallBtn">📐 整体比例</button>
-            <button class="body-part-btn advantage" id="partBtn-adv" onclick="togglePart('adv')" style="border-color:#1d6b44;color:#1d6b44">✨ 我的优势</button>
+            <button class="body-part-btn advantage" id="partBtn-adv" onclick="togglePart('adv')" data-i18n="advBtn" style="border-color:#1d6b44;color:#1d6b44">✨ 我的优势</button>
           </div>
         </div>
 
@@ -2136,11 +2367,11 @@ async function init(){
 
       <div class="body-rules-preview" id="bodyRulesPreview"></div>
       <div class="analysis-result" id="bodyAnalysisResult">
-        <div class="analysis-result-title">🤖 AI 体型分析</div>
+        <div class="analysis-result-title">${ui('aiAnalysisTitle')}</div>
         <div class="analysis-result-text" id="bodyAnalysisText"></div>
         <div class="analysis-tags" id="bodyAnalysisTags"></div>
       </div>
-      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">📸 照片仅在本地使用，不会上传或保存</div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" data-i18n="photoHint">📸 照片仅在本地使用，不会上传或保存</div>
     </div>
 
     <div class="card form-card">
