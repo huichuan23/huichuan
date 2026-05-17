@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers.recommend import router as recommend_router
@@ -8,7 +10,7 @@ app = FastAPI(title="会穿 · AI 男性穿搭助手 API", version="2.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[origin.strip() for origin in os.environ.get("ALLOWED_ORIGINS", "*").split(",") if origin.strip()],
     allow_methods=["*"],
     allow_headers=["*"],
 )

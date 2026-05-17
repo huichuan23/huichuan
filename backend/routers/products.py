@@ -4,16 +4,37 @@ GET  /api/products          搜索商品
 GET  /api/products/stats    数据库统计
 POST /api/products/import   从 products.json 导入数据
 """
-from fastapi import APIRouter, Depends, Query, BackgroundTasks
+from fastapi import APIRouter, Depends, Query, BackgroundTasks, Header, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func, or_
-from typing import Optional, List
-import json, os
+from sqlalchemy import func
+from typing import Optional
+import json
+from pathlib import Path
 
-from database import get_db, Product, ScrapeLog, init_db
+from database import get_db, Product, ScrapeLog
 from datetime import datetime
 
 router = APIRouter()
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+ADMIN_API_KEY = os.environ.get("ADMIN_API_KEY")
+
+
+def require_admin(x_admin_key: Optional[str] = Header(default=None)):
+    if not ADMIN_API_KEY:
+        raise HTTPException(status_code=403, detail="Admin API is disabled")
+    if x_admin_key != ADMIN_API_KEY:
+        raise HTTPException(status_code=403, detail="Invalid admin key")
+
+
+def get_import_json_path() -> Path:
+    candidates = [
+        PROJECT_ROOT / "frontend" / "products.json",
+        PROJECT_ROOT / "backend" / "data" / "products.json",
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    raise HTTPException(status_code=404, detail="products.json not found")
 
 
 @router.get("/products")
@@ -88,17 +109,16 @@ def get_stats(db: Session = Depends(get_db)):
 @router.post("/products/import")
 def import_products(
     background_tasks: BackgroundTasks,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _: None = Depends(require_admin)
 ):
     """从 products.json 文件导入数据到 PostgreSQL"""
-    json_path = os.path.join(os.path.dirname(__file__), "../frontend/products.json")
-    if not os.path.exists(json_path):
-        return {"error": "products.json 不存在，请先运行爬虫"}
+    json_path = get_import_json_path()
 
     log = ScrapeLog(source="import", status="running")
     db.add(log); db.commit(); db.refresh(log)
 
-    background_tasks.add_task(do_import, json_path, log.id)
+    background_tasks.add_task(do_import, str(json_path), log.id)
     return {"message": "导入任务已启动", "log_id": log.id}
 
 

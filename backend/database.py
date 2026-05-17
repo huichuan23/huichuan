@@ -63,4 +63,4 @@ def get_db():
 
 def init_db():
     Base.metadata.create_all(bind=engine)
-    print("✅ 数据库表创建完成")
+    print("Database tables are ready")
