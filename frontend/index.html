@@ -9,7 +9,9 @@
   :root{--bg:#f7f5f0;--card:#fff;--ink:#1a1a1a;--muted:#6b6b6b;--border:rgba(0,0,0,0.09);--safe-bg:#e8f5ee;--safe-c:#1d6b44;--tag-bg:#f0ede8;--accent:#c8a96e;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
-  header{padding:32px 24px 20px;max-width:980px;margin:0 auto;display:flex;align-items:baseline;gap:12px;}
+  header{padding:24px 24px 16px;max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .lang-btn{margin-left:auto;padding:5px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink);font-family:inherit;transition:all .15s;flex-shrink:0;}
+  .lang-btn:hover{border-color:var(--ink);}
   .logo{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;}
   .logo-sub{font-size:13px;color:var(--muted);}
   .wrap{max-width:980px;margin:0 auto;padding:0 24px 60px;}
@@ -159,6 +161,17 @@
   .analysis-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
   .analysis-tag{background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:11px;}
   .step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+  /* 整合按钮和进度 */
+  .unified-btn{width:100%;height:56px;background:linear-gradient(135deg,#1a1a1a,#333);color:#fff;border:none;border-radius:14px;font-size:16px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;letter-spacing:.5px;position:relative;overflow:hidden;}
+  .unified-btn:hover{opacity:.88;}.unified-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .unified-btn-sub{font-size:11px;opacity:.6;display:block;margin-top:2px;font-weight:400;letter-spacing:0;}
+  .progress-steps{display:flex;gap:0;margin-bottom:16px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  .progress-step{flex:1;padding:10px 8px;text-align:center;font-size:11px;background:var(--bg);color:var(--muted);border-right:1px solid var(--border);transition:all .3s;}
+  .progress-step:last-child{border-right:none;}
+  .progress-step.active{background:var(--ink);color:#fff;}
+  .progress-step.done{background:#e8f5ee;color:#1d6b44;}
+  .progress-step-icon{font-size:16px;display:block;margin-bottom:3px;}
+  .progress-step-label{font-size:10px;}
   .step{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
   .step.active{color:var(--ink);font-weight:500;}
   .step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
@@ -166,15 +179,29 @@
   .step-line{flex:1;height:1px;background:var(--border);}
   /* ── 身体问题多选 ── */
   .body-issues-section{margin-bottom:16px;}
-  .body-issues-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:10px;text-transform:uppercase;}
-  .body-issues-group{margin-bottom:12px;}
-  .body-issues-group-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;}
+  .body-issues-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:12px;text-transform:uppercase;}
+  /* 分步骤选择 */
+  .body-step{margin-bottom:14px;}
+  .body-step-label{font-size:12px;font-weight:500;margin-bottom:8px;color:var(--ink);}
+  .body-part-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .body-part-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;cursor:pointer;background:var(--bg);color:var(--ink);transition:all .15s;font-family:inherit;display:flex;align-items:center;gap:5px;}
+  .body-part-btn:hover{border-color:var(--ink);}
+  .body-part-btn.active{border-color:var(--ink);background:var(--ink);color:#fff;}
+  .body-detail-panel{display:none;background:var(--tag-bg);border-radius:12px;padding:14px;margin-bottom:10px;animation:fadeIn .2s ease;}
+  .body-detail-panel.show{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .body-detail-group{margin-bottom:10px;}
+  .body-detail-group-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;}
   .body-issues-grid{display:flex;flex-wrap:wrap;gap:6px;}
-  .body-issue-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--ink);transition:all .15s;font-family:inherit;}
+  .body-issue-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink);transition:all .15s;font-family:inherit;}
   .body-issue-btn:hover{border-color:var(--ink);}
   .body-issue-btn.selected{background:var(--ink);color:#fff;border-color:var(--ink);}
-  .body-issue-btn.advantage{border-color:#1d6b44;color:#1d6b44;}
-  .body-issue-btn.advantage.selected{background:#1d6b44;color:#fff;}
+  .body-issue-btn.advantage{border-color:#1d6b44;color:#1d6b44;background:var(--card);}
+  .body-issue-btn.advantage.selected{background:#1d6b44;color:#fff;border-color:#1d6b44;}
+  .selected-summary{font-size:11px;color:var(--muted);margin-top:8px;min-height:16px;}
+  .selected-tag{display:inline-flex;align-items:center;background:var(--ink);color:#fff;border-radius:12px;padding:2px 8px;font-size:11px;margin:2px;gap:3px;}
+  .selected-tag.adv{background:#1d6b44;}
+  .selected-tag-x{cursor:pointer;opacity:.7;font-size:10px;}
   .body-rules-preview{background:var(--tag-bg);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:12px;line-height:1.8;display:none;}
   .body-rules-preview.show{display:block;}
   .rule-item{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;}
@@ -238,8 +265,9 @@
 </head>
 <body>
 <header>
-  <span class="logo">会穿</span>
-  <span class="logo-sub">AI 男性穿搭助手 · 不踩雷</span>
+  <span class="logo" id="logoText">会穿</span>
+  <span class="logo-sub" id="logoSub">AI 男性穿搭助手 · 不踩雷</span>
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()">🌐 EN</button>
 </header>
 <div class="wrap" id="app">
   <div style="text-align:center;padding:60px 0;color:var(--muted)">
@@ -250,27 +278,249 @@
 </div>
 
 <script>
-const BACKEND = 'https://huichuan-production.up.railway.app';
+// ── 双语文本库 ────────────────────────────────────────────
+const LANG = {
+  zh: {
+    logo: '会穿',
+    logoSub: 'AI 男性穿搭助手 · 不踩雷',
+    langBtn: '🌐 EN',
+    title: '会穿 · AI 男性穿搭助手',
+    loading: '加载中…',
+    // 进度步骤
+    step1: '上传照片', step2: '身体特征', step3: '风格偏好', step4: '获取推荐',
+    // 体型分析卡片
+    bodyCardTitle: '上传全身照（可选，提升推荐精准度）',
+    frontPhotoLabel: '正面全身照',
+    sidePhotoLabel: '侧面全身照（可选）',
+    frontPhotoHint: '站直，全身入镜',
+    sidePhotoHint: '帮助 AI 判断体型',
+    albumBtn: '📁 相册',
+    cameraBtn: '📷 拍照',
+    measureTitle: '身体三围（可选，帮助精准推荐）',
+    chestLabel: '胸围 (cm)', waistLabel: '腰围 (cm)', hipLabel: '臀围 (cm)',
+    thighLabel: '大腿围 (cm)', calfLabel: '小腿围 (cm)',
+    bodyIssuesTitle: '身体特征（分步选择，AI 精准适配）',
+    step1Label: '第一步：选择你想改善的部位',
+    upperBtn: '👆 上半身', lowerBtn: '👇 下半身',
+    overallBtn: '📐 整体比例', advBtn: '✨ 我的优势',
+    photoHint: '📸 照片仅在本地使用，不会上传或保存',
+    // 表单
+    formTitle: '基本信息与偏好',
+    ageLabel: '年龄', heightLabel: '身高 (cm)', weightLabel: '体重 (kg)',
+    skinLabel: '肤色', faceLabel: '脸型', sceneLabel: '场景', styleLabel: '风格偏好',
+    dislikeLabel: '不喜欢的款式（可选）', existingLabel: '已有的主要单品（可选）',
+    descLabel: '补充描述（可选）',
+    dislikePlaceholder: '例：不喜欢卫衣、花哨图案…',
+    existingPlaceholder: '例：白色运动鞋、黑色牛仔裤…',
+    descPlaceholder: '例：我脸比较圆，想显瘦一点；工作环境比较休闲…',
+    // 预算
+    budgetTitle: '分类预算设置',
+    budgetTotal: '套装预计总价',
+    topBudget: '上衣预算', bottomBudget: '裤子预算', shoesBudget: '鞋子预算',
+    // 主按钮
+    mainBtn: '🤖 AI 分析体型 + 个性化推荐',
+    mainBtnSub: '自动分析体型特征，推荐最适合你的穿搭',
+    // 状态
+    statusAnalyzing: '🔍 AI 正在分析你的体型…',
+    statusOrganizing: '📊 整理你的身体特征和偏好…',
+    statusPicking: '🤖 AI 正在从商品库中为你挑选穿搭…',
+    statusDone: '✅ 推荐完成！',
+    // 试穿
+    tryonTitle: '👗 AI 虚拟试穿',
+    tryonSub: '上传你的照片，AI 把推荐的衣服穿到你身上。',
+    fashnTab: '🚀 Fashn.ai 试穿', claudeTab: '💬 AI 文字分析',
+    autoPhotoHint: '✅ 自动使用第一步上传的体型照片，无需重新拍照',
+    yourPhoto: '你的照片', garmentPhoto: '衣服图片',
+    autoFillBtn: '↑ 自动填入当前套装的上衣图片',
+    startTryonBtn: '🤖 开始虚拟试穿',
+    processing: 'AI 处理中，通常 15-40 秒…',
+    tryonResult: '✨ 虚拟试穿效果',
+    origPhoto: '原始照片', tryonEffect: '试穿效果',
+    buyBtn: '购买 ↗',
+    totalLabel: '三件合计', budgetLabel: '预算',
+    swiperLabel: '滑动选择你喜欢的穿搭 💫',
+    likedTitle: '❤️ 我喜欢的穿搭',
+    doneTitle: '全部看完了！', doneSub: '已喜欢',
+    restartBtn: '重新看一遍', suitStr: '套',
+  },
+  en: {
+    logo: 'StyleAI',
+    logoSub: 'AI Men's Fashion Assistant',
+    langBtn: '🌐 中文',
+    title: 'StyleAI · AI Men's Fashion',
+    loading: 'Loading…',
+    step1: 'Photo', step2: 'Body', step3: 'Style', step4: 'Result',
+    bodyCardTitle: 'Upload Full-Body Photo (Optional, improves accuracy)',
+    frontPhotoLabel: 'Front View',
+    sidePhotoLabel: 'Side View (Optional)',
+    frontPhotoHint: 'Stand straight, full body in frame',
+    sidePhotoHint: 'Helps AI analyze body shape',
+    albumBtn: '📁 Gallery',
+    cameraBtn: '📷 Camera',
+    measureTitle: 'Body Measurements (Optional)',
+    chestLabel: 'Chest (cm)', waistLabel: 'Waist (cm)', hipLabel: 'Hip (cm)',
+    thighLabel: 'Thigh (cm)', calfLabel: 'Calf (cm)',
+    bodyIssuesTitle: 'Body Features (Step by step)',
+    step1Label: 'Step 1: Select areas to improve',
+    upperBtn: '👆 Upper Body', lowerBtn: '👇 Lower Body',
+    overallBtn: '📐 Proportions', advBtn: '✨ My Strengths',
+    photoHint: '📸 Photos are used locally only, never uploaded',
+    formTitle: 'Basic Info & Preferences',
+    ageLabel: 'Age', heightLabel: 'Height (cm)', weightLabel: 'Weight (kg)',
+    skinLabel: 'Skin Tone', faceLabel: 'Face Shape', sceneLabel: 'Occasion', styleLabel: 'Style',
+    dislikeLabel: 'Styles to avoid (optional)', existingLabel: 'Items you already own (optional)',
+    descLabel: 'Additional notes (optional)',
+    dislikePlaceholder: 'e.g. no hoodies, no loud prints…',
+    existingPlaceholder: 'e.g. white sneakers, black jeans…',
+    descPlaceholder: 'e.g. I want to look slimmer, casual work environment…',
+    budgetTitle: 'Budget Settings',
+    budgetTotal: 'Total Outfit Budget',
+    topBudget: 'Top', bottomBudget: 'Bottoms', shoesBudget: 'Shoes',
+    mainBtn: '🤖 AI Analyze + Recommend Outfits',
+    mainBtnSub: 'Analyzes your body type and recommends the perfect outfit',
+    statusAnalyzing: '🔍 AI is analyzing your body type…',
+    statusOrganizing: '📊 Processing your preferences…',
+    statusPicking: '🤖 AI is selecting the best outfits…',
+    statusDone: '✅ Done!',
+    tryonTitle: '👗 AI Virtual Try-On',
+    tryonSub: 'Upload your photo and AI will dress you in the recommended outfit.',
+    fashnTab: '🚀 Fashn.ai Try-On', claudeTab: '💬 AI Text Analysis',
+    autoPhotoHint: '✅ Using the photo from Step 1 automatically',
+    yourPhoto: 'Your Photo', garmentPhoto: 'Garment Photo',
+    autoFillBtn: '↑ Auto-fill with selected outfit top',
+    startTryonBtn: '🤖 Start Virtual Try-On',
+    processing: 'AI processing, usually 15-40 seconds…',
+    tryonResult: '✨ Try-On Result',
+    origPhoto: 'Original', tryonEffect: 'Try-On Effect',
+    buyBtn: 'Buy ↗',
+    totalLabel: 'Total', budgetLabel: 'Budget',
+    swiperLabel: 'Swipe to choose your favorite outfit 💫',
+    likedTitle: '❤️ My Liked Outfits',
+    doneTitle: 'All done!', doneSub: 'Liked',
+    restartBtn: 'See again', suitStr: ' outfits',
+  }
+};
 
-let DB = {tops:[], bottoms:[], shoes:[]};
-let dbStats = {total:0};
+// 当前语言
+window._lang = localStorage.getItem('huichuan_lang') || 'zh';
 
-async function loadProducts(){
-  try{
-    const [r1,r2,r3,rs] = await Promise.all([
-      fetch(`${BACKEND}/api/products?limit=100&category=top`),
-      fetch(`${BACKEND}/api/products?limit=100&category=bottom`),
-      fetch(`${BACKEND}/api/products?limit=100&category=shoes`),
-      fetch(`${BACKEND}/api/products/stats`),
-    ]);
-    const [d1,d2,d3,stats] = await Promise.all([r1.json(),r2.json(),r3.json(),rs.json()]);
-    DB.tops    = (d1.products||[]).map(normalizeProduct);
-    DB.bottoms = (d2.products||[]).map(normalizeProduct);
-    DB.shoes   = (d3.products||[]).map(normalizeProduct);
-    dbStats    = stats;
-    console.log(`✅ 商品：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
-  }catch(e){ console.error('加载商品失败',e); }
+function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
+
+function toggleLang(){
+  window._lang = window._lang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('huichuan_lang', window._lang);
+  applyLang();
+  // 重新应用一次确保动态内容也更新
+  setTimeout(applyLang, 50);
 }
+
+function applyLang(){
+  const lang = window._lang;
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = t('title');
+
+  // Header
+  const logoEl = document.getElementById('logoText');
+  const subEl  = document.getElementById('logoSub');
+  const btnEl  = document.getElementById('langBtn');
+  if(logoEl) logoEl.textContent = t('logo');
+  if(subEl)  subEl.textContent  = t('logoSub');
+  if(btnEl)  btnEl.textContent  = t('langBtn');
+
+  // 进度步骤
+  const stepLabels = ['step1','step2','step3','step4'];
+  stepLabels.forEach((s,i)=>{
+    const el = document.getElementById(s);
+    if(el){
+      const label = el.querySelector('.progress-step-label');
+      if(label) label.textContent = t(s);
+    }
+  });
+
+  // 主按钮
+  const mainBtn = document.getElementById('mainBtn');
+  if(mainBtn){
+    const sub = mainBtn.querySelector('.unified-btn-sub');
+    mainBtn.childNodes.forEach(n=>{ if(n.nodeType===3) n.textContent = t('mainBtn')+' '; });
+    if(sub) sub.textContent = t('mainBtnSub');
+  }
+
+  // 状态文字
+  const statusEl = document.getElementById('aiStatusText');
+  if(statusEl && statusEl.textContent.includes('分析') || statusEl?.textContent.includes('analyzing')){
+    // 保持当前状态不变
+  }
+
+  // 通用 data-i18n 属性替换
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.dataset.i18n;
+    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+      el.placeholder = t(key);
+    } else {
+      el.textContent = t(key);
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    el.title = t(el.dataset.i18nTitle);
+  });
+
+  // 硬编码的固定文字替换（动态渲染的内容）
+  const textMap_zh = {
+    '基本信息与偏好': 'Basic Info & Preferences',
+    '分类预算设置': 'Budget Settings',
+    '滑动选择你喜欢的穿搭 💫': 'Swipe to choose your outfit 💫',
+    '为你生成': 'Generated',
+    '个性化穿搭方案': 'personalized outfits',
+    '三件合计': 'Total',
+    '预算': 'Budget',
+    '上衣预算': 'Top Budget',
+    '裤子预算': 'Bottoms Budget',
+    '鞋子预算': 'Shoes Budget',
+    '套装预计总价': 'Total Outfit Budget',
+    '上衣': 'Top', '裤子': 'Bottoms', '鞋子': 'Shoes',
+    '购买 ↗': 'Buy ↗',
+    '❤️ 我喜欢的穿搭': '❤️ My Liked Outfits',
+    '全部看完了！': 'All done!',
+    '重新看一遍': 'See again',
+    '照片仅用于本地分析，不会上传或保存': 'Photos are used locally only, never uploaded',
+  };
+  const textMap_en = Object.fromEntries(Object.entries(textMap_zh).map(([k,v])=>[v,k]));
+  const textMap = lang === 'en' ? textMap_zh : textMap_en;
+
+  // 遍历所有文本节点替换
+  function replaceText(node){
+    if(node.nodeType === 3){
+      let txt = node.textContent;
+      let changed = false;
+      for(const [from, to] of Object.entries(textMap)){
+        if(txt.includes(from)){ txt = txt.split(from).join(to); changed = true; }
+      }
+      if(changed) node.textContent = txt;
+    } else if(node.nodeType === 1 && !['SCRIPT','STYLE','INPUT','TEXTAREA'].includes(node.tagName)){
+      node.childNodes.forEach(replaceText);
+    }
+  }
+
+  // 只替换主要内容区域，避免替换脚本
+  const app = document.getElementById('app');
+  const result = document.getElementById('result');
+  if(app) replaceText(app);
+  if(result) replaceText(result);
+}
+
+// 页面加载后应用语言
+document.addEventListener('DOMContentLoaded', ()=>{
+  setTimeout(applyLang, 500);
+});
+
+// ── 双语文本库 ────────────────────────────────────────────
+
+window._lang = localStorage.getItem('huichuan_lang') || 'zh';
+
+function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
+
+
 
 function normalizeProduct(p){
   return {
@@ -303,6 +553,7 @@ async function callBackendRecommend(userInfo){
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       height:userInfo.height, weight:userInfo.weight,
+      age:userInfo.age||'23-28岁',
       skin:userInfo.skin, face:userInfo.face,
       scene:userInfo.scene, style:userInfo.style,
       dislike:userInfo.dislike||'', existing:userInfo.existing||'',
@@ -353,7 +604,7 @@ function renderResult(aiResult,userInfo){
       <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
     </div>
     <div class="tips">${tipsHTML}</div>
-    <p class="section-label">滑动选择你喜欢的穿搭 💫</p>
+    <p class="section-label"><span data-i18n="swiperLabel">滑动选择你喜欢的穿搭 💫</span></p>
     <div class="swipe-counter" id="swipeCounter">第 1 套 / 共 ${(aiResult.outfits||[]).length} 套</div>
     <div class="swipe-container" id="swipeContainer"></div>
     <div class="swipe-actions">
@@ -406,7 +657,7 @@ function renderResult(aiResult,userInfo){
         <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入当前套装的上衣图片</button>
         <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">🤖 开始虚拟试穿</button>
         <div class="progress-wrap" id="fashnProgress">
-          <div class="progress-label">AI 处理中，通常 15-40 秒…</div>
+          <div class="progress-label"><span data-i18n="processing">AI 处理中，通常 15-40 秒…</span></div>
           <div class="progress-bar-bg"><div class="progress-bar" id="fashnBar"></div></div>
           <div class="progress-status" id="fashnStatus">提交任务…</div>
         </div>
@@ -449,47 +700,137 @@ async function getRecommend(){
   const h=parseInt(document.getElementById('height').value);
   const w=parseInt(document.getElementById('weight').value);
   if(!h||!w){alert('请填写身高和体重');return;}
+
   const body=bodyInfo(h,w);
   const budgets={
     top:parseInt(document.getElementById('topBudget').value),
     bottom:parseInt(document.getElementById('bottomBudget').value),
     shoes:parseInt(document.getElementById('shoesBudget').value),
   };
-  const userInfo={
-    height:h,weight:w,body:body.label,bmi:body.bmi,
-    skin:document.getElementById('skin').value,
-    face:document.getElementById('face').value,
-    scene:document.getElementById('scene').value,
-    style:document.getElementById('style').value,
-    dislike:document.getElementById('dislike').value,
-    existing:document.getElementById('existing').value,
-    desc:document.getElementById('desc').value,
-    budgets,
-    bodyAnalysis: window._bodyAnalysis||'',
-    bodyIssues: Array.from(window._selectedIssues||[]),
-    bodyIssueRules: window._bodyIssueRules||'',
-    measurements: {
-      chest: document.getElementById('chest')?.value||'',
-      waist: document.getElementById('waist')?.value||'',
-      hip:   document.getElementById('hip')?.value||'',
-      thigh: document.getElementById('thigh')?.value||'',
-      calf:  document.getElementById('calf')?.value||'',
-    },
+
+  const measurements={
+    chest: document.getElementById('chest')?.value||'',
+    waist: document.getElementById('waist')?.value||'',
+    hip:   document.getElementById('hip')?.value||'',
+    thigh: document.getElementById('thigh')?.value||'',
+    calf:  document.getElementById('calf')?.value||'',
   };
-  window._lastUserInfo = userInfo;
-  document.getElementById('mainBtn').disabled=true;
+
+  const btn = document.getElementById('mainBtn');
+  const statusEl = document.getElementById('aiStatusText');
+  btn.disabled=true;
   document.getElementById('aiStatus').classList.add('show');
   document.getElementById('result').classList.remove('show');
+
+  // 更新进度条
+  const setStep = (n) => {
+    [1,2,3,4].forEach(i=>{
+      const el=document.getElementById('step'+i);
+      if(!el)return;
+      el.classList.remove('active','done');
+      if(i<n) el.classList.add('done');
+      else if(i===n) el.classList.add('active');
+    });
+  };
+
   try{
-    const aiResult=await callBackendRecommend(userInfo);
+    // 第一步：体型分析（如果有照片或三围数据）
+    let bodyAnalysis = window._bodyAnalysis || '';
+    const frontFile = document.getElementById('frontPhotoInput')?.files[0];
+    const hasMeasurements = Object.values(measurements).some(v=>v);
+
+    if((frontFile || hasMeasurements) && !bodyAnalysis){
+      setStep(1);
+      if(statusEl) statusEl.textContent = '🔍 AI 正在分析你的体型…';
+
+      try{
+        const toB64 = f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});
+        const frontB64 = frontFile ? await toB64(frontFile) : null;
+
+        const resp = await fetch(`${BACKEND}/api/analyze-body`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            messages: frontB64 ? [{role:'user',content:[
+              {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frontB64.split(',')[1]}},
+              {type:'text',text:'分析体型'}
+            ]}] : [],
+            height: h+'', weight: w+'',
+            chest: measurements.chest, waist: measurements.waist,
+            hip: measurements.hip, thigh: measurements.thigh, calf: measurements.calf,
+          })
+        });
+
+        if(resp.ok){
+          const d = await resp.json();
+          bodyAnalysis = d.analysis || '';
+          window._bodyAnalysis = bodyAnalysis;
+
+          // 提取标签显示
+          const tagMatch = bodyAnalysis.match(/标签[：:]\s*(.+)/);
+          if(tagMatch){
+            const tags = tagMatch[1].split('|').map(t=>t.trim()).filter(Boolean);
+            const mainText = bodyAnalysis.replace(/标签[：:].*$/,'').trim();
+            const analysisEl = document.getElementById('bodyAnalysisResult');
+            const textEl = document.getElementById('bodyAnalysisText');
+            const tagsEl = document.getElementById('bodyAnalysisTags');
+            if(analysisEl){ analysisEl.classList.add('show'); }
+            if(textEl){ textEl.textContent = mainText; }
+            if(tagsEl){ tagsEl.innerHTML = tags.map(t=>`<span class="analysis-tag">${t}</span>`).join(''); }
+          }
+        }
+      }catch(e){
+        console.warn('体型分析失败，跳过:', e);
+      }
+    }
+
+    // 第二步：构建用户信息
+    setStep(2);
+    if(statusEl) statusEl.textContent = '📊 整理你的身体特征和偏好…';
+    await new Promise(r=>setTimeout(r,300));
+
+    const userInfo={
+      height:h, weight:w, body:body.label, bmi:body.bmi,
+      age:document.getElementById('age').value,
+      skin:document.getElementById('skin').value,
+      face:document.getElementById('face').value,
+      scene:document.getElementById('scene').value,
+      style:document.getElementById('style').value,
+      dislike:document.getElementById('dislike').value,
+      existing:document.getElementById('existing').value,
+      desc:document.getElementById('desc').value,
+      budgets,
+      bodyAnalysis,
+      bodyIssues: Array.from(window._selectedIssues||[]),
+      bodyIssueRules: window._bodyIssueRules||'',
+      measurements,
+    };
+    window._lastUserInfo = userInfo;
+
+    // 第三步：AI 推荐
+    setStep(3);
+    if(statusEl) statusEl.textContent = '🤖 AI 正在从商品库中为你挑选穿搭…';
+
+    const aiResult = await callBackendRecommend(userInfo);
+
+    // 完成
+    setStep(4);
+    if(statusEl) statusEl.textContent = '✅ 推荐完成！';
+    await new Promise(r=>setTimeout(r,400));
+
     document.getElementById('aiStatus').classList.remove('show');
-    renderResult(aiResult,userInfo);
+    renderResult(aiResult, userInfo);
+
   }catch(e){
     document.getElementById('aiStatus').classList.remove('show');
-    alert('AI 推荐失败：'+e.message);
+    [1,2,3,4].forEach(i=>{
+      const el=document.getElementById('step'+i);
+      if(el){ el.classList.remove('active','done'); if(i===1) el.classList.add('active'); }
+    });
+    alert('推荐失败：'+e.message);
     console.error(e);
   }finally{
-    document.getElementById('mainBtn').disabled=false;
+    btn.disabled=false;
   }
 }
 
@@ -699,19 +1040,235 @@ const BODY_RULES = {
   },
   tall: {
     label: '个子高',
-    avoid_tops: [],
-    prefer_tops: ['长款','oversize均可驾驭'],
-    avoid_bottoms: [],
-    prefer_bottoms: ['宽腿','阔腿均可'],
-    avoid_shoes: [],
-    prefer_shoes: [],
+    avoid_tops: [], prefer_tops: ['长款','oversize均可驾驭'],
+    avoid_bottoms: [], prefer_bottoms: ['宽腿','阔腿均可'],
+    avoid_shoes: [], prefer_shoes: [],
     colors: {avoid:[], prefer:[]},
     prompt: '用户身高优势明显，长款外套、阔腿裤等都能很好驾驭',
+  },
+  // 新增选项
+  round_shoulder: {
+    label: '含胸驼背',
+    avoid_tops: ['超宽松无结构感'],
+    prefer_tops: ['有结构感','挺括面料','修身'],
+    avoid_bottoms: [], avoid_shoes: [], prefer_bottoms: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户有含胸驼背问题，选有结构感和挺括面料的上衣，避免过于宽松塌陷的版型',
+  },
+  belly_lower: {
+    label: '小腹突出',
+    avoid_tops: ['短款上衣','紧身'],
+    prefer_tops: ['长款宽松','深色系'],
+    avoid_bottoms: ['低腰'], prefer_bottoms: ['中高腰'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色上衣']},
+    prompt: '用户小腹突出，上衣选长款宽松深色，裤子选中高腰，避免低腰裤和短款上衣',
+  },
+  love_handle: {
+    label: '腰侧赘肉',
+    avoid_tops: ['紧身','tucked in'],
+    prefer_tops: ['宽松覆盖腰侧'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色系']},
+    prompt: '用户腰侧有赘肉，上衣宽松不要tucked in，选覆盖腰侧的款式',
+  },
+  neck_thin: {
+    label: '脖子细长',
+    avoid_tops: ['深V领','过低领口'],
+    prefer_tops: ['高领','圆领','立领'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脖子细长，可选高领或圆领填充颈部视觉，避免深V拉长脖子',
+  },
+  chest_wide: {
+    label: '胸腔宽大',
+    avoid_tops: ['横条纹'],
+    prefer_tops: ['深色系','竖条纹','V领'],
+    avoid_bottoms: [], prefer_bottoms: ['宽松'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色上衣'], prefer:['深色上衣']},
+    prompt: '用户胸腔宽大，上衣选深色和竖条纹收窄视觉，下装宽松平衡比例',
+  },
+  thigh_inner: {
+    label: '大腿内侧肉多',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: ['超紧身','legging'],
+    prefer_bottoms: ['直筒','宽松'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色裤']},
+    prompt: '用户大腿内侧肉多，选直筒或宽松裤，深色系视觉收窄',
+  },
+  knee_out: {
+    label: '膝盖外扩',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: ['七分裤','短裤'],
+    prefer_bottoms: ['长裤','宽松直筒'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色裤']},
+    prompt: '用户膝盖外扩，选长裤遮盖，避免七分裤和短裤暴露膝盖',
+  },
+  hip_wide: {
+    label: '胯部较宽',
+    avoid_tops: ['短款上衣'],
+    prefer_tops: ['长款遮胯'],
+    avoid_bottoms: ['高腰紧身','浅色裤'],
+    prefer_bottoms: ['深色宽松直筒'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色裤'], prefer:['深色裤']},
+    prompt: '用户胯部较宽，上衣选长款遮胯，裤子选深色宽松直筒，避免浅色紧身裤',
+  },
+  ankle_thick: {
+    label: '脚踝粗',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: ['九分裤'],
+    prefer_bottoms: ['长裤'],
+    avoid_shoes: ['踝靴','ankle strap'],
+    prefer_shoes: ['低帮运动鞋','深色鞋'],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脚踝偏粗，选长裤遮盖，避免九分裤和踝靴在脚踝处截断视线',
+  },
+  foot_big: {
+    label: '脚偏大',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: ['宽头鞋','厚底鞋'],
+    prefer_shoes: ['流线型运动鞋','尖头皮鞋'],
+    colors: {avoid:[], prefer:['深色鞋']},
+    prompt: '用户脚偏大，选流线型鞋款视觉收窄，深色系鞋子，避免过宽或厚底鞋',
+  },
+  upper_long: {
+    label: '上身长下身短',
+    avoid_tops: ['长款上衣','oversize长款'],
+    prefer_tops: ['短款','正常长度'],
+    avoid_bottoms: ['低腰'],
+    prefer_bottoms: ['高腰','视觉拉腿'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户上身长下身短，上衣选短款不要遮过腰，裤子选高腰视觉拉长下身',
+  },
+  lower_long: {
+    label: '下身长上身短',
+    avoid_tops: ['短款crop top'],
+    prefer_tops: ['正常长度略长'],
+    avoid_bottoms: ['高腰'],
+    prefer_bottoms: ['中低腰','正常腰位'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户下身偏长，上衣选正常偏长款平衡比例，裤子选中低腰',
+  },
+  head_big: {
+    label: '头偏大',
+    avoid_tops: ['高领','过于复杂领口'],
+    prefer_tops: ['V领','开领','简洁领口'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户头部偏大，选V领或开领增大领口视觉，避免高领让头显得更大',
+  },
+  face_big: {
+    label: '脸偏大',
+    avoid_tops: ['圆领','高领'],
+    prefer_tops: ['V领','立领','尖领'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脸偏大，选V领或尖领通过领口造型视觉收窄脸部',
+  },
+  skinny_fat: {
+    label: '泡芙体型',
+    avoid_tops: ['紧身','贴身'],
+    prefer_tops: ['略宽松','有结构感'],
+    avoid_bottoms: ['紧身'],
+    prefer_bottoms: ['直筒','略宽松'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色紧身'], prefer:['深色系']},
+    prompt: '用户泡芙体型外表看起来不胖但体脂高，避免紧身款，选略宽松有结构感的深色系',
+  },
+  top_heavy: {
+    label: '上重下轻',
+    avoid_tops: ['宽松oversize','横条纹'],
+    prefer_tops: ['修身','深色'],
+    avoid_bottoms: ['过紧'],
+    prefer_bottoms: ['宽松','阔腿','有量感'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色上装大面积'], prefer:['深色上装+浅色下装']},
+    prompt: '用户上重下轻，上装选修身深色收窄，下装选宽松有量感平衡比例',
+  },
+  bottom_heavy: {
+    label: '梨形身材',
+    avoid_tops: ['修身紧身上衣'],
+    prefer_tops: ['略宽松','有量感的上装'],
+    avoid_bottoms: ['紧身','浅色裤'],
+    prefer_bottoms: ['深色宽松直筒'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色下装'], prefer:['深色下装+浅/亮色上装']},
+    prompt: '用户梨形身材下身重，上装选略有量感平衡比例，下装选深色宽松直筒，视觉重心上移',
+  },
+  abs: {
+    label: '腹肌明显',
+    avoid_tops: [], prefer_tops: ['略修身展现线条'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户腹肌明显是优势，可选略修身款展现身材线条',
+  },
+  arm_muscle: {
+    label: '手臂有肌肉',
+    avoid_tops: ['过于宽松遮盖'],
+    prefer_tops: ['略修身展现手臂'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户手臂有肌肉感是优势，可选略修身T恤展现手臂轮廓',
+  },
+  face_small: {
+    label: '脸小',
+    avoid_tops: [], prefer_tops: ['任何领型都好看'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脸小是优势，各种领型都适合，可大胆尝试不同风格',
+  },
+  skin_white: {
+    label: '肤色白',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['过于苍白的米白'], prefer:['彩色系、深色系都很好看']},
+    prompt: '用户肤色白是优势，彩色和深色都非常好看，可大胆尝试各种色系',
+  },
+  hip_ratio: {
+    label: '臀腰比好',
+    avoid_tops: [], prefer_tops: ['修身展现腰臀比'],
+    avoid_bottoms: [], prefer_bottoms: ['修身直筒展现线条'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户臀腰比优秀是优势，可选修身款展现完美比例',
   },
 };
 
 // 当前选中的身体问题
 window._selectedIssues = new Set();
+window._activeParts = new Set();
+
+// 切换部位面板
+function togglePart(part){
+  const btn = document.getElementById('partBtn-' + part);
+  const panel = document.getElementById('panel-' + part);
+  if(!btn || !panel) return;
+
+  if(window._activeParts.has(part)){
+    window._activeParts.delete(part);
+    btn.classList.remove('active');
+    panel.classList.remove('show');
+  } else {
+    window._activeParts.add(part);
+    btn.classList.add('active');
+    panel.classList.add('show');
+  }
+}
 
 function toggleIssue(btn){
   const issue = btn.dataset.issue;
@@ -722,7 +1279,48 @@ function toggleIssue(btn){
     window._selectedIssues.add(issue);
     btn.classList.add('selected');
   }
+  updateSelectedSummary();
   updateBodyRules();
+}
+
+function removeIssue(issue){
+  window._selectedIssues.delete(issue);
+  // 取消对应按钮的选中状态
+  const btn = document.querySelector(`.body-issue-btn[data-issue="${issue}"]`);
+  if(btn) btn.classList.remove('selected');
+  updateSelectedSummary();
+  updateBodyRules();
+}
+
+// 已选标签汇总显示
+const ISSUE_LABELS = {
+  shoulder_narrow:'肩膀窄', shoulder_wide:'肩膀宽/虎背', round_shoulder:'含胸驼背',
+  belly:'小肚腩', belly_lower:'小腹突出', love_handle:'腰侧赘肉',
+  arm_thick:'手臂粗', neck_short:'脖子短', neck_thin:'脖子细长',
+  chest_flat:'胸肌不明显', back_wide:'背部宽厚', chest_wide:'胸腔宽大',
+  thigh_thick:'大腿粗', thigh_inner:'大腿内侧肉多',
+  calf_thick:'小腿粗', o_leg:'O型腿', x_leg:'X型腿', knee_out:'膝盖外扩',
+  hip_flat:'臀部扁平', hip_big:'臀部丰满', hip_wide:'胯部较宽',
+  ankle_thick:'脚踝粗', foot_big:'脚偏大',
+  leg_short:'腿短', upper_long:'上身长下身短', lower_long:'下身长上身短',
+  head_big:'头偏大', face_big:'脸偏大',
+  skinny_fat:'泡芙体型', top_heavy:'上重下轻', bottom_heavy:'梨形身材',
+  leg_long:'腿长', waist_thin:'腰细', shoulder_good:'肩型好',
+  body_fit:'身材匀称', tall:'个子高', abs:'腹肌明显',
+  arm_muscle:'手臂有肌肉', face_small:'脸小', skin_white:'肤色白', hip_ratio:'臀腰比好',
+};
+
+const ADVANTAGE_ISSUES = new Set(['leg_long','waist_thin','shoulder_good','body_fit','tall','abs','arm_muscle','face_small','skin_white','hip_ratio']);
+
+function updateSelectedSummary(){
+  const el = document.getElementById('selectedSummary');
+  if(!el) return;
+  const issues = Array.from(window._selectedIssues);
+  if(!issues.length){ el.innerHTML=''; return; }
+  el.innerHTML = issues.map(i => {
+    const isAdv = ADVANTAGE_ISSUES.has(i);
+    return `<span class="selected-tag${isAdv?' adv':''}">${ISSUE_LABELS[i]||i}<span class="selected-tag-x" onclick="removeIssue('${i}')">×</span></span>`;
+  }).join('');
 }
 
 function updateBodyRules(){
@@ -1081,83 +1679,7 @@ function openBodyCamera(side){
   openCamera();
 }
 
-async function analyzeBody(){
-  const frontFile=document.getElementById('frontPhotoInput').files[0];
-  if(!frontFile){alert('请先上传正面全身照');return;}
-  const btn=document.getElementById('analyzeBtn');
-  btn.disabled=true; btn.textContent='🔍 AI 分析中…';
-  try{
-    // 把照片转 base64
-    const toB64 = f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});
-    const frontB64=await toB64(frontFile);
-    const sideFile=document.getElementById('sidePhotoInput').files[0];
-    const sideB64=sideFile?await toB64(sideFile):null;
-
-    const chest=document.getElementById('chest').value;
-    const waist=document.getElementById('waist').value;
-    const hip=document.getElementById('hip').value;
-    const h=document.getElementById('height').value||'未填';
-    const w=document.getElementById('weight').value||'未填';
-
-    const measureText = (chest||waist||hip)?`胸围${chest||'未填'}cm，腰围${waist||'未填'}cm，臀围${hip||'未填'}cm`:'未提供';
-
-    const messages=[{
-      role:'user',
-      content:[
-        {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frontB64.split(',')[1]}},
-        ...(sideB64?[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:sideB64.split(',')[1]}}]:[]),
-        {type:'text',text:`你是专业男性体型分析师。请分析这位用户的体型，给出穿搭建议。
-用户信息：身高${h}cm，体重${w}kg，三围：${measureText}
-请分析：
-1. 体型特征（倒三角/标准/略胖/偏瘦等，2-3句话）
-2. 适合的版型和款式（具体说明）
-3. 应避免的款式（具体说明）
-4. 颜色搭配建议
-5. 3个最重要的穿搭关键词标签
-
-输出格式：先写分析文字（3-4句话），然后换行写标签，格式：标签：XXX|XXX|XXX`}
-      ]
-    }];
-
-    const resp=await fetch(`${BACKEND}/api/analyze-body`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages, height:h, weight:w, chest, waist, hip})
-    });
-
-    let analysisText='';
-    if(resp.ok){
-      const d=await resp.json();
-      analysisText=d.analysis||'';
-    } else {
-      // 后端不可用时提示用户
-      throw new Error('体型分析服务暂时不可用');
-    }
-
-    // 解析标签
-    const tagMatch=analysisText.match(/标签[：:]\s*(.+)/);
-    const tags=tagMatch?tagMatch[1].split('|').map(t=>t.trim()).filter(Boolean):[];
-    const mainText=analysisText.replace(/标签[：:].*$/,'').trim();
-
-    document.getElementById('bodyAnalysisText').textContent=mainText;
-    document.getElementById('bodyAnalysisTags').innerHTML=tags.map(t=>`<span class="analysis-tag">${t}</span>`).join('');
-    document.getElementById('bodyAnalysisResult').classList.add('show');
-
-    // 存储分析结果供推荐使用
-    window._bodyAnalysis=mainText;
-
-    // 更新步骤指示
-    document.getElementById('step1').classList.add('active');
-    document.getElementById('step2').classList.add('active');
-    btn.textContent='✅ 分析完成，可重新分析';
-
-  }catch(e){
-    alert('分析失败：'+e.message);
-    btn.textContent='🔍 AI 分析我的体型';
-  }finally{
-    btn.disabled=false;
-  }
-}
+// analyzeBody 已整合进 getRecommend()
 
 function switchTab(name){
   ['fashn','claude'].forEach((n,i)=>{
@@ -1326,18 +1848,29 @@ async function runClaude(){
 async function init(){
   await loadProducts();
   document.getElementById('app').innerHTML=`
-    <!-- 步骤指示器 -->
-    <div class="step-indicator">
-      <div class="step active" id="step1"><div class="step-num">1</div><span>体型分析</span></div>
-      <div class="step-line"></div>
-      <div class="step" id="step2"><div class="step-num">2</div><span>填写偏好</span></div>
-      <div class="step-line"></div>
-      <div class="step" id="step3"><div class="step-num">3</div><span>获取推荐</span></div>
+    <!-- 进度条 -->
+    <div class="progress-steps">
+      <div class="progress-step active" id="step1">
+        <span class="progress-step-icon">📸</span>
+        <span class="progress-step-label">上传照片</span>
+      </div>
+      <div class="progress-step" id="step2">
+        <span class="progress-step-icon">👤</span>
+        <span class="progress-step-label">身体特征</span>
+      </div>
+      <div class="progress-step" id="step3">
+        <span class="progress-step-icon">🎨</span>
+        <span class="progress-step-label">风格偏好</span>
+      </div>
+      <div class="progress-step" id="step4">
+        <span class="progress-step-icon">✨</span>
+        <span class="progress-step-label">获取推荐</span>
+      </div>
     </div>
 
     <!-- 体型分析卡片 -->
     <div class="body-analysis-section" id="bodyAnalysisCard">
-      <p class="section-title">第一步：上传全身照 · AI 分析体型</p>
+      <p class="section-title"><span data-i18n="bodyCardTitle">上传全身照（可选，提升推荐精准度）</span></p>
       <div class="body-photo-row">
         <div>
           <div class="input-label" style="margin-bottom:8px">正面全身照</div>
@@ -1368,53 +1901,150 @@ async function init(){
           </div>
         </div>
       </div>
-      <p class="section-title" style="margin-bottom:10px">身体三围（可选，帮助精准推荐）</p>
+      <p class="section-title" style="margin-bottom:10px"><span data-i18n="measureTitle">身体三围（可选，帮助精准推荐）</span></p>
       <div class="measure-grid">
-        <div class="measure-item"><label>胸围 (cm)</label><input type="number" id="chest" placeholder="例：90" oninput="updateBodyRules()"></div>
-        <div class="measure-item"><label>腰围 (cm)</label><input type="number" id="waist" placeholder="例：75" oninput="updateBodyRules()"></div>
-        <div class="measure-item"><label>臀围 (cm)</label><input type="number" id="hip" placeholder="例：95" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="chestLabel">胸围 (cm)</label><input type="number" id="chest" placeholder="例：90" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="waistLabel">腰围 (cm)</label><input type="number" id="waist" placeholder="例：75" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="hipLabel">臀围 (cm)</label><input type="number" id="hip" placeholder="例：95" oninput="updateBodyRules()"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-        <div class="measure-item"><label>大腿围 (cm)</label><input type="number" id="thigh" placeholder="例：58" oninput="updateBodyRules()"></div>
-        <div class="measure-item"><label>小腿围 (cm)</label><input type="number" id="calf" placeholder="例：37" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="thighLabel">大腿围 (cm)</label><input type="number" id="thigh" placeholder="例：58" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="calfLabel">小腿围 (cm)</label><input type="number" id="calf" placeholder="例：37" oninput="updateBodyRules()"></div>
       </div>
 
       <div class="body-issues-section">
-        <div class="body-issues-title">身体困扰（可多选，AI 会针对性推荐）</div>
-        <div class="body-issues-group">
-          <div class="body-issues-group-label">上半身</div>
-          <div class="body-issues-grid">
-            <button class="body-issue-btn" data-issue="shoulder_narrow" onclick="toggleIssue(this)">肩膀窄</button>
-            <button class="body-issue-btn" data-issue="shoulder_wide" onclick="toggleIssue(this)">肩膀宽</button>
-            <button class="body-issue-btn" data-issue="belly" onclick="toggleIssue(this)">小肚腩</button>
-            <button class="body-issue-btn" data-issue="chest_flat" onclick="toggleIssue(this)">胸肌不明显</button>
-            <button class="body-issue-btn" data-issue="back_wide" onclick="toggleIssue(this)">背部宽厚</button>
-            <button class="body-issue-btn" data-issue="arm_thick" onclick="toggleIssue(this)">手臂粗</button>
-            <button class="body-issue-btn" data-issue="neck_short" onclick="toggleIssue(this)">脖子短</button>
+        <div class="body-issues-title"><span data-i18n="bodyIssuesTitle">身体特征（分步选择，AI 精准适配）</span></div>
+
+        <!-- 第一步：选部位 -->
+        <div class="body-step">
+          <div class="body-step-label"><span data-i18n="step1Label">第一步：选择你想改善的部位</span></div>
+          <div class="body-part-btns">
+            <button class="body-part-btn" id="partBtn-upper" onclick="togglePart('upper')" data-i18n="upperBtn">👆 上半身</button>
+            <button class="body-part-btn" id="partBtn-lower" onclick="togglePart('lower')" data-i18n="lowerBtn">👇 下半身</button>
+            <button class="body-part-btn" id="partBtn-overall" onclick="togglePart('overall')" data-i18n="overallBtn">📐 整体比例</button>
+            <button class="body-part-btn advantage" id="partBtn-adv" onclick="togglePart('adv')" style="border-color:#1d6b44;color:#1d6b44">✨ 我的优势</button>
           </div>
         </div>
-        <div class="body-issues-group">
-          <div class="body-issues-group-label">下半身</div>
-          <div class="body-issues-grid">
-            <button class="body-issue-btn" data-issue="thigh_thick" onclick="toggleIssue(this)">大腿粗</button>
-            <button class="body-issue-btn" data-issue="calf_thick" onclick="toggleIssue(this)">小腿粗</button>
-            <button class="body-issue-btn" data-issue="leg_short" onclick="toggleIssue(this)">腿短</button>
-            <button class="body-issue-btn" data-issue="o_leg" onclick="toggleIssue(this)">O型腿</button>
-            <button class="body-issue-btn" data-issue="x_leg" onclick="toggleIssue(this)">X型腿</button>
-            <button class="body-issue-btn" data-issue="hip_flat" onclick="toggleIssue(this)">臀部扁平</button>
-            <button class="body-issue-btn" data-issue="hip_big" onclick="toggleIssue(this)">臀部丰满</button>
+
+        <!-- 上半身详细 -->
+        <div class="body-detail-panel" id="panel-upper">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">肩部</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="shoulder_narrow" onclick="toggleIssue(this)">肩膀窄</button>
+              <button class="body-issue-btn" data-issue="shoulder_wide" onclick="toggleIssue(this)">肩膀宽/虎背</button>
+              <button class="body-issue-btn" data-issue="round_shoulder" onclick="toggleIssue(this)">含胸驼背</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">腹部</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="belly" onclick="toggleIssue(this)">小肚腩</button>
+              <button class="body-issue-btn" data-issue="belly_lower" onclick="toggleIssue(this)">小腹突出</button>
+              <button class="body-issue-btn" data-issue="love_handle" onclick="toggleIssue(this)">腰侧赘肉</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">手臂/脖子</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="arm_thick" onclick="toggleIssue(this)">手臂粗</button>
+              <button class="body-issue-btn" data-issue="neck_short" onclick="toggleIssue(this)">脖子短</button>
+              <button class="body-issue-btn" data-issue="neck_thin" onclick="toggleIssue(this)">脖子细长</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">胸背</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="chest_flat" onclick="toggleIssue(this)">胸肌不明显</button>
+              <button class="body-issue-btn" data-issue="back_wide" onclick="toggleIssue(this)">背部宽厚</button>
+              <button class="body-issue-btn" data-issue="chest_wide" onclick="toggleIssue(this)">胸腔宽大</button>
+            </div>
           </div>
         </div>
-        <div class="body-issues-group">
-          <div class="body-issues-group-label">✅ 我的优势（加分项）</div>
-          <div class="body-issues-grid">
-            <button class="body-issue-btn advantage" data-issue="leg_long" onclick="toggleIssue(this)">腿长</button>
-            <button class="body-issue-btn advantage" data-issue="waist_thin" onclick="toggleIssue(this)">腰细</button>
-            <button class="body-issue-btn advantage" data-issue="shoulder_good" onclick="toggleIssue(this)">肩型好</button>
-            <button class="body-issue-btn advantage" data-issue="body_fit" onclick="toggleIssue(this)">身材匀称</button>
-            <button class="body-issue-btn advantage" data-issue="tall" onclick="toggleIssue(this)">个子高</button>
+
+        <!-- 下半身详细 -->
+        <div class="body-detail-panel" id="panel-lower">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">大腿</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="thigh_thick" onclick="toggleIssue(this)">大腿粗</button>
+              <button class="body-issue-btn" data-issue="thigh_inner" onclick="toggleIssue(this)">大腿内侧肉多</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">小腿/腿型</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="calf_thick" onclick="toggleIssue(this)">小腿粗</button>
+              <button class="body-issue-btn" data-issue="o_leg" onclick="toggleIssue(this)">O型腿</button>
+              <button class="body-issue-btn" data-issue="x_leg" onclick="toggleIssue(this)">X型腿</button>
+              <button class="body-issue-btn" data-issue="knee_out" onclick="toggleIssue(this)">膝盖外扩</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">臀部</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="hip_flat" onclick="toggleIssue(this)">臀部扁平</button>
+              <button class="body-issue-btn" data-issue="hip_big" onclick="toggleIssue(this)">臀部丰满</button>
+              <button class="body-issue-btn" data-issue="hip_wide" onclick="toggleIssue(this)">胯部较宽</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">脚踝/脚</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="ankle_thick" onclick="toggleIssue(this)">脚踝粗</button>
+              <button class="body-issue-btn" data-issue="foot_big" onclick="toggleIssue(this)">脚偏大</button>
+            </div>
           </div>
         </div>
+
+        <!-- 整体比例详细 -->
+        <div class="body-detail-panel" id="panel-overall">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">腿部比例</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="leg_short" onclick="toggleIssue(this)">腿短</button>
+              <button class="body-issue-btn" data-issue="upper_long" onclick="toggleIssue(this)">上身长下身短</button>
+              <button class="body-issue-btn" data-issue="lower_long" onclick="toggleIssue(this)">下身长上身短</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">头身比例</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="head_big" onclick="toggleIssue(this)">头偏大</button>
+              <button class="body-issue-btn" data-issue="face_big" onclick="toggleIssue(this)">脸偏大</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">整体体型</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="skinny_fat" onclick="toggleIssue(this)">泡芙体型（外瘦内胖）</button>
+              <button class="body-issue-btn" data-issue="top_heavy" onclick="toggleIssue(this)">上重下轻</button>
+              <button class="body-issue-btn" data-issue="bottom_heavy" onclick="toggleIssue(this)">下重上轻（梨形）</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 优势详细 -->
+        <div class="body-detail-panel" id="panel-adv">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">身材优势</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn advantage" data-issue="leg_long" onclick="toggleIssue(this)">腿长</button>
+              <button class="body-issue-btn advantage" data-issue="waist_thin" onclick="toggleIssue(this)">腰细</button>
+              <button class="body-issue-btn advantage" data-issue="shoulder_good" onclick="toggleIssue(this)">肩型好</button>
+              <button class="body-issue-btn advantage" data-issue="body_fit" onclick="toggleIssue(this)">身材匀称</button>
+              <button class="body-issue-btn advantage" data-issue="tall" onclick="toggleIssue(this)">个子高</button>
+              <button class="body-issue-btn advantage" data-issue="abs" onclick="toggleIssue(this)">腹肌明显</button>
+              <button class="body-issue-btn advantage" data-issue="arm_muscle" onclick="toggleIssue(this)">手臂有肌肉感</button>
+              <button class="body-issue-btn advantage" data-issue="face_small" onclick="toggleIssue(this)">脸小</button>
+              <button class="body-issue-btn advantage" data-issue="skin_white" onclick="toggleIssue(this)">肤色白</button>
+              <button class="body-issue-btn advantage" data-issue="hip_ratio" onclick="toggleIssue(this)">臀腰比好</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 已选标签汇总 -->
+        <div class="selected-summary" id="selectedSummary"></div>
       </div>
 
       <div class="body-rules-preview" id="bodyRulesPreview"></div>
@@ -1423,32 +2053,32 @@ async function init(){
         <div class="analysis-result-text" id="bodyAnalysisText"></div>
         <div class="analysis-tags" id="bodyAnalysisTags"></div>
       </div>
-      <button class="analyze-btn" id="analyzeBtn" onclick="analyzeBody()">🔍 AI 分析我的体型</button>
-      <div style="font-size:11px;color:var(--muted);text-align:center">照片仅用于本地分析，不会上传或保存</div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">📸 照片仅在本地使用，不会上传或保存</div>
     </div>
 
     <div class="card form-card">
-      <p class="section-title">第二步：基本信息与偏好</p>
+      <p class="section-title"><span data-i18n="formTitle">基本信息与偏好</span></p>
       <div class="fields">
-        <div class="field"><label>身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
-        <div class="field"><label>体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
-        <div class="field"><label>肤色</label><select id="skin"><option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option></select></div>
-        <div class="field"><label>脸型</label><select id="face"><option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option></select></div>
-        <div class="field"><label>场景</label><select id="scene"><option>日常</option><option>上课</option><option selected>约会</option><option>通勤</option><option>运动</option><option>正式场合</option><option>周末出行</option><option>聚会</option></select></div>
-        <div class="field"><label>风格偏好</label><select id="style"><option>简单百搭</option><option selected>干净清爽</option><option>韩系</option><option>日系</option><option>美式休闲</option><option>极简</option><option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option></select></div>
+        <div class="field"><label data-i18n="ageLabel">年龄</label><select id="age"><option>18-22岁</option><option selected>23-28岁</option><option>29-35岁</option><option>36-45岁</option><option>45岁以上</option></select></div>
+        <div class="field"><label data-i18n="heightLabel">身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
+        <div class="field"><label data-i18n="weightLabel">体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
+        <div class="field"><label data-i18n="skinLabel">肤色</label><select id="skin"><option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option></select></div>
+        <div class="field"><label data-i18n="faceLabel">脸型</label><select id="face"><option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option></select></div>
+        <div class="field"><label data-i18n="sceneLabel">场景</label><select id="scene"><option>日常</option><option>上课</option><option selected>约会</option><option>通勤</option><option>运动</option><option>正式场合</option><option>周末出行</option><option>聚会</option></select></div>
+        <div class="field"><label data-i18n="styleLabel">风格偏好</label><select id="style"><option>简单百搭</option><option selected>干净清爽</option><option>韩系</option><option>日系</option><option>美式休闲</option><option>极简</option><option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option></select></div>
       </div>
       <div class="fields-2">
-        <div class="field"><label>不喜欢的款式（可选）</label><input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…"></div>
-        <div class="field"><label>已有的主要单品（可选）</label><input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…"></div>
+        <div class="field"><label data-i18n="dislikeLabel">不喜欢的款式（可选）</label><input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…" data-i18n="dislikePlaceholder"></div>
+        <div class="field"><label data-i18n="existingLabel">已有的主要单品（可选）</label><input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…" data-i18n="existingPlaceholder"></div>
       </div>
       <div class="field" style="margin-bottom:20px">
-        <label>补充描述（可选）</label>
-        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲…"></textarea>
+        <label data-i18n="descLabel">补充描述（可选）</label>
+        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲…" data-i18n="descPlaceholder"></textarea>
       </div>
       <div class="budget-section">
-        <p class="section-title">分类预算设置</p>
+        <p class="section-title"><span data-i18n="budgetTitle">分类预算设置</span></p>
         <div class="budget-total-bar">
-          <span class="budget-total-label">套装预计总价</span>
+          <span class="budget-total-label"><span data-i18n="budgetTotal" class="budget-total-label">套装预计总价</span>
           <span class="budget-total-value" id="totalDisplay">CA$230</span>
         </div>
         <div class="budget-sliders">
@@ -1469,37 +2099,24 @@ async function init(){
           </div>
         </div>
       </div>
-      <button class="btn" id="mainBtn" onclick="getRecommend()">🤖 AI 个性化穿搭推荐</button>
+      <button class="unified-btn" id="mainBtn" onclick="getRecommend()">
+        🤖 AI 分析体型 + 个性化推荐
+        <span class="unified-btn-sub">自动分析体型特征，推荐最适合你的穿搭</span>
+      </button>
     </div>
     <div class="ai-status" id="aiStatus">
       <div class="ai-status-icon">🤖</div>
-      <div class="ai-status-text">AI 正在从商品库中为你挑选最佳搭配…</div>
+      <div class="ai-status-text" id="aiStatusText">AI 正在分析你的体型…</div>
       <div class="ai-thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
     </div>
     <div class="result" id="result"></div>`;
   updateTotal();
+  // 表单渲染完后应用语言
+  setTimeout(applyLang, 100);
 }
 
 init();
-</script>
 
-<!-- 拍照 Modal -->
-<div class="camera-modal" id="cameraModal">
-  <div class="camera-box">
-    <div class="camera-title">
-      <span>📷 拍照</span>
-      <span class="camera-close" onclick="closeCamera()">✕</span>
-    </div>
-    <video id="cameraVideo" autoplay playsinline></video>
-    <canvas id="cameraCanvas" style="display:none"></canvas>
-    <div class="camera-actions">
-      <button class="camera-cancel" onclick="closeCamera()">取消</button>
-      <button class="camera-snap" onclick="doSnap()">📸 拍摄</button>
-    </div>
-  </div>
-</div>
-
-<script>
 let cameraStream = null;
 
 async function openCamera(){
@@ -1569,5 +2186,23 @@ function doSnap(){
   }, 'image/jpeg', 0.92);
 }
 </script>
+
+
+<!-- 拍照 Modal -->
+<div class="camera-modal" id="cameraModal">
+  <div class="camera-box">
+    <div class="camera-title">
+      <span>📷 拍照</span>
+      <span class="camera-close" onclick="closeCamera()">✕</span>
+    </div>
+    <video id="cameraVideo" autoplay playsinline></video>
+    <canvas id="cameraCanvas" style="display:none"></canvas>
+    <div class="camera-actions">
+      <button class="camera-cancel" onclick="closeCamera()">取消</button>
+      <button class="camera-snap" onclick="doSnap()">📸 拍摄</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
