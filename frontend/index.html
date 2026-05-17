@@ -522,6 +522,27 @@ function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
 
 
 
+const BACKEND = 'https://huichuan-production.up.railway.app';
+let DB = {tops:[], bottoms:[], shoes:[]};
+let dbStats = {total:0};
+
+async function loadProducts(){
+  try{
+    const [r1,r2,r3,rs] = await Promise.all([
+      fetch(`${BACKEND}/api/products?limit=200&category=top`),
+      fetch(`${BACKEND}/api/products?limit=200&category=bottom`),
+      fetch(`${BACKEND}/api/products?limit=200&category=shoes`),
+      fetch(`${BACKEND}/api/products/stats`),
+    ]);
+    const [d1,d2,d3,stats] = await Promise.all([r1.json(),r2.json(),r3.json(),rs.json()]);
+    DB.tops    = (d1.products||[]).map(normalizeProduct);
+    DB.bottoms = (d2.products||[]).map(normalizeProduct);
+    DB.shoes   = (d3.products||[]).map(normalizeProduct);
+    dbStats    = stats;
+    console.log(`✅ 商品：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
+  }catch(e){ console.error('加载商品失败',e); }
+}
+
 function normalizeProduct(p){
   return {
     id:p.id, name:p.name, brand:p.brand||'Amazon', price:p.price,
