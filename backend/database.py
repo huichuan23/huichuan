@@ -53,6 +53,18 @@ class ScrapeLog(Base):
     finished_at = Column(DateTime)
 
 
+class Feedback(Base):
+    __tablename__ = "feedback"
+
+    id            = Column(Integer, primary_key=True, autoincrement=True)
+    feedback_type = Column(String, default="general")
+    message       = Column(Text, nullable=False)
+    contact       = Column(String)
+    page          = Column(String)
+    user_agent    = Column(Text)
+    created_at    = Column(DateTime, default=datetime.utcnow)
+
+
 def get_db():
     db = SessionLocal()
     try:

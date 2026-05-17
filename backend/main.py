@@ -5,6 +5,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from routers.recommend import router as recommend_router
 from routers.products import router as products_router
+from routers.feedback import router as feedback_router
 from database import init_db
 
 app = FastAPI(title="会穿 · AI 男性穿搭助手 API", version="2.1.0")
@@ -21,6 +22,7 @@ def startup():
 
 app.include_router(recommend_router, prefix="/api")
 app.include_router(products_router, prefix="/api")
+app.include_router(feedback_router, prefix="/api")
 
 @app.get("/")
 def root():
