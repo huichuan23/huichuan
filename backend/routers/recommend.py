@@ -15,6 +15,7 @@ DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 class RecommendRequest(BaseModel):
     height: int
     weight: int
+    language: str = "zh"
     skin: str = "普通肤色"
     face: str = "普通脸型"
     scene: str = "日常"
@@ -30,6 +31,7 @@ class RecommendRequest(BaseModel):
 
 class AnalyzeBodyRequest(BaseModel):
     messages: list
+    language: str = "zh"
     height: Optional[str] = None
     weight: Optional[str] = None
     chest: Optional[str] = None
@@ -174,10 +176,15 @@ async def analyze_body(req: AnalyzeBodyRequest):
     for k,v in [("胸围",req.chest),("腰围",req.waist),("臀围",req.hip),("大腿围",req.thigh),("小腿围",req.calf)]:
         if v: vals.append(f"{k}{v}cm")
     measure_text = "、".join(vals) if vals else "未提供"
+    language_rule = (
+        "Write the whole answer in natural English. End with: Tags: tag1|tag2|tag3"
+        if req.language == "en"
+        else "请使用简体中文。最后一行：标签：XXX|XXX|XXX"
+    )
     prompt = f"""你是专业男性体型分析师。根据用户信息给出体型分析。
 用户：身高{req.height or '未知'}cm，体重{req.weight or '未知'}kg，数据：{measure_text}
 请简洁分析：1.体型特征 2.适合版型 3.避免款式 4.颜色建议 5.三个标签
-最后一行：标签：XXX|XXX|XXX"""
+{language_rule}"""
     async with httpx.AsyncClient(timeout=30) as client:
         resp = await client.post("https://api.deepseek.com/chat/completions",
             headers={"Authorization":f"Bearer {api_key}","Content-Type":"application/json"},
@@ -207,7 +214,17 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
     body_prompt  = build_body_prompt(body_issues,measurements,req.body_analysis or "",req.skin,req.face)
     style_prompt = build_style_prompt(req.style, req.scene)
 
+    output_language = "English" if req.language == "en" else "Chinese"
+    language_rule = (
+        "Return every user-facing JSON value in natural English. "
+        "Use safety values High, Medium, or Low. Do not use Chinese in summary, tips, outfit names, safety, or reason."
+        if req.language == "en"
+        else "所有面向用户的 JSON 文案都使用简体中文。safety 使用 高、中、低。"
+    )
+
     prompt = f"""你是专业男性穿搭顾问，必须严格遵守体型规则，从候选商品中选出3套穿搭。
+输出语言：{output_language}
+语言规则：{language_rule}
 
 【用户信息】
 - 身高{req.height}cm，体重{req.weight}kg，体型{body['label']}（BMI {body['bmi']}）
@@ -230,7 +247,7 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 【候选鞋子】
 {fmt(shoes)}
 
-规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型
+规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言
 
 返回JSON：{{"summary":"体型风格总结","tips":["体型贴士1","贴士2","贴士3"],"outfits":[{{"id":1,"name":"...","safety":"高","reason":"具体说明适合体型原因","top_id":"...","bottom_id":"...","shoes_id":"..."}}]}}"""
 
@@ -254,5 +271,14 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
         outfit["bottom"] = find_product(outfit.get("bottom_id"))
         outfit["shoes"]  = find_product(outfit.get("shoes_id"))
 
-    result["body"] = body
+    if req.language == "en":
+        body_labels_en = {
+            "偏瘦": "Slim",
+            "标准": "Standard",
+            "略微偏胖": "Slightly Stocky",
+            "偏胖": "Stocky",
+        }
+        result["body"] = {**body, "label": body_labels_en.get(body["label"], body["label"])}
+    else:
+        result["body"] = body
     return result
