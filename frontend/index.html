@@ -233,8 +233,8 @@
   .rule-item{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;}
   .rule-icon{flex-shrink:0;}
   /* ── Tinder 滑卡 ── */
-  .swipe-container{position:relative;width:100%;min-height:520px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
-  .swipe-card{position:absolute;width:100%;max-width:420px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
+  .swipe-container{position:relative;width:100%;min-height:640px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
+  .swipe-card{position:absolute;width:100%;max-width:460px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
   .swipe-card.dragging{cursor:grabbing;box-shadow:0 16px 48px rgba(0,0,0,.18);transition:none;}
   .swipe-card.fly-left{animation:flyLeft .35s ease forwards;}
   .swipe-card.fly-right{animation:flyRight .35s ease forwards;}
@@ -246,13 +246,24 @@
   .card-outfit-img{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px;}
   .card-outfit-img .ci{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center;}
   .card-outfit-img .ci img{width:100%;height:100%;object-fit:contain;}
+  .outfit-board{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"top outerwear" "bottom shoes";gap:10px;padding:16px;}
+  .outfit-board.no-outerwear{grid-template-areas:"top bottom" "shoes shoes";}
+  .ob-tile{position:relative;min-height:148px;border:1px solid var(--border);border-radius:14px;background:#f7f6f3;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .ob-tile.ob-top{grid-area:top;}
+  .ob-tile.ob-bottom{grid-area:bottom;}
+  .ob-tile.ob-shoes{grid-area:shoes;}
+  .ob-tile.ob-outerwear{grid-area:outerwear;background:#f2f5f7;}
+  .ob-tile img{width:100%;height:100%;object-fit:contain;padding:20px 12px 28px;}
+  .ob-label{position:absolute;left:8px;top:8px;background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:999px;padding:3px 8px;font-size:10px;font-weight:600;line-height:1;}
+  .ob-price{position:absolute;right:8px;bottom:8px;background:var(--ink);color:#fff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:600;line-height:1;}
   .card-outfit-info{padding:0 16px 12px;}
   .card-outfit-name{font-size:15px;font-weight:600;margin-bottom:4px;}
   .card-outfit-reason{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
-  .card-outfit-prices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .card-outfit-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
   .card-price-tag{background:var(--tag-bg);border-radius:6px;padding:3px 8px;font-size:12px;font-weight:500;}
   .card-outfit-total{font-size:16px;font-weight:700;font-family:'Noto Serif SC',serif;}
   .card-outfit-total.over{color:#c0392b;}
+  .card-buy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:10px 16px 16px;}
   .swipe-actions{display:flex;gap:16px;justify-content:center;margin-bottom:20px;}
   .swipe-btn{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:var(--card);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
   .swipe-btn:hover{transform:scale(1.12);}
@@ -280,6 +291,10 @@
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
     .body-photo-row,.measure-grid{grid-template-columns:1fr;}
     .swipe-card{max-width:100%;}
+    .swipe-container{min-height:620px;}
+    .outfit-board{grid-template-columns:1fr 1fr;gap:8px;padding:12px;}
+    .ob-tile{min-height:128px;}
+    .ob-tile img{padding:18px 8px 26px;}
     .swipe-btn{width:52px;height:52px;font-size:20px;}
     .liked-grid{grid-template-columns:repeat(2,1fr);}
     .feedback-grid{grid-template-columns:1fr;}
@@ -1997,7 +2012,13 @@ function buildCard(item, idx, total){
   const {outfit} = item;
   const products = getOutfitProducts(item);
   const over = item.total > (window._budgetTotal||999);
-  const gridCols = Math.min(products.length, 4);
+  const hasOuterwear = products.some(x=>x.key==='outerwear');
+  const tile = ({key,product}) => `
+    <a class="ob-tile ob-${key}" href="${product.buy}" target="_blank" title="${product.name}">
+      <span class="ob-label">${CAT[key]?.icon||''} ${ui(key)}</span>
+      <img src="${product.img}" onerror="this.src=''" alt="${ui(key)}">
+      <span class="ob-price">CA$${product.price}</span>
+    </a>`;
   return `
   <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
     <div class="swipe-stamp like">${ui('like')}</div>
@@ -2009,8 +2030,8 @@ function buildCard(item, idx, total){
       </div>
       <span class="safe-badge">${ui('safety')} ${outfit.safety||ui('high')}</span>
     </div>
-    <div class="card-outfit-img" style="grid-template-columns:repeat(${gridCols},1fr)">
-      ${products.map(({key,product})=>`<div class="ci"><img src="${product.img}" onerror="this.src=''" alt="${ui(key)}"></div>`).join('')}
+    <div class="outfit-board ${hasOuterwear?'':'no-outerwear'}">
+      ${products.map(tile).join('')}
     </div>
     <div class="card-outfit-info">
       <div class="card-outfit-reason">💡 ${outfit.reason||''}</div>
@@ -2019,7 +2040,7 @@ function buildCard(item, idx, total){
       </div>
       <div class="card-outfit-total${over?' over':''}">${ui('total')} CA$${item.total.toFixed(2)}${over?ui('overBudget'):''}</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:6px;padding:10px 16px 14px;">
+    <div class="card-buy-grid">
       ${products.map(({key,product})=>`<a href="${product.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui(key)} ↗</a>`).join('')}
     </div>
   </div>`;
