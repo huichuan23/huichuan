@@ -182,8 +182,6 @@
   .body-model-card{border:1px solid var(--border);border-radius:16px;background:#fbfaf7;padding:14px;min-height:360px;display:flex;align-items:center;justify-content:center;}
   .body-outline{width:210px;height:330px;overflow:visible;}
   .body-outline path,.body-outline ellipse{fill:none;stroke:#171717;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;}
-  .body-outline .guide{stroke:#d7d2ca;stroke-width:1.2;stroke-dasharray:4 5;}
-  .body-outline .center-line{stroke:#d7d2ca;stroke-width:1;stroke-dasharray:3 6;}
   .body-slider-stack{display:grid;gap:10px;}
   .body-slider-row{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
   .body-slider-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;}
@@ -2051,6 +2049,9 @@ function syncBodySlider(key, refreshRules=true){
 function updateBodyModel(){
   const outline = document.getElementById('bodyOutlinePath');
   if(!outline) return;
+  const leftArm = document.getElementById('bodyLeftArmPath');
+  const rightArm = document.getElementById('bodyRightArmPath');
+  const innerLeg = document.getElementById('bodyInnerLegPath');
   const chest = clampBodyValue('chest', document.getElementById('chest')?.value);
   const waist = clampBodyValue('waist', document.getElementById('waist')?.value);
   const hip = clampBodyValue('hip', document.getElementById('hip')?.value);
@@ -2058,43 +2059,72 @@ function updateBodyModel(){
   const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
   const shape = collectBodyShape();
   const cx = 105;
-  const chestW = 34 + (chest - 72) * .36;
-  const waistW = 24 + (waist - 60) * .32;
-  const hipW = 31 + (hip - 75) * .42;
-  const thighW = 13 + (thigh - 42) * .34;
-  const calfW = 9 + (calf - 28) * .33;
+  const shoulderW = 36 + shape.shoulder * .42;
+  const chestW = 30 + (chest - 72) * .30;
+  const waistW = 20 + (waist - 60) * .25;
+  const hipW = 28 + (hip - 75) * .34;
+  const thighW = 12 + (thigh - 42) * .27;
+  const calfW = 8 + (calf - 28) * .26;
   const ankleW = Math.max(7, calfW * .62);
   const footW = Math.max(15, calfW * 1.25);
   const legShift = (shape.legRatio - 55) * .42;
-  const hipY = 202 - legShift * .35;
-  const kneeY = 270 - legShift * .15;
+  const shoulderY = 78;
+  const chestY = 118;
+  const waistY = 156;
+  const hipY = 202 - legShift * .25;
+  const crotchY = 226 - legShift * .12;
+  const kneeY = 282 + legShift * .25;
   const ankleY = 350 + legShift;
   const footY = 366 + legShift;
+  const neckW = 13;
+  const shoulderL = cx - shoulderW;
+  const shoulderR = cx + shoulderW;
   const path = [
-    `M ${cx-15} 58`,
-    `C ${cx-28} 64 ${cx-chestW} 75 ${cx-chestW-5} 96`,
-    `C ${cx-chestW-18} 124 ${cx-chestW-24} 154 ${cx-chestW-29} 174`,
-    `C ${cx-chestW-30} 183 ${cx-chestW-22} 187 ${cx-chestW-17} 180`,
-    `C ${cx-chestW-9} 154 ${cx-chestW+2} 126 ${cx-waistW} 151`,
-    `C ${cx-waistW-4} 168 ${cx-hipW} 182 ${cx-hipW} ${hipY}`,
-    `C ${cx-hipW+2} ${hipY+24} ${cx-thighW-9} 244 ${cx-thighW-8} ${kneeY}`,
-    `C ${cx-thighW-7} ${kneeY+32} ${cx-calfW-5} 326 ${cx-ankleW} ${ankleY}`,
-    `C ${cx-footW} ${ankleY+4} ${cx-footW-4} ${footY-2} ${cx-ankleW+3} ${footY}`,
-    `C ${cx-5} ${footY} ${cx-7} ${ankleY+4} ${cx-5} 333`,
-    `C ${cx-4} 300 ${cx-7} 260 ${cx} ${hipY+22}`,
-    `C ${cx+7} 260 ${cx+4} 300 ${cx+5} 333`,
-    `C ${cx+7} ${ankleY+4} ${cx+5} ${footY} ${cx+ankleW-3} ${footY}`,
-    `C ${cx+footW+4} ${footY-2} ${cx+footW} ${ankleY+4} ${cx+ankleW} ${ankleY}`,
-    `C ${cx+calfW+5} 326 ${cx+thighW+7} ${kneeY+32} ${cx+thighW+8} ${kneeY}`,
-    `C ${cx+thighW+9} 244 ${cx+hipW-2} ${hipY+24} ${cx+hipW} ${hipY}`,
-    `C ${cx+hipW} 182 ${cx+waistW+4} 168 ${cx+waistW} 151`,
-    `C ${cx+chestW-2} 126 ${cx+chestW+9} 154 ${cx+chestW+17} 180`,
-    `C ${cx+chestW+22} 187 ${cx+chestW+30} 183 ${cx+chestW+29} 174`,
-    `C ${cx+chestW+24} 154 ${cx+chestW+18} 124 ${cx+chestW+5} 96`,
-    `C ${cx+chestW} 75 ${cx+28} 64 ${cx+15} 58`,
-    `C ${cx+10} 69 ${cx-10} 69 ${cx-15} 58 Z`,
+    `M ${cx-neckW} 58`,
+    `C ${cx-24} 64 ${shoulderL+16} ${shoulderY-4} ${shoulderL} ${shoulderY}`,
+    `C ${cx-chestW-8} ${chestY} ${cx-waistW-3} ${waistY-8} ${cx-waistW} ${waistY}`,
+    `C ${cx-waistW-6} ${waistY+22} ${cx-hipW} ${hipY-14} ${cx-hipW} ${hipY}`,
+    `C ${cx-hipW} ${hipY+18} ${cx-thighW-10} ${crotchY+22} ${cx-thighW-8} ${kneeY}`,
+    `C ${cx-thighW-5} ${kneeY+30} ${cx-calfW-4} ${ankleY-20} ${cx-ankleW} ${ankleY}`,
+    `C ${cx-footW} ${ankleY+2} ${cx-footW-4} ${footY-3} ${cx-ankleW+3} ${footY}`,
+    `C ${cx-6} ${footY+1} ${cx-7} ${ankleY+2} ${cx-5} ${ankleY-4}`,
+    `C ${cx-4} ${kneeY+30} ${cx-6} ${crotchY+12} ${cx} ${crotchY}`,
+    `C ${cx+6} ${crotchY+12} ${cx+4} ${kneeY+30} ${cx+5} ${ankleY-4}`,
+    `C ${cx+7} ${ankleY+2} ${cx+6} ${footY+1} ${cx+ankleW-3} ${footY}`,
+    `C ${cx+footW+4} ${footY-3} ${cx+footW} ${ankleY+2} ${cx+ankleW} ${ankleY}`,
+    `C ${cx+calfW+4} ${ankleY-20} ${cx+thighW+5} ${kneeY+30} ${cx+thighW+8} ${kneeY}`,
+    `C ${cx+thighW+10} ${crotchY+22} ${cx+hipW} ${hipY+18} ${cx+hipW} ${hipY}`,
+    `C ${cx+hipW} ${hipY-14} ${cx+waistW+6} ${waistY+22} ${cx+waistW} ${waistY}`,
+    `C ${cx+waistW+3} ${waistY-8} ${cx+chestW+8} ${chestY} ${shoulderR} ${shoulderY}`,
+    `C ${shoulderR-16} ${shoulderY-4} ${cx+24} 64 ${cx+neckW} 58`,
   ].join(' ');
   outline.setAttribute('d', path);
+  if(leftArm){
+    leftArm.setAttribute('d', [
+      `M ${shoulderL} ${shoulderY}`,
+      `C ${shoulderL-12} ${shoulderY+22} ${shoulderL-22} 124 ${shoulderL-30} 166`,
+      `C ${shoulderL-34} 190 ${shoulderL-28} 207 ${shoulderL-20} 214`,
+      `C ${shoulderL-12} 207 ${shoulderL-13} 190 ${shoulderL-9} 170`,
+      `C ${shoulderL-3} 136 ${shoulderL+10} 108 ${cx-chestW-3} ${chestY}`
+    ].join(' '));
+  }
+  if(rightArm){
+    rightArm.setAttribute('d', [
+      `M ${shoulderR} ${shoulderY}`,
+      `C ${shoulderR+12} ${shoulderY+22} ${shoulderR+22} 124 ${shoulderR+30} 166`,
+      `C ${shoulderR+34} 190 ${shoulderR+28} 207 ${shoulderR+20} 214`,
+      `C ${shoulderR+12} 207 ${shoulderR+13} 190 ${shoulderR+9} 170`,
+      `C ${shoulderR+3} 136 ${shoulderR-10} 108 ${cx+chestW+3} ${chestY}`
+    ].join(' '));
+  }
+  if(innerLeg){
+    innerLeg.setAttribute('d', [
+      `M ${cx} ${crotchY}`,
+      `C ${cx-5} ${crotchY+28} ${cx-5} ${kneeY+14} ${cx-5} ${ankleY-8}`,
+      `M ${cx} ${crotchY}`,
+      `C ${cx+5} ${crotchY+28} ${cx+5} ${kneeY+14} ${cx+5} ${ankleY-8}`
+    ].join(' '));
+  }
   ['chest','waist','hip','thigh','calf'].forEach(k=>{
     const value = document.getElementById(`${k}Value`);
     const input = document.getElementById(k);
@@ -2802,9 +2832,11 @@ async function init(){
       <div class="body-model-panel">
         <div class="body-model-card">
           <svg class="body-outline" viewBox="0 0 210 370" aria-label="body outline preview">
-            <line class="center-line" x1="105" y1="58" x2="105" y2="366"></line>
             <ellipse id="bodyHead" cx="105" cy="32" rx="20" ry="25"></ellipse>
             <path id="bodyOutlinePath"></path>
+            <path id="bodyLeftArmPath"></path>
+            <path id="bodyRightArmPath"></path>
+            <path id="bodyInnerLegPath"></path>
           </svg>
         </div>
         <div class="body-slider-stack">
