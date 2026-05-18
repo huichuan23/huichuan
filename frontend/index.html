@@ -2,14 +2,16 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>会穿 · AI 男性穿搭助手</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f0;--card:#fff;--ink:#1a1a1a;--muted:#6b6b6b;--border:rgba(0,0,0,0.09);--safe-bg:#e8f5ee;--safe-c:#1d6b44;--tag-bg:#f0ede8;--accent:#c8a96e;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
-  header{padding:32px 24px 20px;max-width:980px;margin:0 auto;display:flex;align-items:baseline;gap:12px;}
+  header{padding:24px 24px 16px;max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .lang-btn{margin-left:auto;padding:5px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink);font-family:inherit;transition:all .15s;flex-shrink:0;}
+  .lang-btn:hover{border-color:var(--ink);}
   .logo{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;}
   .logo-sub{font-size:13px;color:var(--muted);}
   .wrap{max-width:980px;margin:0 auto;padding:0 24px 60px;}
@@ -19,23 +21,23 @@
   .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;}
   .fields-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
   .fields-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
-  .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:500;letter-spacing:.3px;}
-  .field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s;height:40px;}
+  .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:500;letter-spacing:.3px;line-height:1.35;}
+  .field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;transition:border-color .15s;min-height:40px;}
   .field textarea{height:72px;padding:10px 12px;resize:none;line-height:1.5;}
   .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);}
   .budget-section{margin-bottom:20px;}
-  .budget-total-bar{display:flex;align-items:center;justify-content:space-between;background:var(--tag-bg);border-radius:10px;padding:10px 16px;margin-bottom:14px;}
-  .budget-total-label{font-size:12px;color:var(--muted);}
+  .budget-total-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--tag-bg);border-radius:10px;padding:10px 16px;margin-bottom:14px;}
+  .budget-total-label{font-size:12px;color:var(--muted);line-height:1.35;}
   .budget-total-value{font-size:18px;font-weight:700;font-family:'Noto Serif SC',serif;}
-  .budget-sliders{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .budget-sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
   .budget-slider-item{background:var(--bg);border-radius:12px;padding:12px;}
-  .slider-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-  .slider-label{font-size:11px;color:var(--muted);font-weight:500;}
+  .slider-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .slider-label{font-size:11px;color:var(--muted);font-weight:500;line-height:1.35;}
   .slider-value{font-size:14px;font-weight:700;font-family:'Noto Serif SC',serif;}
   input[type=range]{width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;-webkit-appearance:none;cursor:pointer;}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--ink);cursor:pointer;}
   .slider-range{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;}
-  .btn{width:100%;height:48px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;letter-spacing:1px;transition:opacity .15s;}
+  .btn{width:100%;min-height:48px;padding:10px 16px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;letter-spacing:1px;transition:opacity .15s;line-height:1.35;white-space:normal;}
   .btn:hover{opacity:.85;}.btn:disabled{opacity:.4;cursor:not-allowed;}
   .ai-status{display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-top:20px;text-align:center;}
   .ai-status.show{display:block;}
@@ -85,7 +87,7 @@
   .tryon-title{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:700;margin-bottom:8px;}
   .tryon-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
   .api-tabs{display:flex;gap:8px;margin-bottom:20px;}
-  .api-tab{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;background:var(--bg);}
+  .api-tab{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;background:var(--bg);line-height:1.35;}
   .api-tab.active{border-color:var(--ink);background:var(--ink);color:#fff;}
   .api-panel{display:none;}.api-panel.active{display:block;}
   .note-box{font-size:12px;color:var(--muted);background:var(--tag-bg);border-radius:8px;padding:10px 14px;margin-bottom:18px;line-height:1.7;}
@@ -104,9 +106,23 @@
   .upload-hint{font-size:11px;color:var(--muted);}
   .upload-preview{width:100%;height:140px;object-fit:contain;border-radius:8px;display:none;}
   .upload-input{display:none;}
-  .auto-fill-btn{width:100%;height:38px;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:14px;transition:background .15s;}
+  .photo-btns{display:flex;gap:8px;margin-top:8px;}
+  .photo-btn{flex:1;min-height:36px;padding:8px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;background:var(--bg);color:var(--ink);transition:background .15s;line-height:1.3;white-space:normal;}
+  .photo-btn:hover{background:#ede9e3;}
+  .photo-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .photo-btn.primary:hover{opacity:.85;}
+  .camera-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;}
+  .camera-modal.show{display:flex;}
+  .camera-box{background:var(--card);border-radius:16px;padding:20px;width:90%;max-width:480px;}
+  .camera-title{font-size:15px;font-weight:500;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+  .camera-close{cursor:pointer;font-size:20px;color:var(--muted);}
+  #cameraVideo{width:100%;border-radius:10px;background:#000;}
+  .camera-actions{display:flex;gap:10px;margin-top:12px;}
+  .camera-snap{flex:1;min-height:44px;padding:9px 14px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;line-height:1.3;white-space:normal;}
+  .camera-cancel{min-height:44px;padding:9px 20px;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;cursor:pointer;line-height:1.3;white-space:normal;}
+  .auto-fill-btn{width:100%;min-height:38px;padding:9px 12px;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:14px;transition:background .15s;line-height:1.35;white-space:normal;}
   .auto-fill-btn:hover{background:#ede9e3;}
-  .btn-tryon{width:100%;height:48px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;}
+  .btn-tryon{width:100%;min-height:48px;padding:10px 16px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;line-height:1.35;white-space:normal;}
   .btn-tryon:hover{opacity:.85;}.btn-tryon:disabled{opacity:.4;cursor:not-allowed;}
   .progress-wrap{display:none;margin-top:18px;}
   .progress-wrap.show{display:block;}
@@ -125,6 +141,136 @@
   .ai-text{font-size:14px;line-height:1.9;white-space:pre-wrap;}
   .db-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--safe-bg);color:var(--safe-c);border-radius:8px;font-size:12px;margin-bottom:16px;}
   .error-box{background:#fff0f0;border:1px solid #ffcccc;border-radius:10px;padding:14px 18px;font-size:13px;color:#c0392b;margin-top:16px;}
+  .feedback-card{padding:24px 28px;margin-top:20px;}
+  .feedback-title{font-size:18px;font-weight:600;margin-bottom:6px;}
+  .feedback-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+  .feedback-grid{display:grid;grid-template-columns:180px 1fr;gap:12px;margin-bottom:12px;}
+  .feedback-card select,.feedback-card input,.feedback-card textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:14px;outline:none;}
+  .feedback-card select,.feedback-card input{height:42px;padding:0 12px;}
+  .feedback-card textarea{min-height:96px;padding:12px;resize:vertical;line-height:1.7;}
+  .feedback-card select:focus,.feedback-card input:focus,.feedback-card textarea:focus{border-color:var(--ink);}
+  .feedback-actions{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;}
+  .feedback-btn{min-height:42px;padding:9px 22px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;line-height:1.3;white-space:normal;}
+  .feedback-btn:hover{opacity:.86;}
+  .feedback-btn:disabled{opacity:.45;cursor:not-allowed;}
+  .feedback-status{font-size:12px;color:var(--muted);}
+  .feedback-status.ok{color:var(--safe-c);}
+  .feedback-status.err{color:#c0392b;}
+  .auth-card{padding:18px 22px;margin-bottom:18px;display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:end;}
+  .auth-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .auth-sub{font-size:12px;color:var(--muted);line-height:1.6;}
+  .auth-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .auth-card input{width:100%;height:40px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:13px;padding:0 12px;outline:none;}
+  .auth-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;}
+  .auth-btn{min-height:38px;padding:8px 14px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:13px;cursor:pointer;}
+  .auth-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .auth-status{font-size:12px;color:var(--muted);line-height:1.5;}
+  .auth-status.ok{color:var(--safe-c);}
+  .auth-status.err{color:#c0392b;}
+  /* 体型分析区域 */
+  .body-analysis-section{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:24px 28px;margin-bottom:20px;}
+  .body-photo-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .body-photo-box{border:1.5px dashed var(--border);border-radius:12px;background:var(--bg);min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:border-color .15s;text-align:center;padding:12px;}
+  .body-photo-box:hover{border-color:var(--ink);}
+  .body-photo-box.filled{border-style:solid;border-color:#aaa;}
+  .body-preview{width:100%;max-height:130px;object-fit:contain;border-radius:8px;display:none;}
+  .measure-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .measure-item label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500;line-height:1.35;}
+  .measure-item input{width:100%;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;}
+  .measure-item input:focus{border-color:var(--ink);}
+  .analyze-btn{width:100%;min-height:44px;padding:9px 14px;background:linear-gradient(135deg,#1a1a1a,#444);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;margin-bottom:14px;transition:opacity .15s;line-height:1.35;white-space:normal;}
+  .analyze-btn:hover{opacity:.85;}.analyze-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .analysis-result{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:12px;padding:16px 20px;margin-bottom:16px;display:none;}
+  .analysis-result.show{display:block;}
+  .analysis-result-title{font-size:11px;opacity:.5;letter-spacing:.5px;margin-bottom:8px;}
+  .analysis-result-text{font-size:13px;line-height:1.8;opacity:.9;}
+  .analysis-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .analysis-tag{background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:11px;}
+  .step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+  /* 整合按钮和进度 */
+  .unified-btn{width:100%;min-height:56px;padding:10px 16px;background:linear-gradient(135deg,#1a1a1a,#333);color:#fff;border:none;border-radius:14px;font-size:16px;font-family:inherit;font-weight:500;cursor:pointer;transition:opacity .15s;letter-spacing:.5px;position:relative;line-height:1.35;white-space:normal;}
+  .unified-btn:hover{opacity:.88;}.unified-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .unified-btn-sub{font-size:11px;opacity:.6;display:block;margin-top:2px;font-weight:400;letter-spacing:0;}
+  .progress-steps{display:flex;gap:0;margin-bottom:16px;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  .progress-step{flex:1;padding:10px 8px;text-align:center;font-size:11px;background:var(--bg);color:var(--muted);border-right:1px solid var(--border);transition:all .3s;min-width:0;}
+  .progress-step:last-child{border-right:none;}
+  .progress-step.active{background:var(--ink);color:#fff;}
+  .progress-step.done{background:#e8f5ee;color:#1d6b44;}
+  .progress-step-icon{font-size:16px;display:block;margin-bottom:3px;}
+  .progress-step-label{font-size:10px;line-height:1.25;display:block;overflow-wrap:anywhere;}
+  .step{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+  .step.active{color:var(--ink);font-weight:500;}
+  .step-num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+  .step.active .step-num{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .step-line{flex:1;height:1px;background:var(--border);}
+  /* ── 身体问题多选 ── */
+  .body-issues-section{margin-bottom:16px;}
+  .body-issues-title{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.5px;margin-bottom:12px;text-transform:uppercase;}
+  /* 分步骤选择 */
+  .body-step{margin-bottom:14px;}
+  .body-step-label{font-size:12px;font-weight:500;margin-bottom:8px;color:var(--ink);}
+  .body-part-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .body-part-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;cursor:pointer;background:var(--bg);color:var(--ink);transition:all .15s;font-family:inherit;display:flex;align-items:center;gap:5px;line-height:1.3;white-space:normal;}
+  .body-part-btn:hover{border-color:var(--ink);}
+  .body-part-btn.active{border-color:var(--ink);background:var(--ink);color:#fff;}
+  .body-detail-panel{display:none;background:var(--tag-bg);border-radius:12px;padding:14px;margin-bottom:10px;animation:fadeIn .2s ease;}
+  .body-detail-panel.show{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .body-detail-group{margin-bottom:10px;}
+  .body-detail-group-label{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;}
+  .body-issues-grid{display:flex;flex-wrap:wrap;gap:6px;}
+  .body-issue-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--card);color:var(--ink);transition:all .15s;font-family:inherit;line-height:1.3;white-space:normal;}
+  .body-issue-btn:hover{border-color:var(--ink);}
+  .body-issue-btn.selected{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .body-issue-btn.advantage{border-color:#1d6b44;color:#1d6b44;background:var(--card);}
+  .body-issue-btn.advantage.selected{background:#1d6b44;color:#fff;border-color:#1d6b44;}
+  .selected-summary{font-size:11px;color:var(--muted);margin-top:8px;min-height:16px;}
+  .selected-tag{display:inline-flex;align-items:center;background:var(--ink);color:#fff;border-radius:12px;padding:2px 8px;font-size:11px;margin:2px;gap:3px;}
+  .selected-tag.adv{background:#1d6b44;}
+  .selected-tag-x{cursor:pointer;opacity:.7;font-size:10px;}
+  .body-rules-preview{background:var(--tag-bg);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:12px;line-height:1.8;display:none;}
+  .body-rules-preview.show{display:block;}
+  .rule-item{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;}
+  .rule-icon{flex-shrink:0;}
+  /* ── Tinder 滑卡 ── */
+  .swipe-container{position:relative;width:100%;min-height:520px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
+  .swipe-card{position:absolute;width:100%;max-width:420px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
+  .swipe-card.dragging{cursor:grabbing;box-shadow:0 16px 48px rgba(0,0,0,.18);transition:none;}
+  .swipe-card.fly-left{animation:flyLeft .35s ease forwards;}
+  .swipe-card.fly-right{animation:flyRight .35s ease forwards;}
+  @keyframes flyLeft{to{transform:translateX(-140%) rotate(-18deg);opacity:0;}}
+  @keyframes flyRight{to{transform:translateX(140%) rotate(18deg);opacity:0;}}
+  .swipe-stamp{position:absolute;top:22px;padding:6px 18px;border-radius:8px;font-size:18px;font-weight:700;letter-spacing:1px;opacity:0;transition:opacity .1s;pointer-events:none;z-index:10;}
+  .swipe-stamp.like{left:18px;background:#e8f5ee;color:#1d6b44;border:2px solid #1d6b44;}
+  .swipe-stamp.nope{right:18px;background:#fef0f0;color:#c0392b;border:2px solid #c0392b;}
+  .card-outfit-img{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px;}
+  .card-outfit-img .ci{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center;}
+  .card-outfit-img .ci img{width:100%;height:100%;object-fit:contain;}
+  .card-outfit-info{padding:0 16px 12px;}
+  .card-outfit-name{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .card-outfit-reason{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+  .card-outfit-prices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .card-price-tag{background:var(--tag-bg);border-radius:6px;padding:3px 8px;font-size:12px;font-weight:500;}
+  .card-outfit-total{font-size:16px;font-weight:700;font-family:'Noto Serif SC',serif;}
+  .card-outfit-total.over{color:#c0392b;}
+  .swipe-actions{display:flex;gap:16px;justify-content:center;margin-bottom:20px;}
+  .swipe-btn{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:var(--card);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .swipe-btn:hover{transform:scale(1.12);}
+  .swipe-btn.nope{border-color:#e74c3c;color:#e74c3c;}
+  .swipe-btn.like{border-color:#27ae60;color:#27ae60;}
+  .swipe-btn.tryon{border-color:var(--ink);color:var(--ink);}
+  .swipe-counter{text-align:center;font-size:12px;color:var(--muted);margin-bottom:12px;}
+  .liked-section{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:20px;margin-bottom:20px;}
+  .liked-title{font-size:13px;font-weight:500;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+  .liked-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .liked-item{background:var(--bg);border-radius:10px;padding:10px;font-size:11px;cursor:pointer;border:1px solid var(--border);transition:border-color .15s;}
+  .liked-item:hover{border-color:var(--ink);}
+  .liked-item-name{font-weight:500;margin-bottom:2px;font-size:12px;}
+  .liked-item-price{color:var(--muted);}
+  .done-card{text-align:center;padding:40px 20px;background:var(--card);border-radius:20px;border:1px solid var(--border);}
+  .done-icon{font-size:40px;margin-bottom:12px;}
+  .done-title{font-size:17px;font-weight:600;margin-bottom:6px;}
+  .done-sub{font-size:13px;color:var(--muted);margin-bottom:18px;}
   @media(max-width:640px){
     .budget-sliders,.fields-3{grid-template-columns:1fr;}
     .fields-2{grid-template-columns:1fr;}
@@ -132,6 +278,16 @@
     .item{border-right:none;border-bottom:1px solid var(--border);}
     .item:last-child{border-bottom:none;}
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
+    .body-photo-row,.measure-grid{grid-template-columns:1fr;}
+    .swipe-card{max-width:100%;}
+    .swipe-btn{width:52px;height:52px;font-size:20px;}
+    .liked-grid{grid-template-columns:repeat(2,1fr);}
+    .feedback-grid{grid-template-columns:1fr;}
+    .feedback-card{padding:20px;}
+    .auth-card{grid-template-columns:1fr;padding:18px;}
+    .auth-fields{grid-template-columns:1fr;}
+    header{padding:20px 16px 12px;}
+    .logo{font-size:22px;}
     .form-card,.tryon-section{padding:20px;}
     .api-tabs{flex-direction:column;}
   }
@@ -139,8 +295,9 @@
 </head>
 <body>
 <header>
-  <span class="logo">会穿</span>
-  <span class="logo-sub">AI 男性穿搭助手 · 不踩雷</span>
+  <span class="logo" id="logoText">会穿</span>
+  <span class="logo-sub" id="logoSub">AI 男性穿搭助手 · 不踩雷</span>
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()">🌐 EN</button>
 </header>
 <div class="wrap" id="app">
   <div style="text-align:center;padding:60px 0;color:var(--muted)">
@@ -151,23 +308,702 @@
 </div>
 
 <script>
-const BACKEND = 'https://huichuan-production.up.railway.app';
+// ── 双语文本库 ────────────────────────────────────────────
+const LANG = {
+  zh: {
+    logo: '会穿',
+    logoSub: 'AI 男性穿搭助手 · 不踩雷',
+    langBtn: '🌐 EN',
+    title: '会穿 · AI 男性穿搭助手',
+    loading: '加载中…',
+    // 进度步骤
+    step1: '上传照片', step2: '身体特征', step3: '风格偏好', step4: '获取推荐',
+    // 体型分析卡片
+    bodyCardTitle: '上传全身照（可选，提升推荐精准度）',
+    frontPhotoLabel: '正面全身照',
+    sidePhotoLabel: '侧面全身照（可选）',
+    frontPhotoHint: '站直，全身入镜',
+    sidePhotoHint: '帮助 AI 判断体型',
+    albumBtn: '📁 相册',
+    cameraBtn: '📷 拍照',
+    measureTitle: '身体三围（可选，帮助精准推荐）',
+    chestLabel: '胸围 (cm)', waistLabel: '腰围 (cm)', hipLabel: '臀围 (cm)',
+    thighLabel: '大腿围 (cm)', calfLabel: '小腿围 (cm)',
+    bodyIssuesTitle: '身体特征（分步选择，AI 精准适配）',
+    step1Label: '第一步：选择你想改善的部位',
+    upperBtn: '👆 上半身', lowerBtn: '👇 下半身',
+    overallBtn: '📐 整体比例', advBtn: '✨ 我的优势',
+    photoHint: '📸 照片仅在本地使用，不会上传或保存',
+    // 表单
+    formTitle: '基本信息与偏好',
+    ageLabel: '年龄', heightLabel: '身高 (cm)', weightLabel: '体重 (kg)',
+    skinLabel: '肤色', faceLabel: '脸型', sceneLabel: '场景', styleLabel: '风格偏好',
+    dislikeLabel: '不喜欢的款式（可选）', existingLabel: '已有的主要单品（可选）',
+    descLabel: '补充描述（可选）',
+    dislikePlaceholder: '例：不喜欢卫衣、花哨图案…',
+    existingPlaceholder: '例：白色运动鞋、黑色牛仔裤…',
+    descPlaceholder: '例：我脸比较圆，想显瘦一点；工作环境比较休闲…',
+    // 预算
+    budgetTitle: '分类预算设置',
+    budgetTotal: '套装预计总价',
+    topBudget: '上衣预算', bottomBudget: '裤子预算', shoesBudget: '鞋子预算',
+    // 主按钮
+    mainBtn: '🤖 AI 分析体型 + 个性化推荐',
+    mainBtnSub: '自动分析体型特征，推荐最适合你的穿搭',
+    // 状态
+    statusAnalyzing: '🔍 AI 正在分析你的体型…',
+    statusOrganizing: '📊 整理你的身体特征和偏好…',
+    statusPicking: '🤖 AI 正在从商品库中为你挑选穿搭…',
+    statusDone: '✅ 推荐完成！',
+    // 试穿
+    tryonTitle: '👗 AI 虚拟试穿',
+    tryonSub: '上传你的照片，AI 把推荐的衣服穿到你身上。',
+    fashnTab: '🚀 Fashn.ai 试穿', claudeTab: '💬 AI 文字分析',
+    autoPhotoHint: '✅ 自动使用第一步上传的体型照片，无需重新拍照',
+    yourPhoto: '你的照片', garmentPhoto: '衣服图片',
+    autoFillBtn: '↑ 自动填入当前套装的上衣图片',
+    startTryonBtn: '🤖 开始虚拟试穿',
+    processing: 'AI 处理中，通常 15-40 秒…',
+    tryonResult: '✨ 虚拟试穿效果',
+    origPhoto: '原始照片', tryonEffect: '试穿效果',
+    buyBtn: '购买 ↗',
+    totalLabel: '三件合计', budgetLabel: '预算',
+    swiperLabel: '滑动选择你喜欢的穿搭 💫',
+    likedTitle: '❤️ 我喜欢的穿搭',
+    doneTitle: '全部看完了！', doneSub: '已喜欢',
+    restartBtn: '重新看一遍', suitStr: '套',
+  },
+  en: {
+    logo: 'StyleAI',
+    logoSub: "AI Men's Fashion Assistant",
+    langBtn: '🌐 中文',
+    title: "StyleAI · AI Men's Fashion",
+    loading: 'Loading…',
+    step1: 'Photo', step2: 'Body', step3: 'Style', step4: 'Result',
+    bodyCardTitle: 'Upload Full-Body Photo (Optional, improves accuracy)',
+    frontPhotoLabel: 'Front View',
+    sidePhotoLabel: 'Side View (Optional)',
+    frontPhotoHint: 'Stand straight, full body in frame',
+    sidePhotoHint: 'Helps AI analyze body shape',
+    albumBtn: '📁 Gallery',
+    cameraBtn: '📷 Camera',
+    measureTitle: 'Body Measurements (Optional)',
+    chestLabel: 'Chest (cm)', waistLabel: 'Waist (cm)', hipLabel: 'Hip (cm)',
+    thighLabel: 'Thigh (cm)', calfLabel: 'Calf (cm)',
+    bodyIssuesTitle: 'Body Features (Step by step)',
+    step1Label: 'Step 1: Select areas to improve',
+    upperBtn: '👆 Upper Body', lowerBtn: '👇 Lower Body',
+    overallBtn: '📐 Proportions', advBtn: '✨ My Strengths',
+    photoHint: '📸 Photos are used locally only, never uploaded',
+    formTitle: 'Basic Info & Preferences',
+    ageLabel: 'Age', heightLabel: 'Height (cm)', weightLabel: 'Weight (kg)',
+    skinLabel: 'Skin Tone', faceLabel: 'Face Shape', sceneLabel: 'Occasion', styleLabel: 'Style',
+    dislikeLabel: 'Styles to avoid (optional)', existingLabel: 'Items you already own (optional)',
+    descLabel: 'Additional notes (optional)',
+    dislikePlaceholder: 'e.g. no hoodies, no loud prints…',
+    existingPlaceholder: 'e.g. white sneakers, black jeans…',
+    descPlaceholder: 'e.g. I want to look slimmer, casual work environment…',
+    budgetTitle: 'Budget Settings',
+    budgetTotal: 'Total Outfit Budget',
+    topBudget: 'Top', bottomBudget: 'Bottoms', shoesBudget: 'Shoes',
+    mainBtn: '🤖 AI Analyze + Recommend Outfits',
+    mainBtnSub: 'Analyzes your body type and recommends the perfect outfit',
+    statusAnalyzing: '🔍 AI is analyzing your body type…',
+    statusOrganizing: '📊 Processing your preferences…',
+    statusPicking: '🤖 AI is selecting the best outfits…',
+    statusDone: '✅ Done!',
+    tryonTitle: '👗 AI Virtual Try-On',
+    tryonSub: "Upload your photo and AI will dress you in the recommended outfit.",
+    fashnTab: '🚀 Fashn.ai Try-On', claudeTab: '💬 AI Text Analysis',
+    autoPhotoHint: '✅ Using the photo from Step 1 automatically',
+    yourPhoto: 'Your Photo', garmentPhoto: 'Garment Photo',
+    autoFillBtn: '↑ Auto-fill with selected outfit top',
+    startTryonBtn: '🤖 Start Virtual Try-On',
+    processing: 'AI processing, usually 15-40 seconds…',
+    tryonResult: '✨ Try-On Result',
+    origPhoto: 'Original', tryonEffect: 'Try-On Effect',
+    buyBtn: 'Buy ↗',
+    totalLabel: 'Total', budgetLabel: 'Budget',
+    swiperLabel: 'Swipe to choose your favorite outfit 💫',
+    likedTitle: '❤️ My Liked Outfits',
+    doneTitle: 'All done!', doneSub: 'Liked',
+    restartBtn: 'See again', suitStr: ' outfits',
+  }
+};
 
-let DB = {tops:[], bottoms:[], shoes:[]};
+// 当前语言
+window._lang = localStorage.getItem('huichuan_lang') || 'zh';
+
+function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
+
+const UI_TEXT = {
+  zh: {
+    realProducts: 'Amazon.ca 真实商品',
+    pieces: '件',
+    aiAnalysisTitle: '🤖 AI 穿搭分析',
+    outfit: '套装',
+    set: '套',
+    setCounter: (idx,total)=>`第 ${idx} 套 / 共 ${total} 套`,
+    allDoneCounter: '已看完全部套装',
+    likedCount: n=>`${n}套`,
+    like: '❤️ 喜欢',
+    skip: '✕ 跳过',
+    safety: '安全',
+    high: '高',
+    total: '合计',
+    overBudget: ' ⚠️超预算',
+    top: '上衣',
+    bottom: '裤子',
+    shoes: '鞋子',
+    outerwear: '外套',
+    hat: '帽子',
+    accessory: '配饰',
+    topBudget: '上衣预算',
+    bottomBudget: '裤子预算',
+    shoesBudget: '鞋子预算',
+    outerwearBudget: '外套预算',
+    hatBudget: '帽子预算',
+    accessoryBudget: '配饰预算',
+    chooseTryon: '选择试穿套装',
+    chooseOutfit: '选择套装',
+    yourPhoto: '你的照片',
+    garmentPhoto: '衣服图片',
+    uploadGarment: '点击上传衣服图',
+    autoFillHint: '或点下方自动填入',
+    apiKeyLocal: 'Key 仅在本地浏览器使用',
+    missingPhoto: '第一步未上传照片，请点此上传',
+    fromGallery: '📁 从相册选择',
+    camera: '📷 拍照',
+    tryonResultLabel: '✅ 虚拟试穿效果',
+    originalPhoto: '原始照片',
+    tryonEffect: '试穿效果',
+    claudeResultLabel: 'AI 穿搭效果分析',
+    feedbackTitle: '写下你的反馈',
+    feedbackSub: '推荐哪里不准、哪里不好用、想加什么功能，都可以直接告诉我。',
+    feedbackContact: '联系方式（可选）',
+    feedbackMessage: '例如：推荐的裤子预算太高，或者我想加保存穿搭功能',
+    feedbackSubmit: '提交反馈',
+    feedbackEmpty: '请先写一点反馈内容',
+    feedbackSending: '正在提交...',
+    feedbackOk: '收到啦，谢谢你的反馈',
+    feedbackFail: '提交失败，请稍后再试',
+    profileTitle: '用户档案',
+    profileSub: '登录后保存身体数据、风格偏好和预算，下次会自动填好。',
+    email: '邮箱',
+    password: '密码',
+    login: '登录',
+    register: '注册',
+    logout: '退出',
+    saveProfile: '保存档案',
+    profileLoaded: '已加载你的档案',
+    profileSaved: '档案已保存',
+    loginOk: '登录成功',
+    registerOk: '注册成功',
+    authRequired: '请先登录',
+  },
+  en: {
+    realProducts: 'Real Amazon.ca items',
+    pieces: 'items',
+    aiAnalysisTitle: '🤖 AI Outfit Analysis',
+    outfit: 'Outfit',
+    set: 'outfits',
+    setCounter: (idx,total)=>`Outfit ${idx} / ${total}`,
+    allDoneCounter: 'You have reviewed all outfits',
+    likedCount: n=>`${n} liked`,
+    like: '❤️ Like',
+    skip: '✕ Skip',
+    safety: 'Safe',
+    high: 'High',
+    total: 'Total',
+    overBudget: ' ⚠️Over budget',
+    top: 'Top',
+    bottom: 'Bottoms',
+    shoes: 'Shoes',
+    outerwear: 'Outerwear',
+    hat: 'Hat',
+    accessory: 'Accessory',
+    topBudget: 'Top',
+    bottomBudget: 'Bottoms',
+    shoesBudget: 'Shoes',
+    outerwearBudget: 'Outerwear',
+    hatBudget: 'Hat',
+    accessoryBudget: 'Accessory',
+    chooseTryon: 'Choose Try-On Outfit',
+    chooseOutfit: 'Choose Outfit',
+    yourPhoto: 'Your Photo',
+    garmentPhoto: 'Garment Photo',
+    uploadGarment: 'Upload Garment Image',
+    autoFillHint: 'Or auto-fill below',
+    apiKeyLocal: 'Key is only used in this browser',
+    missingPhoto: 'No photo from Step 1. Click here to upload',
+    fromGallery: '📁 Gallery',
+    camera: '📷 Camera',
+    tryonResultLabel: '✅ Try-On Result',
+    originalPhoto: 'Original Photo',
+    tryonEffect: 'Try-On Effect',
+    claudeResultLabel: 'AI Outfit Analysis',
+    feedbackTitle: 'Write Feedback',
+    feedbackSub: 'Tell me what feels inaccurate, confusing, or what feature you want next.',
+    feedbackContact: 'Contact info (optional)',
+    feedbackMessage: 'Example: the pants budget is too high, or I want a save outfit feature',
+    feedbackSubmit: 'Submit Feedback',
+    feedbackEmpty: 'Please write a little feedback first',
+    feedbackSending: 'Submitting...',
+    feedbackOk: 'Got it. Thanks for your feedback',
+    feedbackFail: 'Submit failed. Please try again later',
+    profileTitle: 'User Profile',
+    profileSub: 'Log in to save body data, preferences, and budgets so the form fills itself next time.',
+    email: 'Email',
+    password: 'Password',
+    login: 'Log In',
+    register: 'Sign Up',
+    logout: 'Log Out',
+    saveProfile: 'Save Profile',
+    profileLoaded: 'Profile loaded',
+    profileSaved: 'Profile saved',
+    loginOk: 'Logged in',
+    registerOk: 'Account created',
+    authRequired: 'Please log in first',
+  }
+};
+function ui(key, ...args){
+  const value = (UI_TEXT[window._lang] && UI_TEXT[window._lang][key]) || UI_TEXT.zh[key] || key;
+  return typeof value === 'function' ? value(...args) : value;
+}
+
+const SELECT_OPTIONS = {
+  age: [
+    ['18-22岁','18-22'], ['23-28岁','23-28'], ['29-35岁','29-35'],
+    ['36-45岁','36-45'], ['45岁以上','45+'],
+  ],
+  skin: [
+    ['普通肤色','Neutral Skin Tone'], ['偏白肤色','Fair Skin Tone'],
+    ['偏黄肤色','Warm/Yellow Skin Tone'], ['偏深肤色','Deep Skin Tone'],
+  ],
+  face: [
+    ['普通脸型','Regular Face Shape'], ['圆脸','Round Face'],
+    ['长脸','Long Face'], ['方脸','Square Face'], ['瓜子脸','Oval Face'],
+  ],
+  scene: [
+    ['日常','Daily'], ['上课','Class'], ['约会','Date'],
+    ['通勤','Commute'], ['运动','Sport'], ['正式场合','Formal'],
+    ['周末出行','Weekend'], ['聚会','Party'],
+  ],
+  style: [
+    ['简单百搭','Simple & Versatile'], ['干净清爽','Clean & Fresh'],
+    ['韩系','Korean'], ['日系','Japanese'], ['美式休闲','American Casual'],
+    ['极简','Minimal'], ['街头','Streetwear'], ['学院风','Preppy'],
+    ['工装','Workwear'], ['商务休闲','Business Casual'],
+  ],
+  feedbackType: [
+    ['general','General feedback','一般反馈'], ['bug','Bug','功能问题'],
+    ['recommendation','Recommendation issue','推荐不准'], ['feature','Feature request','想加功能'],
+  ],
+};
+
+const ISSUE_LABEL_TEXTS = {
+  shoulder_narrow:['肩膀窄','Narrow shoulders'],
+  shoulder_wide:['肩膀宽/虎背','Broad shoulders'],
+  round_shoulder:['含胸驼背','Rounded shoulders'],
+  belly:['小肚腩','Belly'],
+  belly_lower:['小腹突出','Lower belly'],
+  love_handle:['腰侧赘肉','Love handles'],
+  arm_thick:['手臂粗','Thick arms'],
+  neck_short:['脖子短','Short neck'],
+  neck_thin:['脖子细长','Long thin neck'],
+  chest_flat:['胸肌不明显','Flat chest'],
+  back_wide:['背部宽厚','Wide back'],
+  chest_wide:['胸腔宽大','Broad chest'],
+  thigh_thick:['大腿粗','Thick thighs'],
+  thigh_inner:['大腿内侧肉多','Inner thigh bulk'],
+  calf_thick:['小腿粗','Thick calves'],
+  o_leg:['O型腿','Bow legs'],
+  x_leg:['X型腿','X legs'],
+  knee_out:['膝盖外扩','Outward knees'],
+  hip_flat:['臀部扁平','Flat hips'],
+  hip_big:['臀部丰满','Full hips'],
+  hip_wide:['胯部较宽','Wide hips'],
+  ankle_thick:['脚踝粗','Thick ankles'],
+  foot_big:['脚偏大','Large feet'],
+  leg_short:['腿短','Short legs'],
+  upper_long:['上身长下身短','Long torso'],
+  lower_long:['下身长上身短','Long legs / short torso'],
+  head_big:['头偏大','Large head'],
+  face_big:['脸偏大','Large face'],
+  skinny_fat:['泡芙体型（外瘦内胖）','Skinny fat'],
+  top_heavy:['上重下轻','Top-heavy'],
+  bottom_heavy:['下重上轻（梨形）','Bottom-heavy / pear shape'],
+  leg_long:['腿长','Long legs'],
+  waist_thin:['腰细','Slim waist'],
+  shoulder_good:['肩型好','Good shoulder line'],
+  body_fit:['身材匀称','Balanced body'],
+  tall:['个子高','Tall'],
+  abs:['腹肌明显','Visible abs'],
+  arm_muscle:['手臂有肌肉感','Muscular arms'],
+  face_small:['脸小','Small face'],
+  skin_white:['肤色白','Fair skin'],
+  hip_ratio:['臀腰比好','Good waist-hip ratio'],
+};
+const GROUP_LABELS = {
+  肩膀:['Shoulders','肩膀'],
+  腹部:['Abdomen','腹部'],
+  '手臂/脖子':['Arms / Neck','手臂/脖子'],
+  胸背:['Chest / Back','胸背'],
+  大腿:['Thighs','大腿'],
+  '小腿/腿型':['Calves / Legs','小腿/腿型'],
+  臀部:['Hips','臀部'],
+  '脚踝/脚':['Ankles / Feet','脚踝/脚'],
+  比例:['Proportion','比例'],
+  头脸:['Head / Face','头脸'],
+  整体体型:['Overall Body','整体体型'],
+  身材优势:['Body Strengths','身材优势'],
+};
+
+function applySelectOptions(){
+  Object.entries(SELECT_OPTIONS).forEach(([id, options])=>{
+    const select = document.getElementById(id);
+    if(!select) return;
+    const current = select.value;
+    select.innerHTML = options.map(([value, en, zh], idx)=>{
+      const label = window._lang === 'en' ? en : (zh || value);
+      const selected = current ? value === current : idx === 0;
+      return `<option value="${value}"${selected?' selected':''}>${label}</option>`;
+    }).join('');
+  });
+}
+
+function applyExtraTranslations(){
+  applySelectOptions();
+  document.querySelectorAll('[data-ui]').forEach(el=>{
+    el.textContent = ui(el.dataset.ui);
+  });
+  document.querySelectorAll('[data-ui-placeholder]').forEach(el=>{
+    el.placeholder = ui(el.dataset.uiPlaceholder);
+  });
+  document.querySelectorAll('.body-issue-btn[data-issue]').forEach(btn=>{
+    const label = ISSUE_LABEL_TEXTS[btn.dataset.issue];
+    if(label) btn.textContent = window._lang === 'en' ? label[1] : label[0];
+  });
+  document.querySelectorAll('.body-detail-group-label').forEach(el=>{
+    const current = el.textContent.trim();
+    const entry = Object.entries(GROUP_LABELS).find(([zh, pair])=>current === zh || current === pair[0]);
+    if(entry) el.textContent = window._lang === 'en' ? entry[1][0] : entry[0];
+  });
+  const feedbackTitle = document.querySelector('.feedback-title');
+  if(feedbackTitle) feedbackTitle.textContent = ui('feedbackTitle');
+  const feedbackSub = document.querySelector('.feedback-sub');
+  if(feedbackSub) feedbackSub.textContent = ui('feedbackSub');
+  const feedbackContact = document.getElementById('feedbackContact');
+  if(feedbackContact) feedbackContact.placeholder = ui('feedbackContact');
+  const feedbackMessage = document.getElementById('feedbackMessage');
+  if(feedbackMessage) feedbackMessage.placeholder = ui('feedbackMessage');
+  const feedbackBtn = document.getElementById('feedbackBtn');
+  if(feedbackBtn) feedbackBtn.textContent = ui('feedbackSubmit');
+  [['chest','90'],['waist','75'],['hip','95'],['thigh','58'],['calf','37']].forEach(([id, value])=>{
+    const input = document.getElementById(id);
+    if(input) input.placeholder = window._lang === 'en' ? `e.g. ${value}` : `例：${value}`;
+  });
+}
+
+function toggleLang(){
+  window._lang = window._lang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('huichuan_lang', window._lang);
+  applyLang();
+  // 重新应用一次确保动态内容也更新
+  setTimeout(applyLang, 50);
+}
+
+function applyLang(){
+  const lang = window._lang;
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = t('title');
+
+  // Header
+  const logoEl = document.getElementById('logoText');
+  const subEl  = document.getElementById('logoSub');
+  const btnEl  = document.getElementById('langBtn');
+  if(logoEl) logoEl.textContent = t('logo');
+  if(subEl)  subEl.textContent  = t('logoSub');
+  if(btnEl)  btnEl.textContent  = t('langBtn');
+
+  // 进度步骤
+  const stepLabels = ['step1','step2','step3','step4'];
+  stepLabels.forEach((s,i)=>{
+    const el = document.getElementById(s);
+    if(el){
+      const label = el.querySelector('.progress-step-label');
+      if(label) label.textContent = t(s);
+    }
+  });
+
+  // 主按钮
+  const mainBtn = document.getElementById('mainBtn');
+  if(mainBtn){
+    mainBtn.textContent = '';
+    mainBtn.append(document.createTextNode(t('mainBtn')));
+    const sub = document.createElement('span');
+    sub.className = 'unified-btn-sub';
+    sub.textContent = t('mainBtnSub');
+    mainBtn.append(sub);
+  }
+
+  // 状态文字
+  const statusEl = document.getElementById('aiStatusText');
+  if(statusEl && statusEl.textContent.includes('分析') || statusEl?.textContent.includes('analyzing')){
+    // 保持当前状态不变
+  }
+
+  // 通用 data-i18n 属性替换
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.dataset.i18n;
+    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+      el.placeholder = t(key);
+    } else {
+      el.textContent = t(key);
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    el.title = t(el.dataset.i18nTitle);
+  });
+
+  // 硬编码的固定文字替换（动态渲染的内容）
+  const textMap_zh = {
+    '基本信息与偏好': 'Basic Info & Preferences',
+    '分类预算设置': 'Budget Settings',
+    '滑动选择你喜欢的穿搭 💫': 'Swipe to choose your outfit 💫',
+    '为你生成': 'Generated',
+    '个性化穿搭方案': 'personalized outfits',
+    '三件合计': 'Total',
+    '预算': 'Budget',
+    '上衣预算': 'Top Budget',
+    '裤子预算': 'Bottoms Budget',
+    '鞋子预算': 'Shoes Budget',
+    '套装预计总价': 'Total Outfit Budget',
+    '上衣': 'Top', '裤子': 'Bottoms', '鞋子': 'Shoes',
+    '购买 ↗': 'Buy ↗',
+    '❤️ 我喜欢的穿搭': '❤️ My Liked Outfits',
+    '全部看完了！': 'All done!',
+    '重新看一遍': 'See again',
+    '照片仅用于本地分析，不会上传或保存': 'Photos are used locally only, never uploaded',
+  };
+  const textMap_en = Object.fromEntries(Object.entries(textMap_zh).map(([k,v])=>[v,k]));
+  const textMap = lang === 'en' ? textMap_zh : textMap_en;
+
+  // 遍历所有文本节点替换
+  function replaceText(node){
+    if(node.nodeType === 3){
+      let txt = node.textContent;
+      let changed = false;
+      for(const [from, to] of Object.entries(textMap)){
+        if(txt.includes(from)){ txt = txt.split(from).join(to); changed = true; }
+      }
+      if(changed) node.textContent = txt;
+    } else if(node.nodeType === 1 && !['SCRIPT','STYLE','INPUT','TEXTAREA'].includes(node.tagName)){
+      node.childNodes.forEach(replaceText);
+    }
+  }
+
+  // 只替换主要内容区域，避免替换脚本
+  const app = document.getElementById('app');
+  const result = document.getElementById('result');
+  if(app) replaceText(app);
+  if(result) replaceText(result);
+  applyExtraTranslations();
+}
+
+// 页面加载后应用语言
+document.addEventListener('DOMContentLoaded', ()=>{
+  setTimeout(applyLang, 500);
+});
+
+// ── 双语文本库 ────────────────────────────────────────────
+
+window._lang = localStorage.getItem('huichuan_lang') || 'zh';
+
+function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
+
+
+
+const BACKEND = 'https://huichuan-production.up.railway.app';
+let DB = {tops:[], bottoms:[], shoes:[], outerwear:[], hats:[], accessories:[]};
 let dbStats = {total:0};
+let AUTH_TOKEN = localStorage.getItem('huichuan_token') || '';
+let AUTH_USER = null;
+
+function authHeaders(){
+  return AUTH_TOKEN ? {'Authorization': `Bearer ${AUTH_TOKEN}`} : {};
+}
+
+function setAuthStatus(msg, type=''){
+  const el = document.getElementById('authStatus');
+  if(!el) return;
+  el.textContent = msg || '';
+  el.className = `auth-status ${type}`;
+}
+
+function collectProfile(){
+  return {
+    height: document.getElementById('height')?.value || '',
+    weight: document.getElementById('weight')?.value || '',
+    age: document.getElementById('age')?.value || '',
+    skin: document.getElementById('skin')?.value || '',
+    face: document.getElementById('face')?.value || '',
+    scene: document.getElementById('scene')?.value || '',
+    style: document.getElementById('style')?.value || '',
+    dislike: document.getElementById('dislike')?.value || '',
+    existing: document.getElementById('existing')?.value || '',
+    desc: document.getElementById('desc')?.value || '',
+    budgets: {
+      top: document.getElementById('topBudget')?.value || 100,
+      bottom: document.getElementById('bottomBudget')?.value || 120,
+      shoes: document.getElementById('shoesBudget')?.value || 150,
+      outerwear: document.getElementById('outerwearBudget')?.value || 200,
+      hat: document.getElementById('hatBudget')?.value || 80,
+      accessory: document.getElementById('accessoryBudget')?.value || 100,
+    },
+    measurements: {
+      chest: document.getElementById('chest')?.value || '',
+      waist: document.getElementById('waist')?.value || '',
+      hip: document.getElementById('hip')?.value || '',
+      thigh: document.getElementById('thigh')?.value || '',
+      calf: document.getElementById('calf')?.value || '',
+    },
+    bodyIssues: Array.from(window._selectedIssues || []),
+  };
+}
+
+function applyProfile(profile){
+  if(!profile) return;
+  ['height','weight','age','skin','face','scene','style','dislike','existing','desc'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && profile[id] !== undefined && profile[id] !== null) el.value = profile[id];
+  });
+  Object.entries(profile.measurements || {}).forEach(([key,val])=>{
+    const el = document.getElementById(key);
+    if(el) el.value = val || '';
+  });
+  Object.entries(profile.budgets || {}).forEach(([key,val])=>{
+    const id = `${key}Budget`;
+    const el = document.getElementById(id);
+    if(el && val !== undefined && val !== null) el.value = val;
+    if(el) updateSlider(key, el.value);
+  });
+  window._selectedIssues = new Set(profile.bodyIssues || []);
+  document.querySelectorAll('.body-issue-btn[data-issue]').forEach(btn=>{
+    btn.classList.toggle('selected', window._selectedIssues.has(btn.dataset.issue));
+  });
+  updateSelectedSummary();
+  updateBodyRules();
+  updateTotal();
+}
+
+function updateAuthUI(){
+  const loggedIn = !!AUTH_TOKEN && !!AUTH_USER;
+  const signedOut = document.getElementById('authSignedOut');
+  const signedIn = document.getElementById('authSignedIn');
+  if(signedOut) signedOut.style.display = loggedIn ? 'none' : 'block';
+  if(signedIn) signedIn.style.display = loggedIn ? 'block' : 'none';
+  const email = document.getElementById('authUserEmail');
+  if(email) email.textContent = AUTH_USER?.email || '';
+}
+
+async function authRequest(path, payload){
+  const resp = await fetch(`${BACKEND}${path}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(payload),
+  });
+  const data = await resp.json().catch(()=>({}));
+  if(!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+  return data;
+}
+
+async function loginUser(mode){
+  const email = document.getElementById('authEmail')?.value.trim();
+  const password = document.getElementById('authPassword')?.value;
+  if(!email || !password){ setAuthStatus(ui('authRequired'), 'err'); return; }
+  try{
+    const data = await authRequest(mode === 'register' ? '/api/auth/register' : '/api/auth/login', {email, password});
+    AUTH_TOKEN = data.token;
+    AUTH_USER = data.user;
+    localStorage.setItem('huichuan_token', AUTH_TOKEN);
+    updateAuthUI();
+    applyProfile(data.user?.profile || {});
+    setAuthStatus(mode === 'register' ? ui('registerOk') : ui('loginOk'), 'ok');
+  }catch(err){
+    setAuthStatus(err.message, 'err');
+  }
+}
+
+function logoutUser(){
+  AUTH_TOKEN = '';
+  AUTH_USER = null;
+  localStorage.removeItem('huichuan_token');
+  updateAuthUI();
+  setAuthStatus('');
+}
+
+async function saveProfile(silent=false){
+  if(!AUTH_TOKEN){ if(!silent) setAuthStatus(ui('authRequired'), 'err'); return; }
+  try{
+    const resp = await fetch(`${BACKEND}/api/profile`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json', ...authHeaders()},
+      body: JSON.stringify({profile: collectProfile()}),
+    });
+    const data = await resp.json().catch(()=>({}));
+    if(!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+    AUTH_USER = data;
+    updateAuthUI();
+    if(!silent) setAuthStatus(ui('profileSaved'), 'ok');
+  }catch(err){
+    if(!silent) setAuthStatus(err.message, 'err');
+  }
+}
+
+async function loadProfile(){
+  if(!AUTH_TOKEN){ updateAuthUI(); return; }
+  try{
+    const resp = await fetch(`${BACKEND}/api/profile`, {headers: authHeaders()});
+    const data = await resp.json().catch(()=>({}));
+    if(!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+    AUTH_USER = data;
+    updateAuthUI();
+    applyProfile(data.profile || {});
+    setAuthStatus(ui('profileLoaded'), 'ok');
+  }catch(err){
+    logoutUser();
+  }
+}
 
 async function loadProducts(){
   try{
-    const [r1,r2,r3,rs] = await Promise.all([
-      fetch(`${BACKEND}/api/products?limit=100&category=top`),
-      fetch(`${BACKEND}/api/products?limit=100&category=bottom`),
-      fetch(`${BACKEND}/api/products?limit=100&category=shoes`),
+    const loadGroup = async (categories) => {
+      const results = await Promise.all(categories.map(cat =>
+        fetch(`${BACKEND}/api/products?limit=100&category=${encodeURIComponent(cat)}`)
+          .then(r=>r.json()).then(d=>d.products||[]).catch(()=>[])
+      ));
+      const byId = new Map();
+      results.flat().forEach(p=>byId.set(p.id, p));
+      return [...byId.values()].map(normalizeProduct);
+    };
+    const [d1,d2,d3,d4,d5,d6,rs] = await Promise.all([
+      loadGroup(['top']),
+      loadGroup(['bottom']),
+      loadGroup(['shoes']),
+      loadGroup(['outerwear','outer','jacket','coat']),
+      loadGroup(['hat','hats']),
+      loadGroup(['accessory','accessories']),
       fetch(`${BACKEND}/api/products/stats`),
     ]);
-    const [d1,d2,d3,stats] = await Promise.all([r1.json(),r2.json(),r3.json(),rs.json()]);
-    DB.tops    = (d1.products||[]).map(normalizeProduct);
-    DB.bottoms = (d2.products||[]).map(normalizeProduct);
-    DB.shoes   = (d3.products||[]).map(normalizeProduct);
+    const stats = await rs.json();
+    DB.tops    = d1;
+    DB.bottoms = d2;
+    DB.shoes   = d3;
+    DB.outerwear = d4;
+    DB.hats = d5;
+    DB.accessories = d6;
     dbStats    = stats;
     console.log(`✅ 商品：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
   }catch(e){ console.error('加载商品失败',e); }
@@ -204,10 +1040,16 @@ async function callBackendRecommend(userInfo){
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       height:userInfo.height, weight:userInfo.weight,
+      language: window._lang,
+      age:userInfo.age||'23-28岁',
       skin:userInfo.skin, face:userInfo.face,
       scene:userInfo.scene, style:userInfo.style,
       dislike:userInfo.dislike||'', existing:userInfo.existing||'',
       desc:userInfo.desc||'', budgets:userInfo.budgets,
+      body_analysis: userInfo.bodyAnalysis||'',
+      body_issues: userInfo.bodyIssues||[],
+      body_issue_rules: userInfo.bodyIssueRules||'',
+      measurements: userInfo.measurements||{},
     }),
   });
   if(!resp.ok){const e=await resp.json();throw new Error(e.detail||`后端错误 ${resp.status}`);}
@@ -215,113 +1057,121 @@ async function callBackendRecommend(userInfo){
   const outfits=(data.outfits||[]).map(o=>({
     id:o.id, name:o.name, safety:o.safety||'高', reason:o.reason,
     top_id:o.top?.id||o.top_id, bottom_id:o.bottom?.id||o.bottom_id, shoes_id:o.shoes?.id||o.shoes_id,
+    outerwear_id:o.outerwear?.id||o.outerwear_id, hat_id:o.hat?.id||o.hat_id, accessory_id:o.accessory?.id||o.accessory_id,
   }));
   (data.outfits||[]).forEach(o=>{
     if(o.top)   {const p=normalizeProduct(o.top);   if(!DB.tops.find(x=>x.id===p.id))   DB.tops.push(p);}
     if(o.bottom){const p=normalizeProduct(o.bottom);if(!DB.bottoms.find(x=>x.id===p.id))DB.bottoms.push(p);}
     if(o.shoes) {const p=normalizeProduct(o.shoes); if(!DB.shoes.find(x=>x.id===p.id))  DB.shoes.push(p);}
+    if(o.outerwear){const p=normalizeProduct(o.outerwear); if(!DB.outerwear.find(x=>x.id===p.id)) DB.outerwear.push(p);}
+    if(o.hat){const p=normalizeProduct(o.hat); if(!DB.hats.find(x=>x.id===p.id)) DB.hats.push(p);}
+    if(o.accessory){const p=normalizeProduct(o.accessory); if(!DB.accessories.find(x=>x.id===p.id)) DB.accessories.push(p);}
   });
   return {summary:data.summary||'', tips:data.tips||[], outfits, body:data.body};
 }
 
-const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'}};
-function findProduct(id){return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);}
+const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'},outerwear:{label:'外套',icon:'🧥'},hat:{label:'帽子',icon:'🧢'},accessory:{label:'配饰',icon:'⌚'}};
+function findProduct(id){return [...DB.tops,...DB.bottoms,...DB.shoes,...DB.outerwear,...DB.hats,...DB.accessories].find(p=>p.id===id);}
+function displayBodyLabel(label){
+  if(window._lang !== 'en') return label;
+  return {偏瘦:'Slim', 标准:'Standard', 略微偏胖:'Slightly Stocky', 偏胖:'Stocky'}[label] || label;
+}
 
 function renderResult(aiResult,userInfo){
-  const budgetTotal=userInfo.budgets.top+userInfo.budgets.bottom+userInfo.budgets.shoes;
+  const budgetTotal=Object.values(userInfo.budgets||{}).reduce((sum,val)=>sum+(parseInt(val)||0),0);
   const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
-  const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">套装${o.id}：${o.name}</option>`).join('');
+  const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">${ui('outfit')} ${o.id}: ${o.name}</option>`).join('');
 
-  const outfitsHTML=(aiResult.outfits||[]).map(o=>{
+  // Tinder 滑卡数据
+  window._swipeOutfits = (aiResult.outfits||[]).map(o=>{
     const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
-    if(!top||!bottom||!shoe)return '';
-    const total=top.price+bottom.price+shoe.price;
-    const items=[{cat:'top',p:top},{cat:'bottom',p:bottom},{cat:'shoes',p:shoe}].map(({cat,p})=>`
-      <div class="item">
-        <div class="img-box">
-          <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'">
-          <span style="display:none">${CAT[cat].icon}</span>
-        </div>
-        <div class="item-cat">${CAT[cat].label}</div>
-        <div class="item-name">${p.name}</div>
-        <div class="item-brand">${p.brand}</div>
-        <div class="item-price"><span class="cur">CA$</span>${p.price}</div>
-        <a class="buy-btn" href="${p.buy}" target="_blank" rel="noopener">购买 ↗</a>
-      </div>`).join('');
-    return `<div class="card outfit">
-      <div class="outfit-head">
-        <div><span class="outfit-num">套装 ${o.id}</span><span class="outfit-name">${o.name}</span></div>
-        <span class="safe-badge">安全度 ${o.safety}</span>
-      </div>
-      <div class="outfit-reason">💡 ${o.reason}</div>
-      <div class="items">${items}</div>
-      <div class="outfit-foot">
-        <span class="foot-label">三件合计</span>
-        <div class="foot-right">
-          <span class="foot-budget">预算 CA$${budgetTotal}</span>
-          <span class="foot-price${total>budgetTotal?' over':''}">CA$${total.toFixed(2)}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+    const outerwear=findProduct(o.outerwear_id),hat=findProduct(o.hat_id),accessory=findProduct(o.accessory_id);
+    if(!top||!bottom||!shoe)return null;
+    const products=[
+      {key:'top', product:top},
+      {key:'bottom', product:bottom},
+      {key:'shoes', product:shoe},
+      outerwear ? {key:'outerwear', product:outerwear} : null,
+      hat ? {key:'hat', product:hat} : null,
+      accessory ? {key:'accessory', product:accessory} : null,
+    ].filter(Boolean);
+    return {outfit:o, top, bottom, shoe, outerwear, hat, accessory, products, total:products.reduce((sum,item)=>sum+(Number(item.product.price)||0),0)};
+  }).filter(Boolean);
+  window._swipeIdx    = 0;
+  window._likedOutfits= [];
+  const outfitsHTML = ''; // 由 initSwipe() 渲染
 
   document.getElementById('result').innerHTML=`
-    <div class="db-badge">✅ Amazon.ca 真实商品（${dbStats.total||DB.tops.length+DB.bottoms.length+DB.shoes.length} 件）</div>
-    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">🤖 AI 穿搭分析</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
+    <div class="db-badge">✅ ${ui('realProducts')} (${dbStats.total||DB.tops.length+DB.bottoms.length+DB.shoes.length} ${ui('pieces')})</div>
+    ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">${ui('aiAnalysisTitle')}</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
     <div class="meta-row">
-      <span class="badge">🧍 ${userInfo.body}（BMI ${userInfo.bmi}）</span>
-      <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
+      <span class="badge">🧍 ${displayBodyLabel(userInfo.body)} (BMI ${userInfo.bmi})</span>
+      <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes} · 🧥 CA$${userInfo.budgets.outerwear} · 🧢 CA$${userInfo.budgets.hat} · ⌚ CA$${userInfo.budgets.accessory}</span>
     </div>
     <div class="tips">${tipsHTML}</div>
-    <p class="section-label">为你生成 ${(aiResult.outfits||[]).length} 套个性化穿搭方案</p>
-    ${outfitsHTML}
+    <p class="section-label"><span data-i18n="swiperLabel">滑动选择你喜欢的穿搭 💫</span></p>
+    <div class="swipe-counter" id="swipeCounter">${ui('setCounter', 1, (aiResult.outfits||[]).length)}</div>
+    <div class="swipe-container" id="swipeContainer"></div>
+    <div class="swipe-actions">
+      <button class="swipe-btn nope" onclick="swipeCard('left')" title="${ui('skip')}">✕</button>
+      <button class="swipe-btn tryon" onclick="quickTryon()" title="${t('tryonTitle')}">👗</button>
+      <button class="swipe-btn like" onclick="swipeCard('right')" title="${ui('like')}">♥</button>
+    </div>
+    <div class="liked-section" id="likedSection" style="display:none">
+      <div class="liked-title"><span>${t('likedTitle')}</span><span id="likedCount" style="color:var(--muted)">${ui('likedCount', 0)}</span></div>
+      <div class="liked-grid" id="likedGrid"></div>
+    </div>
     <div class="card tryon-section">
-      <div class="tryon-title">👗 AI 虚拟试穿</div>
-      <div class="tryon-sub">上传你的照片，AI 把推荐的衣服穿到你身上。</div>
+      <div class="tryon-title">${t('tryonTitle')}</div>
+      <div class="tryon-sub">${t('tryonSub')}</div>
       <div class="api-tabs">
-        <div class="api-tab active" onclick="switchTab('fashn')">🚀 Fashn.ai 试穿</div>
-        <div class="api-tab" onclick="switchTab('claude')">💬 AI 文字分析</div>
+        <div class="api-tab active" onclick="switchTab('fashn')">${t('fashnTab')}</div>
+        <div class="api-tab" onclick="switchTab('claude')">${t('claudeTab')}</div>
       </div>
       <div class="api-panel active" id="panel-fashn">
         <div class="note-box">专业虚拟试穿 API。👉 <a href="https://fashn.ai" target="_blank">fashn.ai</a> → 注册 → Dashboard → 复制 API Key</div>
         <div class="input-label">Fashn.ai API Key</div>
         <input class="key-input" id="fashnKey" type="password" placeholder="fa-xxxxxxxxxxxxxxxx">
-        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
-        <div class="input-label" style="margin-bottom:6px">选择试穿套装</div>
+        <div class="key-hint" style="margin-bottom:16px">${ui('apiKeyLocal')}</div>
+        <div class="input-label" style="margin-bottom:6px">${ui('chooseTryon')}</div>
         <select class="sel" id="fashnSel">${outfitOpts}</select>
+        <div class="note-box" style="background:#e8f5ee;color:#1d6b44">${t('autoPhotoHint')}</div>
         <div class="tryon-grid">
           <div>
-            <div class="input-label" style="margin-bottom:8px">你的照片（正面全身）</div>
-            <div class="upload-area" id="personArea" onclick="document.getElementById('personInput').click()">
-              <div class="upload-icon">🧍</div><div class="upload-label">点击上传照片</div>
-              <div class="upload-hint">JPG/PNG，正面站立效果最佳</div>
-              <img class="upload-preview" id="personPreview">
+            <div class="input-label" style="margin-bottom:8px">${ui('yourPhoto')}</div>
+            <div class="upload-area filled" id="personArea" style="cursor:default">
+              <img class="upload-preview" id="personPreview" style="display:block">
+              <div class="upload-hint" id="personHint" style="display:none">${ui('missingPhoto')}</div>
             </div>
             <input class="upload-input" type="file" id="personInput" accept="image/jpeg,image/png" onchange="previewImg('personInput','personPreview','personArea')">
+            <div class="photo-btns" id="personBtns" style="display:none">
+              <button class="photo-btn" onclick="document.getElementById('personInput').click()">${ui('fromGallery')}</button>
+              <button class="photo-btn primary" onclick="openCamera()">${ui('camera')}</button>
+            </div>
           </div>
           <div>
-            <div class="input-label" style="margin-bottom:8px">衣服图片</div>
+            <div class="input-label" style="margin-bottom:8px">${ui('garmentPhoto')}</div>
             <div class="upload-area" id="garmentArea" onclick="document.getElementById('garmentInput').click()">
-              <div class="upload-icon">👕</div><div class="upload-label" id="garmentLabel">点击上传衣服图</div>
-              <div class="upload-hint">或点下方自动填入</div>
+              <div class="upload-icon">👕</div><div class="upload-label" id="garmentLabel">${ui('uploadGarment')}</div>
+              <div class="upload-hint">${ui('autoFillHint')}</div>
               <img class="upload-preview" id="garmentPreview">
             </div>
             <input class="upload-input" type="file" id="garmentInput" accept="image/jpeg,image/png" onchange="previewImg('garmentInput','garmentPreview','garmentArea')">
           </div>
         </div>
-        <button class="auto-fill-btn" onclick="autoFill()">↑ 自动填入所选套装的上衣图片</button>
-        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">🤖 开始虚拟试穿</button>
+        <button class="auto-fill-btn" onclick="autoFill()">${t('autoFillBtn')}</button>
+        <button class="btn-tryon" id="fashnBtn" onclick="runFashn()">${t('startTryonBtn')}</button>
         <div class="progress-wrap" id="fashnProgress">
-          <div class="progress-label">AI 处理中，通常 15-40 秒…</div>
+          <div class="progress-label"><span data-i18n="processing">AI 处理中，通常 15-40 秒…</span></div>
           <div class="progress-bar-bg"><div class="progress-bar" id="fashnBar"></div></div>
           <div class="progress-status" id="fashnStatus">提交任务…</div>
         </div>
         <div class="tryon-result" id="fashnResult">
-          <div class="result-label-sm">✨ 虚拟试穿效果</div>
+          <div class="result-label-sm">${ui('tryonResultLabel')}</div>
           <div class="result-box">
             <div class="compare-row">
-              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="原图"><div class="compare-caption">原始照片</div></div>
-              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="效果"><div class="compare-caption">试穿效果</div></div>
+              <div class="compare-item"><img class="compare-img" id="origImg" src="" alt="${ui('originalPhoto')}"><div class="compare-caption">${ui('originalPhoto')}</div></div>
+              <div class="compare-item"><img class="compare-img" id="outImg" src="" alt="${ui('tryonEffect')}"><div class="compare-caption">${ui('tryonEffect')}</div></div>
             </div>
           </div>
         </div>
@@ -330,12 +1180,12 @@ function renderResult(aiResult,userInfo){
         <div class="note-box">Claude AI 生成详细穿搭效果文字分析。👉 <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></div>
         <div class="input-label">Claude API Key</div>
         <input class="key-input" id="claudeKey" type="password" placeholder="sk-ant-api03-...">
-        <div class="key-hint" style="margin-bottom:16px">Key 仅在本地浏览器使用</div>
-        <div class="input-label" style="margin-bottom:6px">选择套装</div>
+        <div class="key-hint" style="margin-bottom:16px">${ui('apiKeyLocal')}</div>
+        <div class="input-label" style="margin-bottom:6px">${ui('chooseOutfit')}</div>
         <select class="sel" id="claudeSel">${outfitOpts}</select>
         <button class="btn-tryon" id="claudeBtn" onclick="runClaude()">💬 生成穿搭效果分析</button>
         <div class="tryon-result" id="claudeResult" style="margin-top:16px">
-          <div class="result-label-sm">AI 穿搭效果分析</div>
+          <div class="result-label-sm">${ui('claudeResultLabel')}</div>
           <div class="result-box"><div class="ai-text" id="claudeText"></div></div>
         </div>
       </div>
@@ -344,59 +1194,1025 @@ function renderResult(aiResult,userInfo){
   window._recData={outfits:aiResult.outfits};
   document.getElementById('result').classList.add('show');
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+  // 初始化滑卡 + 同步体型照片到试穿区
+  setTimeout(()=>{
+    initSwipe();
+    syncBodyPhotoToTryon();
+  }, 100);
 }
 
 async function getRecommend(){
   const h=parseInt(document.getElementById('height').value);
   const w=parseInt(document.getElementById('weight').value);
-  if(!h||!w){alert('请填写身高和体重');return;}
+  if(!h||!w){alert(window._lang === 'en' ? 'Please enter height and weight' : '请填写身高和体重');return;}
+
   const body=bodyInfo(h,w);
   const budgets={
     top:parseInt(document.getElementById('topBudget').value),
     bottom:parseInt(document.getElementById('bottomBudget').value),
     shoes:parseInt(document.getElementById('shoesBudget').value),
+    outerwear:parseInt(document.getElementById('outerwearBudget').value),
+    hat:parseInt(document.getElementById('hatBudget').value),
+    accessory:parseInt(document.getElementById('accessoryBudget').value),
   };
-  const userInfo={
-    height:h,weight:w,body:body.label,bmi:body.bmi,
-    skin:document.getElementById('skin').value,
-    face:document.getElementById('face').value,
-    scene:document.getElementById('scene').value,
-    style:document.getElementById('style').value,
-    dislike:document.getElementById('dislike').value,
-    existing:document.getElementById('existing').value,
-    desc:document.getElementById('desc').value,
-    budgets,
+
+  const measurements={
+    chest: document.getElementById('chest')?.value||'',
+    waist: document.getElementById('waist')?.value||'',
+    hip:   document.getElementById('hip')?.value||'',
+    thigh: document.getElementById('thigh')?.value||'',
+    calf:  document.getElementById('calf')?.value||'',
   };
-  document.getElementById('mainBtn').disabled=true;
+
+  const btn = document.getElementById('mainBtn');
+  const statusEl = document.getElementById('aiStatusText');
+  btn.disabled=true;
   document.getElementById('aiStatus').classList.add('show');
   document.getElementById('result').classList.remove('show');
+
+  // 更新进度条
+  const setStep = (n) => {
+    [1,2,3,4].forEach(i=>{
+      const el=document.getElementById('step'+i);
+      if(!el)return;
+      el.classList.remove('active','done');
+      if(i<n) el.classList.add('done');
+      else if(i===n) el.classList.add('active');
+    });
+  };
+
   try{
-    const aiResult=await callBackendRecommend(userInfo);
+    // 第一步：体型分析（如果有照片或三围数据）
+    let bodyAnalysis = window._bodyAnalysis || '';
+    const frontFile = document.getElementById('frontPhotoInput')?.files[0];
+    const hasMeasurements = Object.values(measurements).some(v=>v);
+
+    if((frontFile || hasMeasurements) && !bodyAnalysis){
+      setStep(1);
+      if(statusEl) statusEl.textContent = t('statusAnalyzing');
+
+      try{
+        const toB64 = f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});
+        const frontB64 = frontFile ? await toB64(frontFile) : null;
+
+        const resp = await fetch(`${BACKEND}/api/analyze-body`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            messages: frontB64 ? [{role:'user',content:[
+              {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frontB64.split(',')[1]}},
+              {type:'text',text:'分析体型'}
+            ]}] : [],
+            language: window._lang,
+            height: h+'', weight: w+'',
+            chest: measurements.chest, waist: measurements.waist,
+            hip: measurements.hip, thigh: measurements.thigh, calf: measurements.calf,
+          })
+        });
+
+        if(resp.ok){
+          const d = await resp.json();
+          bodyAnalysis = d.analysis || '';
+          window._bodyAnalysis = bodyAnalysis;
+
+          // 提取标签显示
+          const tagMatch = bodyAnalysis.match(/标签[：:]\s*(.+)/);
+          if(tagMatch){
+            const tags = tagMatch[1].split('|').map(t=>t.trim()).filter(Boolean);
+            const mainText = bodyAnalysis.replace(/标签[：:].*$/,'').trim();
+            const analysisEl = document.getElementById('bodyAnalysisResult');
+            const textEl = document.getElementById('bodyAnalysisText');
+            const tagsEl = document.getElementById('bodyAnalysisTags');
+            if(analysisEl){ analysisEl.classList.add('show'); }
+            if(textEl){ textEl.textContent = mainText; }
+            if(tagsEl){ tagsEl.innerHTML = tags.map(t=>`<span class="analysis-tag">${t}</span>`).join(''); }
+          }
+        }
+      }catch(e){
+        console.warn('体型分析失败，跳过:', e);
+      }
+    }
+
+    // 第二步：构建用户信息
+    setStep(2);
+    if(statusEl) statusEl.textContent = t('statusOrganizing');
+    await new Promise(r=>setTimeout(r,300));
+
+    const userInfo={
+      height:h, weight:w, body:body.label, bmi:body.bmi,
+      age:document.getElementById('age').value,
+      skin:document.getElementById('skin').value,
+      face:document.getElementById('face').value,
+      scene:document.getElementById('scene').value,
+      style:document.getElementById('style').value,
+      dislike:document.getElementById('dislike').value,
+      existing:document.getElementById('existing').value,
+      desc:document.getElementById('desc').value,
+      budgets,
+      bodyAnalysis,
+      bodyIssues: Array.from(window._selectedIssues||[]),
+      bodyIssueRules: window._bodyIssueRules||'',
+      measurements,
+    };
+    window._lastUserInfo = userInfo;
+    if(AUTH_TOKEN) saveProfile(true);
+
+    // 第三步：AI 推荐
+    setStep(3);
+    if(statusEl) statusEl.textContent = t('statusPicking');
+
+    const aiResult = await callBackendRecommend(userInfo);
+
+    // 完成
+    setStep(4);
+    if(statusEl) statusEl.textContent = t('statusDone');
+    await new Promise(r=>setTimeout(r,400));
+
     document.getElementById('aiStatus').classList.remove('show');
-    renderResult(aiResult,userInfo);
+    renderResult(aiResult, userInfo);
+
   }catch(e){
     document.getElementById('aiStatus').classList.remove('show');
-    alert('AI 推荐失败：'+e.message);
+    [1,2,3,4].forEach(i=>{
+      const el=document.getElementById('step'+i);
+      if(el){ el.classList.remove('active','done'); if(i===1) el.classList.add('active'); }
+    });
+    alert('推荐失败：'+e.message);
     console.error(e);
   }finally{
-    document.getElementById('mainBtn').disabled=false;
+    btn.disabled=false;
   }
+}
+
+// ── 身体问题规则引擎 ─────────────────────────────────────
+
+const BODY_RULES = {
+  // 上半身问题
+  shoulder_narrow: {
+    label: '肩膀窄',
+    avoid_tops: ['无袖','背心','V领过深'],
+    prefer_tops: ['宽肩设计','横条纹','垫肩','层叠穿搭','oversize'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户肩膀较窄，上衣优先选择有宽肩感的款式如横条纹、层叠、oversize，避免无袖和深V领',
+  },
+  shoulder_wide: {
+    label: '肩膀宽',
+    avoid_tops: ['横条纹','宽肩设计','加厚肩部'],
+    prefer_tops: ['V领','深色系上衣','竖条纹','修身'],
+    avoid_bottoms: [],
+    prefer_bottoms: ['宽松','阔腿'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['白色上衣'], prefer:['深色上衣']},
+    prompt: '用户肩膀较宽，上衣选深色系和竖条纹视觉收窄，避免横条纹和加厚肩部设计，下装可选宽松款平衡比例',
+  },
+  belly: {
+    label: '小肚腩',
+    avoid_tops: ['紧身T恤','tucked in短上衣','浅色紧身'],
+    prefer_tops: ['宽松版型','深色系','oversize','长款上衣'],
+    avoid_bottoms: ['高腰紧身'],
+    prefer_bottoms: ['直筒','宽松'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['白色紧身上衣'], prefer:['黑色','深灰','深蓝上衣']},
+    prompt: '用户腹部偏圆，上衣必须选宽松版型和深色系，长度要遮过腰线，避免紧身和浅色上衣，裤子选直筒不要过紧',
+  },
+  chest_flat: {
+    label: '胸肌不明显',
+    avoid_tops: ['过于宽松的T恤','垂感强'],
+    prefer_tops: ['略修身','层叠穿搭','有结构感'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户胸部较平，选略修身版型增加轮廓感，可用层叠穿搭增加上身厚度',
+  },
+  back_wide: {
+    label: '背部宽厚',
+    avoid_tops: ['横条纹','浅色系上衣','宽松背部'],
+    prefer_tops: ['深色系','竖条纹','修身'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['白色','浅色上衣'], prefer:['深色上衣']},
+    prompt: '用户背部较宽，上衣选深色系视觉收窄背部，避免横条纹',
+  },
+  arm_thick: {
+    label: '手臂粗',
+    avoid_tops: ['无袖','紧身袖','短袖过紧'],
+    prefer_tops: ['宽松袖','七分袖','长袖宽松'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户手臂偏粗，避免无袖和紧身袖，选宽松袖口或七分袖视觉遮盖',
+  },
+  neck_short: {
+    label: '脖子短',
+    avoid_tops: ['高领','厚围巾','堆领'],
+    prefer_tops: ['V领','开领','低圆领'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脖子较短，必须避免高领和堆领，优先选V领或低圆领拉长脖子视觉效果',
+  },
+  // 下半身问题
+  thigh_thick: {
+    label: '大腿粗',
+    avoid_tops: [],
+    prefer_tops: ['长款上衣'],
+    avoid_bottoms: ['skinny','紧身裤','修身裤'],
+    prefer_bottoms: ['straight','直筒裤','宽松裤','wide leg','阔腿裤'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['浅色裤子'], prefer:['深色裤子','黑色','深蓝裤子']},
+    prompt: '用户大腿偏粗，裤子必须选直筒或宽松版型，严禁推荐skinny和修身裤，裤子优选深色系视觉收窄',
+  },
+  calf_thick: {
+    label: '小腿粗',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: ['紧身裤','九分裤'],
+    prefer_bottoms: ['直筒长裤','宽松裤'],
+    avoid_shoes: ['踝靴','短靴'],
+    prefer_shoes: ['运动鞋','低帮鞋','深色鞋'],
+    colors: {avoid:['浅色裤'], prefer:['深色裤']},
+    prompt: '用户小腿偏粗，选长裤遮盖，避免在小腿处截断视线的九分裤和踝靴，鞋子选低帮款',
+  },
+  leg_short: {
+    label: '腿短',
+    avoid_tops: ['超长款上衣','宽松长卫衣'],
+    prefer_tops: ['短款','正常长度'],
+    avoid_bottoms: ['低腰裤'],
+    prefer_bottoms: ['九分裤','高腰裤','竖条纹裤'],
+    avoid_shoes: ['厚底鞋'],
+    prefer_shoes: ['增高鞋','简洁运动鞋'],
+    colors: {avoid:['上下同色大反差'], prefer:['上下相近色系']},
+    prompt: '用户腿部偏短，上衣不要过长遮住腿，裤子选九分裤或高腰款视觉拉长腿部，上下装颜色接近避免截断',
+  },
+  o_leg: {
+    label: 'O型腿',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: ['紧身裤','短裤'],
+    prefer_bottoms: ['宽松直筒裤','深色长裤'],
+    avoid_shoes: [],
+    prefer_shoes: ['深色鞋'],
+    colors: {avoid:['浅色紧身裤'], prefer:['深色宽松裤']},
+    prompt: '用户O型腿，必须选宽松直筒深色长裤遮盖，严禁推荐紧身裤和短裤',
+  },
+  x_leg: {
+    label: 'X型腿',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: ['超宽松阔腿裤'],
+    prefer_bottoms: ['直筒裤','修身直筒'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色裤子']},
+    prompt: '用户X型腿，选直筒裤修正视觉，避免过于宽松的阔腿裤',
+  },
+  hip_flat: {
+    label: '臀部扁平',
+    avoid_tops: ['超长款遮臀上衣'],
+    prefer_tops: ['正常长度'],
+    avoid_bottoms: ['过于宽松'],
+    prefer_bottoms: ['略修身直筒','有立体感裤型'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户臀部较平，避免过于宽松掩盖轮廓，选有立体感的直筒款',
+  },
+  hip_big: {
+    label: '臀部丰满',
+    avoid_tops: ['短款上衣'],
+    prefer_tops: ['长款遮臀','深色系'],
+    avoid_bottoms: ['浅色紧身裤','低腰裤'],
+    prefer_bottoms: ['深色宽松','直筒'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:['浅色裤子'], prefer:['深色裤子']},
+    prompt: '用户臀部丰满，上衣选长款遮臀，裤子选深色宽松直筒，避免浅色紧身裤',
+  },
+  // 优势
+  leg_long: {
+    label: '腿长',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: [],
+    prefer_bottoms: ['九分裤','阔腿裤','修身裤'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户腿部修长，可大胆尝试九分裤、阔腿裤展示腿型，这是优势要发挥',
+  },
+  waist_thin: {
+    label: '腰细',
+    avoid_tops: [],
+    prefer_tops: ['可tucked in','修身'],
+    avoid_bottoms: [],
+    prefer_bottoms: ['高腰','修身'],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户腰部纤细，可以tucked in展示腰线，高腰裤搭配更显比例好',
+  },
+  shoulder_good: {
+    label: '肩型好',
+    avoid_tops: [],
+    prefer_tops: ['修身','展现肩部线条'],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户肩型优秀，可选修身款展现肩部线条，这是核心优势',
+  },
+  body_fit: {
+    label: '身材匀称',
+    avoid_tops: [],
+    prefer_tops: [],
+    avoid_bottoms: [],
+    prefer_bottoms: [],
+    avoid_shoes: [],
+    prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户身材匀称，大部分款式都适合，重点根据风格偏好推荐',
+  },
+  tall: {
+    label: '个子高',
+    avoid_tops: [], prefer_tops: ['长款','oversize均可驾驭'],
+    avoid_bottoms: [], prefer_bottoms: ['宽腿','阔腿均可'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户身高优势明显，长款外套、阔腿裤等都能很好驾驭',
+  },
+  // 新增选项
+  round_shoulder: {
+    label: '含胸驼背',
+    avoid_tops: ['超宽松无结构感'],
+    prefer_tops: ['有结构感','挺括面料','修身'],
+    avoid_bottoms: [], avoid_shoes: [], prefer_bottoms: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户有含胸驼背问题，选有结构感和挺括面料的上衣，避免过于宽松塌陷的版型',
+  },
+  belly_lower: {
+    label: '小腹突出',
+    avoid_tops: ['短款上衣','紧身'],
+    prefer_tops: ['长款宽松','深色系'],
+    avoid_bottoms: ['低腰'], prefer_bottoms: ['中高腰'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色上衣']},
+    prompt: '用户小腹突出，上衣选长款宽松深色，裤子选中高腰，避免低腰裤和短款上衣',
+  },
+  love_handle: {
+    label: '腰侧赘肉',
+    avoid_tops: ['紧身','tucked in'],
+    prefer_tops: ['宽松覆盖腰侧'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色系']},
+    prompt: '用户腰侧有赘肉，上衣宽松不要tucked in，选覆盖腰侧的款式',
+  },
+  neck_thin: {
+    label: '脖子细长',
+    avoid_tops: ['深V领','过低领口'],
+    prefer_tops: ['高领','圆领','立领'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脖子细长，可选高领或圆领填充颈部视觉，避免深V拉长脖子',
+  },
+  chest_wide: {
+    label: '胸腔宽大',
+    avoid_tops: ['横条纹'],
+    prefer_tops: ['深色系','竖条纹','V领'],
+    avoid_bottoms: [], prefer_bottoms: ['宽松'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色上衣'], prefer:['深色上衣']},
+    prompt: '用户胸腔宽大，上衣选深色和竖条纹收窄视觉，下装宽松平衡比例',
+  },
+  thigh_inner: {
+    label: '大腿内侧肉多',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: ['超紧身','legging'],
+    prefer_bottoms: ['直筒','宽松'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色裤']},
+    prompt: '用户大腿内侧肉多，选直筒或宽松裤，深色系视觉收窄',
+  },
+  knee_out: {
+    label: '膝盖外扩',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: ['七分裤','短裤'],
+    prefer_bottoms: ['长裤','宽松直筒'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:['深色裤']},
+    prompt: '用户膝盖外扩，选长裤遮盖，避免七分裤和短裤暴露膝盖',
+  },
+  hip_wide: {
+    label: '胯部较宽',
+    avoid_tops: ['短款上衣'],
+    prefer_tops: ['长款遮胯'],
+    avoid_bottoms: ['高腰紧身','浅色裤'],
+    prefer_bottoms: ['深色宽松直筒'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色裤'], prefer:['深色裤']},
+    prompt: '用户胯部较宽，上衣选长款遮胯，裤子选深色宽松直筒，避免浅色紧身裤',
+  },
+  ankle_thick: {
+    label: '脚踝粗',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: ['九分裤'],
+    prefer_bottoms: ['长裤'],
+    avoid_shoes: ['踝靴','ankle strap'],
+    prefer_shoes: ['低帮运动鞋','深色鞋'],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脚踝偏粗，选长裤遮盖，避免九分裤和踝靴在脚踝处截断视线',
+  },
+  foot_big: {
+    label: '脚偏大',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: ['宽头鞋','厚底鞋'],
+    prefer_shoes: ['流线型运动鞋','尖头皮鞋'],
+    colors: {avoid:[], prefer:['深色鞋']},
+    prompt: '用户脚偏大，选流线型鞋款视觉收窄，深色系鞋子，避免过宽或厚底鞋',
+  },
+  upper_long: {
+    label: '上身长下身短',
+    avoid_tops: ['长款上衣','oversize长款'],
+    prefer_tops: ['短款','正常长度'],
+    avoid_bottoms: ['低腰'],
+    prefer_bottoms: ['高腰','视觉拉腿'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户上身长下身短，上衣选短款不要遮过腰，裤子选高腰视觉拉长下身',
+  },
+  lower_long: {
+    label: '下身长上身短',
+    avoid_tops: ['短款crop top'],
+    prefer_tops: ['正常长度略长'],
+    avoid_bottoms: ['高腰'],
+    prefer_bottoms: ['中低腰','正常腰位'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户下身偏长，上衣选正常偏长款平衡比例，裤子选中低腰',
+  },
+  head_big: {
+    label: '头偏大',
+    avoid_tops: ['高领','过于复杂领口'],
+    prefer_tops: ['V领','开领','简洁领口'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户头部偏大，选V领或开领增大领口视觉，避免高领让头显得更大',
+  },
+  face_big: {
+    label: '脸偏大',
+    avoid_tops: ['圆领','高领'],
+    prefer_tops: ['V领','立领','尖领'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脸偏大，选V领或尖领通过领口造型视觉收窄脸部',
+  },
+  skinny_fat: {
+    label: '泡芙体型',
+    avoid_tops: ['紧身','贴身'],
+    prefer_tops: ['略宽松','有结构感'],
+    avoid_bottoms: ['紧身'],
+    prefer_bottoms: ['直筒','略宽松'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色紧身'], prefer:['深色系']},
+    prompt: '用户泡芙体型外表看起来不胖但体脂高，避免紧身款，选略宽松有结构感的深色系',
+  },
+  top_heavy: {
+    label: '上重下轻',
+    avoid_tops: ['宽松oversize','横条纹'],
+    prefer_tops: ['修身','深色'],
+    avoid_bottoms: ['过紧'],
+    prefer_bottoms: ['宽松','阔腿','有量感'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色上装大面积'], prefer:['深色上装+浅色下装']},
+    prompt: '用户上重下轻，上装选修身深色收窄，下装选宽松有量感平衡比例',
+  },
+  bottom_heavy: {
+    label: '梨形身材',
+    avoid_tops: ['修身紧身上衣'],
+    prefer_tops: ['略宽松','有量感的上装'],
+    avoid_bottoms: ['紧身','浅色裤'],
+    prefer_bottoms: ['深色宽松直筒'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['浅色下装'], prefer:['深色下装+浅/亮色上装']},
+    prompt: '用户梨形身材下身重，上装选略有量感平衡比例，下装选深色宽松直筒，视觉重心上移',
+  },
+  abs: {
+    label: '腹肌明显',
+    avoid_tops: [], prefer_tops: ['略修身展现线条'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户腹肌明显是优势，可选略修身款展现身材线条',
+  },
+  arm_muscle: {
+    label: '手臂有肌肉',
+    avoid_tops: ['过于宽松遮盖'],
+    prefer_tops: ['略修身展现手臂'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户手臂有肌肉感是优势，可选略修身T恤展现手臂轮廓',
+  },
+  face_small: {
+    label: '脸小',
+    avoid_tops: [], prefer_tops: ['任何领型都好看'],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户脸小是优势，各种领型都适合，可大胆尝试不同风格',
+  },
+  skin_white: {
+    label: '肤色白',
+    avoid_tops: [], prefer_tops: [],
+    avoid_bottoms: [], prefer_bottoms: [],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:['过于苍白的米白'], prefer:['彩色系、深色系都很好看']},
+    prompt: '用户肤色白是优势，彩色和深色都非常好看，可大胆尝试各种色系',
+  },
+  hip_ratio: {
+    label: '臀腰比好',
+    avoid_tops: [], prefer_tops: ['修身展现腰臀比'],
+    avoid_bottoms: [], prefer_bottoms: ['修身直筒展现线条'],
+    avoid_shoes: [], prefer_shoes: [],
+    colors: {avoid:[], prefer:[]},
+    prompt: '用户臀腰比优秀是优势，可选修身款展现完美比例',
+  },
+};
+
+// 当前选中的身体问题
+window._selectedIssues = new Set();
+window._activeParts = new Set();
+
+// 切换部位面板
+function togglePart(part){
+  const btn = document.getElementById('partBtn-' + part);
+  const panel = document.getElementById('panel-' + part);
+  if(!btn || !panel) return;
+
+  if(window._activeParts.has(part)){
+    window._activeParts.delete(part);
+    btn.classList.remove('active');
+    panel.classList.remove('show');
+  } else {
+    window._activeParts.add(part);
+    btn.classList.add('active');
+    panel.classList.add('show');
+  }
+}
+
+function toggleIssue(btn){
+  const issue = btn.dataset.issue;
+  if(window._selectedIssues.has(issue)){
+    window._selectedIssues.delete(issue);
+    btn.classList.remove('selected');
+  } else {
+    window._selectedIssues.add(issue);
+    btn.classList.add('selected');
+  }
+  updateSelectedSummary();
+  updateBodyRules();
+}
+
+function removeIssue(issue){
+  window._selectedIssues.delete(issue);
+  // 取消对应按钮的选中状态
+  const btn = document.querySelector(`.body-issue-btn[data-issue="${issue}"]`);
+  if(btn) btn.classList.remove('selected');
+  updateSelectedSummary();
+  updateBodyRules();
+}
+
+// 已选标签汇总显示
+const ISSUE_LABELS_ZH = {
+  shoulder_narrow:'肩膀窄', shoulder_wide:'肩膀宽/虎背', round_shoulder:'含胸驼背',
+  belly:'小肚腩', belly_lower:'小腹突出', love_handle:'腰侧赘肉',
+  arm_thick:'手臂粗', neck_short:'脖子短', neck_thin:'脖子细长',
+  chest_flat:'胸肌不明显', back_wide:'背部宽厚', chest_wide:'胸腔宽大',
+  thigh_thick:'大腿粗', thigh_inner:'大腿内侧肉多',
+  calf_thick:'小腿粗', o_leg:'O型腿', x_leg:'X型腿', knee_out:'膝盖外扩',
+  hip_flat:'臀部扁平', hip_big:'臀部丰满', hip_wide:'胯部较宽',
+  ankle_thick:'脚踝粗', foot_big:'脚偏大',
+  leg_short:'腿短', upper_long:'上身长下身短', lower_long:'下身长上身短',
+  head_big:'头偏大', face_big:'脸偏大',
+  skinny_fat:'泡芙体型', top_heavy:'上重下轻', bottom_heavy:'梨形身材',
+  leg_long:'腿长', waist_thin:'腰细', shoulder_good:'肩型好',
+  body_fit:'身材匀称', tall:'个子高', abs:'腹肌明显',
+  arm_muscle:'手臂有肌肉', face_small:'脸小', skin_white:'肤色白', hip_ratio:'臀腰比好',
+};
+
+const ADVANTAGE_ISSUES = new Set(['leg_long','waist_thin','shoulder_good','body_fit','tall','abs','arm_muscle','face_small','skin_white','hip_ratio']);
+function issueText(issue){
+  const pair = ISSUE_LABEL_TEXTS[issue];
+  if(pair) return window._lang === 'en' ? pair[1] : pair[0];
+  return ISSUE_LABELS_ZH[issue] || issue;
+}
+
+function updateSelectedSummary(){
+  const el = document.getElementById('selectedSummary');
+  if(!el) return;
+  const issues = Array.from(window._selectedIssues);
+  if(!issues.length){ el.innerHTML=''; return; }
+  el.innerHTML = issues.map(i => {
+    const isAdv = ADVANTAGE_ISSUES.has(i);
+    return `<span class="selected-tag${isAdv?' adv':''}">${issueText(i)}<span class="selected-tag-x" onclick="removeIssue('${i}')">×</span></span>`;
+  }).join('');
+}
+
+function updateBodyRules(){
+  const issues = Array.from(window._selectedIssues);
+  const preview = document.getElementById('bodyRulesPreview');
+  if(!preview) return;
+
+  // 同时根据三围自动推断
+  const thigh = parseInt(document.getElementById('thigh')?.value)||0;
+  const waist = parseInt(document.getElementById('waist')?.value)||0;
+  const hip   = parseInt(document.getElementById('hip')?.value)||0;
+
+  const autoIssues = [];
+  if(thigh > 60) autoIssues.push('大腿偏粗（根据腿围数据）');
+  if(waist > 90) autoIssues.push('腰围偏大（根据三围数据）');
+  if(hip > 105)  autoIssues.push('臀围偏大（根据三围数据）');
+
+  if(issues.length === 0 && autoIssues.length === 0){
+    preview.classList.remove('show');
+    return;
+  }
+
+  const rules = [];
+  issues.forEach(issue => {
+    const r = BODY_RULES[issue];
+    if(!r) return;
+    const avoidParts = [...r.avoid_tops, ...r.avoid_bottoms, ...r.avoid_shoes].filter(Boolean);
+    const preferParts = [...r.prefer_tops, ...r.prefer_bottoms].filter(Boolean);
+    if(avoidParts.length){
+      rules.push(`<div class="rule-item"><span class="rule-icon">⚠️</span><span><b>${r.label}</b>：避免 ${avoidParts.slice(0,3).join('、')}</span></div>`);
+    }
+    if(preferParts.length){
+      rules.push(`<div class="rule-item"><span class="rule-icon">✅</span><span><b>${r.label}</b>：推荐 ${preferParts.slice(0,3).join('、')}</span></div>`);
+    }
+  });
+
+  autoIssues.forEach(a => {
+    rules.push(`<div class="rule-item"><span class="rule-icon">📏</span><span>${a}</span></div>`);
+  });
+
+  preview.innerHTML = '<div style="font-weight:500;margin-bottom:8px;font-size:12px">🎯 AI 将根据以下规则为你选品：</div>' + rules.join('');
+  preview.classList.add('show');
+
+  // 存储供推荐使用
+  window._bodyIssueRules = generateIssuePrompt(issues);
+}
+
+function generateIssuePrompt(issues){
+  if(!issues.length) return '';
+  const prompts = issues.map(i => BODY_RULES[i]?.prompt).filter(Boolean);
+  const avoidBottoms = new Set();
+  const preferBottoms = new Set();
+  const avoidTops = new Set();
+  const preferTops = new Set();
+  const avoidShoes = new Set();
+
+  issues.forEach(i => {
+    const r = BODY_RULES[i];
+    if(!r) return;
+    r.avoid_bottoms.forEach(x => avoidBottoms.add(x));
+    r.prefer_bottoms.forEach(x => preferBottoms.add(x));
+    r.avoid_tops.forEach(x => avoidTops.add(x));
+    r.prefer_tops.forEach(x => preferTops.add(x));
+    r.avoid_shoes.forEach(x => avoidShoes.add(x));
+  });
+
+  return {
+    prompts,
+    avoid_bottoms: [...avoidBottoms],
+    prefer_bottoms: [...preferBottoms],
+    avoid_tops: [...avoidTops],
+    prefer_tops: [...preferTops],
+    avoid_shoes: [...avoidShoes],
+  };
+}
+
+// ── 同步体型照片到试穿区 ────────────────────────────────
+function syncBodyPhotoToTryon(){
+  const frontFile = document.getElementById('frontPhotoInput')?.files[0];
+  const personPreview = document.getElementById('personPreview');
+  const personArea = document.getElementById('personArea');
+  const personHint = document.getElementById('personHint');
+  const personBtns = document.getElementById('personBtns');
+  if(!personPreview) return;
+
+  if(frontFile){
+    // 直接用体型照片
+    const reader = new FileReader();
+    reader.onload = e => {
+      personPreview.src = e.target.result;
+      personPreview.style.display = 'block';
+      if(personArea) personArea.style.cursor = 'default';
+      // 也把文件塞进 personInput
+      const dt = new DataTransfer(); dt.items.add(frontFile);
+      const pi = document.getElementById('personInput');
+      if(pi) pi.files = dt.files;
+    };
+    reader.readAsDataURL(frontFile);
+  } else {
+    // 没有体型照片，显示上传按钮
+    personPreview.style.display = 'none';
+    if(personHint){ personHint.style.display='block'; }
+    if(personBtns){ personBtns.style.display='flex'; }
+    if(personArea){ personArea.style.cursor='pointer';
+      personArea.onclick = ()=>document.getElementById('personInput').click(); }
+  }
+}
+
+// ── Tinder 滑卡逻辑 ─────────────────────────────────────
+function getOutfitProducts(item){
+  if(item.products?.length) return item.products.filter(x=>x?.product);
+  return [
+    {key:'top', product:item.top},
+    {key:'bottom', product:item.bottom},
+    {key:'shoes', product:item.shoe},
+    {key:'outerwear', product:item.outerwear},
+    {key:'hat', product:item.hat},
+    {key:'accessory', product:item.accessory},
+  ].filter(x=>x.product);
+}
+
+function getBudgetTotal(budgets){
+  return Object.values(budgets || {}).reduce((sum,val)=>sum+(parseInt(val)||0),0);
+}
+
+function buildCard(item, idx, total){
+  const {outfit} = item;
+  const products = getOutfitProducts(item);
+  const over = item.total > (window._budgetTotal||999);
+  const gridCols = Math.min(products.length, 3);
+  return `
+  <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
+    <div class="swipe-stamp like">${ui('like')}</div>
+    <div class="swipe-stamp nope">${ui('skip')}</div>
+    <div style="padding:14px 16px 6px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:11px;color:var(--muted)">${ui('setCounter', idx+1, total)}</div>
+        <div style="font-size:15px;font-weight:600">${outfit.name}</div>
+      </div>
+      <span class="safe-badge">${ui('safety')} ${outfit.safety||ui('high')}</span>
+    </div>
+    <div class="card-outfit-img" style="grid-template-columns:repeat(${gridCols},1fr)">
+      ${products.map(({key,product})=>`<div class="ci"><img src="${product.img}" onerror="this.src=''" alt="${ui(key)}"></div>`).join('')}
+    </div>
+    <div class="card-outfit-info">
+      <div class="card-outfit-reason">💡 ${outfit.reason||''}</div>
+      <div class="card-outfit-prices">
+        ${products.map(({key,product})=>`<span class="card-price-tag">${CAT[key]?.icon||''} CA$${product.price}</span>`).join('')}
+      </div>
+      <div class="card-outfit-total${over?' over':''}">${ui('total')} CA$${item.total.toFixed(2)}${over?ui('overBudget'):''}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:6px;padding:10px 16px 14px;">
+      ${products.map(({key,product})=>`<a href="${product.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui(key)} ↗</a>`).join('')}
+    </div>
+  </div>`;
+}
+
+function initSwipe(){
+  const outfits = window._swipeOutfits || [];
+  if(!outfits.length) return;
+  window._budgetTotal = getBudgetTotal(window._lastUserInfo?.budgets);
+
+  const container = document.getElementById('swipeContainer');
+  if(!container) return;
+
+  // 渲染所有卡片（后面的在下面）
+  container.innerHTML = '';
+  [...outfits].reverse().forEach((item,ri)=>{
+    const idx = outfits.length - 1 - ri;
+    const div = document.createElement('div');
+    div.innerHTML = buildCard(item, idx, outfits.length);
+    const card = div.firstElementChild;
+    // 堆叠效果
+    const offset = (outfits.length - 1 - idx) * 4;
+    card.style.transform = `scale(${1 - offset*0.02}) translateY(${offset*2}px)`;
+    card.style.zIndex = idx + 1;
+    container.appendChild(card);
+    bindSwipe(card, idx);
+  });
+  updateSwipeCounter();
+}
+
+function updateSwipeCounter(){
+  const outfits = window._swipeOutfits || [];
+  const idx = window._swipeIdx || 0;
+  const el = document.getElementById('swipeCounter');
+  if(!el) return;
+  if(idx >= outfits.length){
+    el.textContent = ui('allDoneCounter');
+    const container = document.getElementById('swipeContainer');
+    if(container){
+      container.innerHTML = `<div class="done-card">
+        <div class="done-icon">🎉</div>
+        <div class="done-title">${t('doneTitle')}</div>
+        <div class="done-sub">${ui('likedCount', window._likedOutfits.length)}</div>
+        <button class="btn" style="width:auto;padding:0 24px" onclick="restartSwipe()">${t('restartBtn')}</button>
+      </div>`;
+    }
+  } else {
+    el.textContent = ui('setCounter', idx+1, outfits.length);
+  }
+}
+
+function restartSwipe(){
+  window._swipeIdx = 0;
+  initSwipe();
+}
+
+function swipeCard(dir){
+  const idx = window._swipeIdx;
+  const outfits = window._swipeOutfits || [];
+  if(idx >= outfits.length) return;
+
+  const card = document.getElementById(`card-${idx}`);
+  if(!card) return;
+
+  // 显示 stamp
+  const stamp = card.querySelector(dir==='right'?'.swipe-stamp.like':'.swipe-stamp.nope');
+  if(stamp) stamp.style.opacity = '1';
+
+  card.classList.add(dir==='right'?'fly-right':'fly-left');
+
+  if(dir==='right'){
+    window._likedOutfits.push(outfits[idx]);
+    updateLikedSection();
+    // 自动填入试穿套装
+    const fashnSel = document.getElementById('fashnSel');
+    if(fashnSel) fashnSel.value = outfits[idx].outfit.id;
+    autoFill();
+  }
+
+  card.addEventListener('animationend', ()=>{
+    card.remove();
+    window._swipeIdx++;
+    updateSwipeCounter();
+    // 更新下一张卡片的堆叠效果
+    const nextCard = document.getElementById(`card-${window._swipeIdx}`);
+    if(nextCard){
+      nextCard.style.transform = 'scale(1) translateY(0)';
+      nextCard.style.transition = 'transform .3s';
+    }
+  }, {once:true});
+}
+
+function quickTryon(){
+  const idx = window._swipeIdx;
+  const outfits = window._swipeOutfits || [];
+  if(idx >= outfits.length) return;
+  const o = outfits[idx].outfit;
+  const fashnSel = document.getElementById('fashnSel');
+  if(fashnSel) fashnSel.value = o.id;
+  autoFill();
+  // 滚动到试穿区
+  const tryonEl = document.querySelector('.tryon-section');
+  if(tryonEl) tryonEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function updateLikedSection(){
+  const liked = window._likedOutfits || [];
+  const sec = document.getElementById('likedSection');
+  const grid = document.getElementById('likedGrid');
+  const cnt = document.getElementById('likedCount');
+  if(!sec) return;
+  sec.style.display = liked.length ? 'block' : 'none';
+  if(cnt) cnt.textContent = ui('likedCount', liked.length);
+  if(!grid) return;
+  grid.innerHTML = liked.map((item,i)=>{
+    const products = getOutfitProducts(item);
+    const cols = Math.min(products.length, 3);
+    return `<div class="liked-item" onclick="showLikedDetail(${i})">
+      <div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:4px;margin-bottom:6px">
+        ${products.map(({product})=>`<img src="${product.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">`).join('')}
+      </div>
+      <div class="liked-item-name">${item.outfit.name}</div>
+      <div class="liked-item-price">CA$${item.total.toFixed(2)}</div>
+    </div>`;
+  }).join('');
+}
+
+function showLikedDetail(i){
+  const item = (window._likedOutfits||[])[i];
+  if(!item) return;
+  const fashnSel = document.getElementById('fashnSel');
+  if(fashnSel) fashnSel.value = item.outfit.id;
+  autoFill();
+  const tryonEl = document.querySelector('.tryon-section');
+  if(tryonEl) tryonEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function bindSwipe(card, idx){
+  let startX=0, startY=0, curX=0, isDragging=false;
+
+  const onStart = e => {
+    if(window._swipeIdx !== idx) return;
+    isDragging = true;
+    startX = (e.touches?e.touches[0].clientX:e.clientX);
+    startY = (e.touches?e.touches[0].clientY:e.clientY);
+    card.classList.add('dragging');
+  };
+  const onMove = e => {
+    if(!isDragging) return;
+    curX = (e.touches?e.touches[0].clientX:e.clientX) - startX;
+    const rot = curX * 0.08;
+    card.style.transform = `translateX(${curX}px) rotate(${rot}deg)`;
+    const likeStamp = card.querySelector('.swipe-stamp.like');
+    const nopeStamp = card.querySelector('.swipe-stamp.nope');
+    if(likeStamp) likeStamp.style.opacity = Math.min(curX/80, 1);
+    if(nopeStamp) nopeStamp.style.opacity = Math.min(-curX/80, 1);
+  };
+  const onEnd = () => {
+    if(!isDragging) return;
+    isDragging = false;
+    card.classList.remove('dragging');
+    if(curX > 80)       swipeCard('right');
+    else if(curX < -80) swipeCard('left');
+    else {
+      card.style.transform = '';
+      card.style.transition = 'transform .3s';
+      setTimeout(()=>card.style.transition='', 300);
+      const likeStamp = card.querySelector('.swipe-stamp.like');
+      const nopeStamp = card.querySelector('.swipe-stamp.nope');
+      if(likeStamp) likeStamp.style.opacity = '0';
+      if(nopeStamp) nopeStamp.style.opacity = '0';
+    }
+    curX = 0;
+  };
+
+  card.addEventListener('mousedown', onStart);
+  card.addEventListener('mousemove', onMove);
+  card.addEventListener('mouseup', onEnd);
+  card.addEventListener('mouseleave', onEnd);
+  card.addEventListener('touchstart', onStart, {passive:true});
+  card.addEventListener('touchmove', onMove, {passive:true});
+  card.addEventListener('touchend', onEnd);
 }
 
 function updateSlider(cat,val){
   val=parseInt(val);
-  const maxMap={top:200,bottom:200,shoes:250};
-  const ids={top:'topBudgetDisplay',bottom:'bottomBudgetDisplay',shoes:'shoesBudgetDisplay'};
+  const maxMap={top:500,bottom:500,shoes:600,outerwear:800,hat:200,accessory:300};
+  const ids={
+    top:'topBudgetDisplay',
+    bottom:'bottomBudgetDisplay',
+    shoes:'shoesBudgetDisplay',
+    outerwear:'outerwearBudgetDisplay',
+    hat:'hatBudgetDisplay',
+    accessory:'accessoryBudgetDisplay'
+  };
   const el=document.getElementById(ids[cat]);
+  if(!el) return;
   el.textContent=val>=maxMap[cat]?`CA$${val}+`:`CA$${val}`;
   updateTotal();
 }
 function updateTotal(){
-  const t=parseInt(document.getElementById('topBudget').value);
-  const b=parseInt(document.getElementById('bottomBudget').value);
-  const s=parseInt(document.getElementById('shoesBudget').value);
-  document.getElementById('totalDisplay').textContent=`CA$${t+b+s}`;
+  const total = ['top','bottom','shoes','outerwear','hat','accessory']
+    .reduce((sum,key)=>sum+(parseInt(document.getElementById(`${key}Budget`)?.value)||0),0);
+  document.getElementById('totalDisplay').textContent=`CA$${total}`;
 }
+
+function previewBodyPhoto(inputId, previewId, boxId){
+  const file=document.getElementById(inputId).files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById(previewId);
+    const box=document.getElementById(boxId);
+    img.src=e.target.result;img.style.display='block';
+    box.querySelectorAll('div').forEach(el=>el.style.display='none');
+    box.classList.add('filled');
+  };
+  reader.readAsDataURL(file);
+}
+
+function openBodyCamera(side){
+  window._cameraSide = side;
+  openCamera();
+}
+
+// analyzeBody 已整合进 getRecommend()
 
 function switchTab(name){
   ['fashn','claude'].forEach((n,i)=>{
@@ -444,8 +2260,13 @@ async function uploadImageToBackend(file){
 async function runFashn(){
   const key=document.getElementById('fashnKey').value.trim();
   if(!key){alert('请填写 Fashn.ai API Key');return;}
-  const personFile=document.getElementById('personInput').files[0];
-  if(!personFile){alert('请上传你的照片');return;}
+  // 优先用 personInput，其次用体型照片
+  let personFile=document.getElementById('personInput').files[0];
+  if(!personFile){
+    const frontFile=document.getElementById('frontPhotoInput')?.files[0];
+    if(frontFile){ personFile=frontFile; }
+    else{ alert('请上传你的照片或在第一步上传体型照片');return; }
+  }
   const garmentFile=document.getElementById('garmentInput').files[0];
   if(!garmentFile&&!window._garmentUrl){alert('请上传衣服图片或点击"自动填入"');return;}
 
@@ -471,19 +2292,13 @@ async function runFashn(){
       garmentUrl=window._garmentUrl;
     }
 
-    // 验证URL格式
-    if(!personUrl.startsWith('https://')){
-      throw new Error(`人物照片URL格式错误: ${personUrl}`);
-    }
-
     status.textContent='提交试穿任务…';
-    // BUG FIX: category 使用 Fashn.ai v1.6 正确值 'upper_body'
     const payload={
       model_name:'tryon-v1.6',
       inputs:{
         model_image: personUrl,
         garment_image: garmentUrl,
-        category: 'upper_body',
+        category: 'tops',
         mode: 'balanced'
       }
     };
@@ -563,63 +2378,471 @@ async function runClaude(){
   finally{btn.disabled=false;btn.textContent='💬 生成穿搭效果分析';}
 }
 
+async function submitFeedback(){
+  const typeEl = document.getElementById('feedbackType');
+  const contactEl = document.getElementById('feedbackContact');
+  const messageEl = document.getElementById('feedbackMessage');
+  const statusEl = document.getElementById('feedbackStatus');
+  const btn = document.getElementById('feedbackBtn');
+  const message = (messageEl?.value || '').trim();
+
+  if(!message){
+    statusEl.textContent = ui('feedbackEmpty');
+    statusEl.className = 'feedback-status err';
+    messageEl?.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  statusEl.textContent = ui('feedbackSending');
+  statusEl.className = 'feedback-status';
+
+  try{
+    const resp = await fetch(`${BACKEND}/api/feedback`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        feedback_type: typeEl?.value || 'general',
+        contact: contactEl?.value || '',
+        message,
+        page: location.href,
+        user_agent: navigator.userAgent,
+      }),
+    });
+    if(!resp.ok){
+      const err = await resp.json().catch(()=>({}));
+      throw new Error(err.detail || `提交失败 ${resp.status}`);
+    }
+    messageEl.value = '';
+    statusEl.textContent = ui('feedbackOk');
+    statusEl.className = 'feedback-status ok';
+  }catch(err){
+    statusEl.textContent = err.message || ui('feedbackFail');
+    statusEl.className = 'feedback-status err';
+  }finally{
+    btn.disabled = false;
+  }
+}
+
 async function init(){
   await loadProducts();
   document.getElementById('app').innerHTML=`
+    <div class="card auth-card">
+      <div>
+        <div class="auth-title" data-ui="profileTitle">${ui('profileTitle')}</div>
+        <div class="auth-sub" data-ui="profileSub">${ui('profileSub')}</div>
+        <div class="auth-status" id="authStatus"></div>
+      </div>
+      <div>
+        <div id="authSignedOut">
+          <div class="auth-fields">
+            <input id="authEmail" type="email" autocomplete="email" data-ui-placeholder="email" placeholder="${ui('email')}">
+            <input id="authPassword" type="password" autocomplete="current-password" data-ui-placeholder="password" placeholder="${ui('password')}">
+          </div>
+          <div class="auth-actions">
+            <button class="auth-btn primary" data-ui="login" onclick="loginUser('login')">${ui('login')}</button>
+            <button class="auth-btn" data-ui="register" onclick="loginUser('register')">${ui('register')}</button>
+          </div>
+        </div>
+        <div id="authSignedIn" style="display:none">
+          <div class="auth-sub" id="authUserEmail"></div>
+          <div class="auth-actions">
+            <button class="auth-btn primary" data-ui="saveProfile" onclick="saveProfile()">${ui('saveProfile')}</button>
+            <button class="auth-btn" data-ui="logout" onclick="logoutUser()">${ui('logout')}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 进度条 -->
+    <div class="progress-steps">
+      <div class="progress-step active" id="step1">
+        <span class="progress-step-icon">📸</span>
+        <span class="progress-step-label">上传照片</span>
+      </div>
+      <div class="progress-step" id="step2">
+        <span class="progress-step-icon">👤</span>
+        <span class="progress-step-label">身体特征</span>
+      </div>
+      <div class="progress-step" id="step3">
+        <span class="progress-step-icon">🎨</span>
+        <span class="progress-step-label">风格偏好</span>
+      </div>
+      <div class="progress-step" id="step4">
+        <span class="progress-step-icon">✨</span>
+        <span class="progress-step-label">获取推荐</span>
+      </div>
+    </div>
+
+    <!-- 体型分析卡片 -->
+    <div class="body-analysis-section" id="bodyAnalysisCard">
+      <p class="section-title"><span data-i18n="bodyCardTitle">上传全身照（可选，提升推荐精准度）</span></p>
+      <div class="body-photo-row">
+        <div>
+          <div class="input-label" style="margin-bottom:8px" data-i18n="frontPhotoLabel">正面全身照</div>
+          <div class="body-photo-box" id="frontPhotoBox" onclick="document.getElementById('frontPhotoInput').click()">
+            <div style="font-size:24px">🧍</div>
+            <div style="font-size:13px;font-weight:500" data-i18n="frontPhotoLabel">点击上传正面照</div>
+            <div style="font-size:11px;color:var(--muted)" data-i18n="frontPhotoHint">站直，全身入镜</div>
+            <img class="body-preview" id="frontPreview">
+          </div>
+          <input type="file" id="frontPhotoInput" accept="image/jpeg,image/png" style="display:none" onchange="previewBodyPhoto('frontPhotoInput','frontPreview','frontPhotoBox')">
+          <div class="photo-btns" style="margin-top:8px">
+            <button class="photo-btn" onclick="document.getElementById('frontPhotoInput').click()" data-i18n="albumBtn">📁 相册</button>
+            <button class="photo-btn primary" onclick="openBodyCamera('front')" data-i18n="cameraBtn">📷 拍照</button>
+          </div>
+        </div>
+        <div>
+          <div class="input-label" style="margin-bottom:8px" data-i18n="sidePhotoLabel">侧面全身照（可选）</div>
+          <div class="body-photo-box" id="sidePhotoBox" onclick="document.getElementById('sidePhotoInput').click()">
+            <div style="font-size:24px">🚶</div>
+            <div style="font-size:13px;font-weight:500" data-i18n="sidePhotoLabel">点击上传侧面照</div>
+            <div style="font-size:11px;color:var(--muted)" data-i18n="sidePhotoHint">帮助 AI 判断体型</div>
+            <img class="body-preview" id="sidePreview">
+          </div>
+          <input type="file" id="sidePhotoInput" accept="image/jpeg,image/png" style="display:none" onchange="previewBodyPhoto('sidePhotoInput','sidePreview','sidePhotoBox')">
+          <div class="photo-btns" style="margin-top:8px">
+            <button class="photo-btn" onclick="document.getElementById('sidePhotoInput').click()" data-i18n="albumBtn">📁 相册</button>
+            <button class="photo-btn primary" onclick="openBodyCamera('side')" data-i18n="cameraBtn">📷 拍照</button>
+          </div>
+        </div>
+      </div>
+      <p class="section-title" style="margin-bottom:10px"><span data-i18n="measureTitle">身体三围（可选，帮助精准推荐）</span></p>
+      <div class="measure-grid">
+        <div class="measure-item"><label data-i18n="chestLabel">胸围 (cm)</label><input type="number" id="chest" placeholder="例：90" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="waistLabel">腰围 (cm)</label><input type="number" id="waist" placeholder="例：75" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="hipLabel">臀围 (cm)</label><input type="number" id="hip" placeholder="例：95" oninput="updateBodyRules()"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div class="measure-item"><label data-i18n="thighLabel">大腿围 (cm)</label><input type="number" id="thigh" placeholder="例：58" oninput="updateBodyRules()"></div>
+        <div class="measure-item"><label data-i18n="calfLabel">小腿围 (cm)</label><input type="number" id="calf" placeholder="例：37" oninput="updateBodyRules()"></div>
+      </div>
+
+      <div class="body-issues-section">
+        <div class="body-issues-title"><span data-i18n="bodyIssuesTitle">身体特征（分步选择，AI 精准适配）</span></div>
+
+        <!-- 第一步：选部位 -->
+        <div class="body-step">
+          <div class="body-step-label"><span data-i18n="step1Label">第一步：选择你想改善的部位</span></div>
+          <div class="body-part-btns">
+            <button class="body-part-btn" id="partBtn-upper" onclick="togglePart('upper')" data-i18n="upperBtn">👆 上半身</button>
+            <button class="body-part-btn" id="partBtn-lower" onclick="togglePart('lower')" data-i18n="lowerBtn">👇 下半身</button>
+            <button class="body-part-btn" id="partBtn-overall" onclick="togglePart('overall')" data-i18n="overallBtn">📐 整体比例</button>
+            <button class="body-part-btn advantage" id="partBtn-adv" onclick="togglePart('adv')" data-i18n="advBtn" style="border-color:#1d6b44;color:#1d6b44">✨ 我的优势</button>
+          </div>
+        </div>
+
+        <!-- 上半身详细 -->
+        <div class="body-detail-panel" id="panel-upper">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">肩部</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="shoulder_narrow" onclick="toggleIssue(this)">肩膀窄</button>
+              <button class="body-issue-btn" data-issue="shoulder_wide" onclick="toggleIssue(this)">肩膀宽/虎背</button>
+              <button class="body-issue-btn" data-issue="round_shoulder" onclick="toggleIssue(this)">含胸驼背</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">腹部</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="belly" onclick="toggleIssue(this)">小肚腩</button>
+              <button class="body-issue-btn" data-issue="belly_lower" onclick="toggleIssue(this)">小腹突出</button>
+              <button class="body-issue-btn" data-issue="love_handle" onclick="toggleIssue(this)">腰侧赘肉</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">手臂/脖子</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="arm_thick" onclick="toggleIssue(this)">手臂粗</button>
+              <button class="body-issue-btn" data-issue="neck_short" onclick="toggleIssue(this)">脖子短</button>
+              <button class="body-issue-btn" data-issue="neck_thin" onclick="toggleIssue(this)">脖子细长</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">胸背</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="chest_flat" onclick="toggleIssue(this)">胸肌不明显</button>
+              <button class="body-issue-btn" data-issue="back_wide" onclick="toggleIssue(this)">背部宽厚</button>
+              <button class="body-issue-btn" data-issue="chest_wide" onclick="toggleIssue(this)">胸腔宽大</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 下半身详细 -->
+        <div class="body-detail-panel" id="panel-lower">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">大腿</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="thigh_thick" onclick="toggleIssue(this)">大腿粗</button>
+              <button class="body-issue-btn" data-issue="thigh_inner" onclick="toggleIssue(this)">大腿内侧肉多</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">小腿/腿型</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="calf_thick" onclick="toggleIssue(this)">小腿粗</button>
+              <button class="body-issue-btn" data-issue="o_leg" onclick="toggleIssue(this)">O型腿</button>
+              <button class="body-issue-btn" data-issue="x_leg" onclick="toggleIssue(this)">X型腿</button>
+              <button class="body-issue-btn" data-issue="knee_out" onclick="toggleIssue(this)">膝盖外扩</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">臀部</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="hip_flat" onclick="toggleIssue(this)">臀部扁平</button>
+              <button class="body-issue-btn" data-issue="hip_big" onclick="toggleIssue(this)">臀部丰满</button>
+              <button class="body-issue-btn" data-issue="hip_wide" onclick="toggleIssue(this)">胯部较宽</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">脚踝/脚</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="ankle_thick" onclick="toggleIssue(this)">脚踝粗</button>
+              <button class="body-issue-btn" data-issue="foot_big" onclick="toggleIssue(this)">脚偏大</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 整体比例详细 -->
+        <div class="body-detail-panel" id="panel-overall">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">腿部比例</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="leg_short" onclick="toggleIssue(this)">腿短</button>
+              <button class="body-issue-btn" data-issue="upper_long" onclick="toggleIssue(this)">上身长下身短</button>
+              <button class="body-issue-btn" data-issue="lower_long" onclick="toggleIssue(this)">下身长上身短</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">头身比例</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="head_big" onclick="toggleIssue(this)">头偏大</button>
+              <button class="body-issue-btn" data-issue="face_big" onclick="toggleIssue(this)">脸偏大</button>
+            </div>
+          </div>
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">整体体型</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn" data-issue="skinny_fat" onclick="toggleIssue(this)">泡芙体型（外瘦内胖）</button>
+              <button class="body-issue-btn" data-issue="top_heavy" onclick="toggleIssue(this)">上重下轻</button>
+              <button class="body-issue-btn" data-issue="bottom_heavy" onclick="toggleIssue(this)">下重上轻（梨形）</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 优势详细 -->
+        <div class="body-detail-panel" id="panel-adv">
+          <div class="body-detail-group">
+            <div class="body-detail-group-label">身材优势</div>
+            <div class="body-issues-grid">
+              <button class="body-issue-btn advantage" data-issue="leg_long" onclick="toggleIssue(this)">腿长</button>
+              <button class="body-issue-btn advantage" data-issue="waist_thin" onclick="toggleIssue(this)">腰细</button>
+              <button class="body-issue-btn advantage" data-issue="shoulder_good" onclick="toggleIssue(this)">肩型好</button>
+              <button class="body-issue-btn advantage" data-issue="body_fit" onclick="toggleIssue(this)">身材匀称</button>
+              <button class="body-issue-btn advantage" data-issue="tall" onclick="toggleIssue(this)">个子高</button>
+              <button class="body-issue-btn advantage" data-issue="abs" onclick="toggleIssue(this)">腹肌明显</button>
+              <button class="body-issue-btn advantage" data-issue="arm_muscle" onclick="toggleIssue(this)">手臂有肌肉感</button>
+              <button class="body-issue-btn advantage" data-issue="face_small" onclick="toggleIssue(this)">脸小</button>
+              <button class="body-issue-btn advantage" data-issue="skin_white" onclick="toggleIssue(this)">肤色白</button>
+              <button class="body-issue-btn advantage" data-issue="hip_ratio" onclick="toggleIssue(this)">臀腰比好</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 已选标签汇总 -->
+        <div class="selected-summary" id="selectedSummary"></div>
+      </div>
+
+      <div class="body-rules-preview" id="bodyRulesPreview"></div>
+      <div class="analysis-result" id="bodyAnalysisResult">
+        <div class="analysis-result-title">${ui('aiAnalysisTitle')}</div>
+        <div class="analysis-result-text" id="bodyAnalysisText"></div>
+        <div class="analysis-tags" id="bodyAnalysisTags"></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" data-i18n="photoHint">📸 照片仅在本地使用，不会上传或保存</div>
+    </div>
+
     <div class="card form-card">
-      <p class="section-title">基本信息</p>
+      <p class="section-title"><span data-i18n="formTitle">基本信息与偏好</span></p>
       <div class="fields">
-        <div class="field"><label>身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
-        <div class="field"><label>体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
-        <div class="field"><label>肤色</label><select id="skin"><option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option></select></div>
-        <div class="field"><label>脸型</label><select id="face"><option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option></select></div>
-        <div class="field"><label>场景</label><select id="scene"><option>日常</option><option>上课</option><option selected>约会</option><option>通勤</option><option>运动</option><option>正式场合</option><option>周末出行</option><option>聚会</option></select></div>
-        <div class="field"><label>风格偏好</label><select id="style"><option>简单百搭</option><option selected>干净清爽</option><option>韩系</option><option>日系</option><option>美式休闲</option><option>极简</option><option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option></select></div>
+        <div class="field"><label data-i18n="ageLabel">年龄</label><select id="age"><option>18-22岁</option><option selected>23-28岁</option><option>29-35岁</option><option>36-45岁</option><option>45岁以上</option></select></div>
+        <div class="field"><label data-i18n="heightLabel">身高 (cm)</label><input type="number" id="height" value="175" min="150" max="220"></div>
+        <div class="field"><label data-i18n="weightLabel">体重 (kg)</label><input type="number" id="weight" value="70" min="40" max="150"></div>
+        <div class="field"><label data-i18n="skinLabel">肤色</label><select id="skin"><option>普通肤色</option><option>偏白肤色</option><option>偏黄肤色</option><option>偏深肤色</option></select></div>
+        <div class="field"><label data-i18n="faceLabel">脸型</label><select id="face"><option>普通脸型</option><option>圆脸</option><option>长脸</option><option>方脸</option><option>瓜子脸</option></select></div>
+        <div class="field"><label data-i18n="sceneLabel">场景</label><select id="scene"><option>日常</option><option>上课</option><option selected>约会</option><option>通勤</option><option>运动</option><option>正式场合</option><option>周末出行</option><option>聚会</option></select></div>
+        <div class="field"><label data-i18n="styleLabel">风格偏好</label><select id="style"><option>简单百搭</option><option selected>干净清爽</option><option>韩系</option><option>日系</option><option>美式休闲</option><option>极简</option><option>街头</option><option>学院风</option><option>工装</option><option>商务休闲</option></select></div>
       </div>
       <div class="fields-2">
-        <div class="field"><label>不喜欢的款式（可选）</label><input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…"></div>
-        <div class="field"><label>已有的主要单品（可选）</label><input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…"></div>
+        <div class="field"><label data-i18n="dislikeLabel">不喜欢的款式（可选）</label><input type="text" id="dislike" placeholder="例：不喜欢卫衣、花哨图案…" data-i18n="dislikePlaceholder"></div>
+        <div class="field"><label data-i18n="existingLabel">已有的主要单品（可选）</label><input type="text" id="existing" placeholder="例：白色运动鞋、黑色牛仔裤…" data-i18n="existingPlaceholder"></div>
       </div>
       <div class="field" style="margin-bottom:20px">
-        <label>补充描述（可选）</label>
-        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲…"></textarea>
+        <label data-i18n="descLabel">补充描述（可选）</label>
+        <textarea id="desc" placeholder="例：我脸比较圆，想显瘦一点；工作环境比较休闲…" data-i18n="descPlaceholder"></textarea>
       </div>
       <div class="budget-section">
-        <p class="section-title">分类预算设置</p>
+        <p class="section-title"><span data-i18n="budgetTitle">分类预算设置</span></p>
         <div class="budget-total-bar">
-          <span class="budget-total-label">套装预计总价</span>
-          <span class="budget-total-value" id="totalDisplay">CA$230</span>
+          <span class="budget-total-label"><span data-i18n="budgetTotal" class="budget-total-label">套装预计总价</span>
+          <span class="budget-total-value" id="totalDisplay">CA$750</span>
         </div>
         <div class="budget-sliders">
           <div class="budget-slider-item">
-            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label">上衣预算</span></div><span class="slider-value" id="topBudgetDisplay">CA$60</span></div>
-            <input type="range" id="topBudget" min="20" max="200" step="10" value="60" oninput="updateSlider('top',this.value)">
-            <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label" data-ui="topBudget">上衣预算</span></div><span class="slider-value" id="topBudgetDisplay">CA$100</span></div>
+            <input type="range" id="topBudget" min="20" max="500" step="10" value="100" oninput="updateSlider('top',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$500+</span></div>
           </div>
           <div class="budget-slider-item">
-            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label">裤子预算</span></div><span class="slider-value" id="bottomBudgetDisplay">CA$80</span></div>
-            <input type="range" id="bottomBudget" min="20" max="200" step="10" value="80" oninput="updateSlider('bottom',this.value)">
-            <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label" data-ui="bottomBudget">裤子预算</span></div><span class="slider-value" id="bottomBudgetDisplay">CA$120</span></div>
+            <input type="range" id="bottomBudget" min="20" max="500" step="10" value="120" oninput="updateSlider('bottom',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$500+</span></div>
           </div>
           <div class="budget-slider-item">
-            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label">鞋子预算</span></div><span class="slider-value" id="shoesBudgetDisplay">CA$90</span></div>
-            <input type="range" id="shoesBudget" min="20" max="250" step="10" value="90" oninput="updateSlider('shoes',this.value)">
-            <div class="slider-range"><span>CA$20</span><span>CA$250+</span></div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label" data-ui="shoesBudget">鞋子预算</span></div><span class="slider-value" id="shoesBudgetDisplay">CA$150</span></div>
+            <input type="range" id="shoesBudget" min="20" max="600" step="10" value="150" oninput="updateSlider('shoes',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$600+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>🧥</span><span class="slider-label" data-ui="outerwearBudget">外套预算</span></div><span class="slider-value" id="outerwearBudgetDisplay">CA$200</span></div>
+            <input type="range" id="outerwearBudget" min="0" max="800" step="10" value="200" oninput="updateSlider('outerwear',this.value)">
+            <div class="slider-range"><span>CA$0</span><span>CA$800+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>🧢</span><span class="slider-label" data-ui="hatBudget">帽子预算</span></div><span class="slider-value" id="hatBudgetDisplay">CA$80</span></div>
+            <input type="range" id="hatBudget" min="0" max="200" step="10" value="80" oninput="updateSlider('hat',this.value)">
+            <div class="slider-range"><span>CA$0</span><span>CA$200+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>⌚</span><span class="slider-label" data-ui="accessoryBudget">配饰预算</span></div><span class="slider-value" id="accessoryBudgetDisplay">CA$100</span></div>
+            <input type="range" id="accessoryBudget" min="0" max="300" step="10" value="100" oninput="updateSlider('accessory',this.value)">
+            <div class="slider-range"><span>CA$0</span><span>CA$300+</span></div>
           </div>
         </div>
       </div>
-      <button class="btn" id="mainBtn" onclick="getRecommend()">🤖 AI 个性化穿搭推荐</button>
+      <button class="unified-btn" id="mainBtn" onclick="getRecommend()">
+        🤖 AI 分析体型 + 个性化推荐
+        <span class="unified-btn-sub">自动分析体型特征，推荐最适合你的穿搭</span>
+      </button>
     </div>
     <div class="ai-status" id="aiStatus">
       <div class="ai-status-icon">🤖</div>
-      <div class="ai-status-text">AI 正在从商品库中为你挑选最佳搭配…</div>
+      <div class="ai-status-text" id="aiStatusText">AI 正在分析你的体型…</div>
       <div class="ai-thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
     </div>
-    <div class="result" id="result"></div>`;
+    <div class="result" id="result"></div>
+    <div class="card feedback-card">
+      <div class="feedback-title">写下你的反馈</div>
+      <div class="feedback-sub">推荐哪里不准、哪里不好用、想加什么功能，都可以直接告诉我。</div>
+      <div class="feedback-grid">
+        <select id="feedbackType" aria-label="反馈类型">
+          <option value="general">一般反馈</option>
+          <option value="bug">功能问题</option>
+          <option value="recommendation">推荐不准</option>
+          <option value="feature">想加功能</option>
+        </select>
+        <input id="feedbackContact" type="text" placeholder="联系方式（可选）" maxlength="200">
+      </div>
+      <textarea id="feedbackMessage" maxlength="2000" placeholder="例如：推荐的裤子预算太高，或者我想加保存穿搭功能"></textarea>
+      <div class="feedback-actions">
+        <button class="feedback-btn" id="feedbackBtn" onclick="submitFeedback()">提交反馈</button>
+        <span class="feedback-status" id="feedbackStatus"></span>
+      </div>
+    </div>`;
   updateTotal();
+  updateAuthUI();
+  loadProfile();
+  // 表单渲染完后应用语言
+  setTimeout(applyLang, 100);
 }
 
 init();
+
+let cameraStream = null;
+
+async function openCamera(){
+  const modal = document.getElementById('cameraModal');
+  const video = document.getElementById('cameraVideo');
+  modal.classList.add('show');
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
+    video.srcObject = cameraStream;
+  } catch(e) {
+    alert('无法访问摄像头：' + e.message + '\n请检查浏览器权限设置。');
+    modal.classList.remove('show');
+  }
+}
+
+function closeCamera(){
+  if(cameraStream){ cameraStream.getTracks().forEach(t=>t.stop()); cameraStream=null; }
+  document.getElementById('cameraModal').classList.remove('show');
+  document.getElementById('cameraVideo').srcObject = null;
+}
+
+function doSnap(){
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('cameraCanvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  const side = window._cameraSide;
+  canvas.toBlob(blob => {
+    if(!blob) return;
+    if(side === 'front' || side === 'side'){
+      // 体型照片
+      const inputId  = side==='front' ? 'frontPhotoInput' : 'sidePhotoInput';
+      const previewId= side==='front' ? 'frontPreview'    : 'sidePreview';
+      const boxId    = side==='front' ? 'frontPhotoBox'   : 'sidePhotoBox';
+      const file = new File([blob], 'body-photo.jpg', { type: 'image/jpeg' });
+      const dt = new DataTransfer(); dt.items.add(file);
+      document.getElementById(inputId).files = dt.files;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById(previewId);
+        const box = document.getElementById(boxId);
+        img.src = e.target.result; img.style.display = 'block';
+        box.querySelectorAll('div').forEach(el=>el.style.display='none');
+        box.classList.add('filled');
+      };
+      reader.readAsDataURL(blob);
+      window._cameraSide = null;
+    } else {
+      // 试穿人物照片
+      const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+      const dt = new DataTransfer(); dt.items.add(file);
+      document.getElementById('personInput').files = dt.files;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById('personPreview');
+        const area = document.getElementById('personArea');
+        img.src = e.target.result; img.style.display = 'block';
+        area.querySelectorAll('.upload-icon,.upload-label,.upload-hint').forEach(el=>el.style.display='none');
+        area.classList.add('filled');
+      };
+      reader.readAsDataURL(blob);
+    }
+    closeCamera();
+  }, 'image/jpeg', 0.92);
+}
 </script>
+
+
+<!-- 拍照 Modal -->
+<div class="camera-modal" id="cameraModal">
+  <div class="camera-box">
+    <div class="camera-title">
+      <span>📷 拍照</span>
+      <span class="camera-close" onclick="closeCamera()">✕</span>
+    </div>
+    <video id="cameraVideo" autoplay playsinline></video>
+    <canvas id="cameraCanvas" style="display:none"></canvas>
+    <div class="camera-actions">
+      <button class="camera-cancel" onclick="closeCamera()">取消</button>
+      <button class="camera-snap" onclick="doSnap()">📸 拍摄</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
