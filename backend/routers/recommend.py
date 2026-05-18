@@ -225,6 +225,14 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
     if req.budgets.get("hat"): optional_budget_text.append(f"帽子CA${req.budgets.get('hat')}")
     if req.budgets.get("accessory"): optional_budget_text.append(f"配饰CA${req.budgets.get('accessory')}")
     optional_budget_text = "，" + "，".join(optional_budget_text) if optional_budget_text else ""
+    optional_rules = []
+    if outerwear:
+        optional_rules.append("外套预算大于0且存在候选外套，每套必须选择一个 outerwear_id")
+    if hats:
+        optional_rules.append("帽子预算大于0且存在候选帽子，每套必须选择一个 hat_id")
+    if accessories:
+        optional_rules.append("配饰预算大于0且存在候选配饰，每套必须选择一个 accessory_id")
+    optional_rules_text = "；".join(optional_rules) or "外套、帽子、配饰没有候选时返回 null"
 
     body_prompt  = build_body_prompt(body_issues,measurements,req.body_analysis or "",req.skin,req.face)
     style_prompt = build_style_prompt(req.style, req.scene)
@@ -265,7 +273,7 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 {optional_section("候选帽子（可选）", hats)}
 {optional_section("候选配饰（可选）", accessories)}
 
-规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选；外套、帽子、配饰有合适候选时可选，没有合适候选可返回 null
+规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选 8.{optional_rules_text}
 
 返回JSON：{{"summary":"体型风格总结","tips":["体型贴士1","贴士2","贴士3"],"outfits":[{{"id":1,"name":"...","safety":"高","reason":"具体说明适合体型原因","top_id":"...","bottom_id":"...","shoes_id":"...","outerwear_id":null,"hat_id":null,"accessory_id":null}}]}}"""
 
@@ -284,7 +292,13 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
         if not p: return None
         return {"id":p.id,"name":p.name,"brand":p.brand,"price":p.price,"color":p.color,"img":p.img,"buy":p.buy}
 
-    for outfit in result.get("outfits",[]):
+    for idx, outfit in enumerate(result.get("outfits",[])):
+        if outerwear and not outfit.get("outerwear_id"):
+            outfit["outerwear_id"] = outerwear[idx % len(outerwear)].id
+        if hats and not outfit.get("hat_id"):
+            outfit["hat_id"] = hats[idx % len(hats)].id
+        if accessories and not outfit.get("accessory_id"):
+            outfit["accessory_id"] = accessories[idx % len(accessories)].id
         outfit["top"]    = find_product(outfit.get("top_id"))
         outfit["bottom"] = find_product(outfit.get("bottom_id"))
         outfit["shoes"]  = find_product(outfit.get("shoes_id"))
