@@ -1081,11 +1081,40 @@ function renderResult(aiResult,userInfo){
   const budgetTotal=Object.values(userInfo.budgets||{}).reduce((sum,val)=>sum+(parseInt(val)||0),0);
   const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
   const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">${ui('outfit')} ${o.id}: ${o.name}</option>`).join('');
+  const chooseByBudget = (products, budget, idx, step=1) => {
+    const pool = (products || []).filter(p => (Number(p.price)||0) <= (Number(budget)||0));
+    const source = pool.length ? pool : (products || []);
+    return source.length ? source[(idx * step) % source.length] : null;
+  };
+  const usedCombos = new Set();
 
   // Tinder 滑卡数据
-  window._swipeOutfits = (aiResult.outfits||[]).map(o=>{
-    const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
-    const outerwear=findProduct(o.outerwear_id),hat=findProduct(o.hat_id),accessory=findProduct(o.accessory_id);
+  window._swipeOutfits = (aiResult.outfits||[]).map((o,idx)=>{
+    let top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
+    let outerwear=findProduct(o.outerwear_id),hat=findProduct(o.hat_id),accessory=findProduct(o.accessory_id);
+    if(!outerwear && Number(userInfo.budgets?.outerwear || 0) > 0){
+      outerwear = chooseByBudget(DB.outerwear, userInfo.budgets.outerwear, idx, 1);
+      if(outerwear) o.outerwear_id = outerwear.id;
+    }
+    if(!hat && Number(userInfo.budgets?.hat || 0) > 0){
+      hat = chooseByBudget(DB.hats, userInfo.budgets.hat, idx, 1);
+      if(hat) o.hat_id = hat.id;
+    }
+    if(!accessory && Number(userInfo.budgets?.accessory || 0) > 0){
+      accessory = chooseByBudget(DB.accessories, userInfo.budgets.accessory, idx, 1);
+      if(accessory) o.accessory_id = accessory.id;
+    }
+    let combo = [top?.id,bottom?.id,shoe?.id,outerwear?.id,hat?.id,accessory?.id].join('|');
+    let offset = 0;
+    while(usedCombos.has(combo) && offset < Math.max(DB.tops.length, DB.bottoms.length, DB.shoes.length, DB.outerwear.length, 1)){
+      offset++;
+      top = chooseByBudget(DB.tops, userInfo.budgets.top, idx + offset, 1) || top;
+      bottom = chooseByBudget(DB.bottoms, userInfo.budgets.bottom, idx + offset, 2) || bottom;
+      shoe = chooseByBudget(DB.shoes, userInfo.budgets.shoes, idx + offset, 3) || shoe;
+      if(outerwear) outerwear = chooseByBudget(DB.outerwear, userInfo.budgets.outerwear, idx + offset, 1) || outerwear;
+      combo = [top?.id,bottom?.id,shoe?.id,outerwear?.id,hat?.id,accessory?.id].join('|');
+    }
+    usedCombos.add(combo);
     if(!top||!bottom||!shoe)return null;
     const products=[
       {key:'top', product:top},
@@ -1095,6 +1124,9 @@ function renderResult(aiResult,userInfo){
       hat ? {key:'hat', product:hat} : null,
       accessory ? {key:'accessory', product:accessory} : null,
     ].filter(Boolean);
+    o.top_id = top.id;
+    o.bottom_id = bottom.id;
+    o.shoes_id = shoe.id;
     return {outfit:o, top, bottom, shoe, outerwear, hat, accessory, products, total:products.reduce((sum,item)=>sum+(Number(item.product.price)||0),0)};
   }).filter(Boolean);
   window._swipeIdx    = 0;
@@ -1965,7 +1997,7 @@ function buildCard(item, idx, total){
   const {outfit} = item;
   const products = getOutfitProducts(item);
   const over = item.total > (window._budgetTotal||999);
-  const gridCols = Math.min(products.length, 3);
+  const gridCols = Math.min(products.length, 4);
   return `
   <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
     <div class="swipe-stamp like">${ui('like')}</div>
@@ -2001,7 +2033,7 @@ function initSwipe(){
   const container = document.getElementById('swipeContainer');
   if(!container) return;
 
-  // 渲染所有卡片（后面的在下面）
+  // 渲染所有卡片，idx 越小越靠上，保证计数和视觉卡片一致
   container.innerHTML = '';
   [...outfits].reverse().forEach((item,ri)=>{
     const idx = outfits.length - 1 - ri;
@@ -2009,9 +2041,9 @@ function initSwipe(){
     div.innerHTML = buildCard(item, idx, outfits.length);
     const card = div.firstElementChild;
     // 堆叠效果
-    const offset = (outfits.length - 1 - idx) * 4;
+    const offset = idx * 4;
     card.style.transform = `scale(${1 - offset*0.02}) translateY(${offset*2}px)`;
-    card.style.zIndex = idx + 1;
+    card.style.zIndex = outfits.length - idx;
     container.appendChild(card);
     bindSwipe(card, idx);
   });
