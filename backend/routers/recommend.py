@@ -92,31 +92,34 @@ def get_measurement_rules(m):
     return parts
 
 def smart_filter(db, category, body_label, budget, body_issues, measurements, limit=18):
-    products = db.query(Product).filter(Product.category==category).filter(Product.price<=budget).all()
+    categories = category if isinstance(category, (list, tuple, set)) else [category]
+    products = db.query(Product).filter(Product.category.in_(categories)).filter(Product.price<=budget).all()
     result = [p for p in products if body_label not in (p.avoid_body or [])]
 
     thigh = float(measurements.get("thigh") or 0)
     waist = float(measurements.get("waist") or 0)
 
-    if category == "bottom":
+    primary_category = categories[0] if categories else category
+
+    if primary_category == "bottom":
         if thigh > 62 or "thigh_thick" in body_issues or "o_leg" in body_issues:
             result = [p for p in result if not any(t in (p.tags or []) for t in ["skinny","slim"])]
-    if category == "top":
+    if primary_category == "top":
         if "belly" in body_issues or waist > 90:
             result = [p for p in result if "fitted" not in (p.tags or [])]
-    if category == "top":
+    if primary_category == "top":
         if "neck_short" in body_issues:
             result = [p for p in result if "turtleneck" not in p.name.lower()]
 
     def score(p):
         s = 0
         tags = p.tags or []
-        if "thigh_thick" in body_issues and category=="bottom":
+        if "thigh_thick" in body_issues and primary_category=="bottom":
             if any(t in tags for t in ["straight","relaxed","wide"]): s += 3
             if p.color_tone == "dark": s += 2
-        if "belly" in body_issues and category=="top":
+        if "belly" in body_issues and primary_category=="top":
             if p.color_tone == "dark": s += 2
-        if "o_leg" in body_issues and category=="bottom":
+        if "o_leg" in body_issues and primary_category=="bottom":
             if p.color_tone == "dark": s += 2
         return s
 
@@ -204,12 +207,24 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
     tops    = smart_filter(db,"top",    body["label"],req.budgets.get("top",100),   body_issues,measurements)
     bottoms = smart_filter(db,"bottom", body["label"],req.budgets.get("bottom",100),body_issues,measurements)
     shoes   = smart_filter(db,"shoes",  body["label"],req.budgets.get("shoes",150), body_issues,measurements)
+    outerwear = smart_filter(db, ["outerwear", "outer", "jacket", "coat"], body["label"], req.budgets.get("outerwear", 0) or 0, body_issues, measurements, limit=8) if req.budgets.get("outerwear", 0) else []
+    hats = smart_filter(db, ["hat", "hats"], body["label"], req.budgets.get("hat", 0) or 0, body_issues, measurements, limit=8) if req.budgets.get("hat", 0) else []
+    accessories = smart_filter(db, ["accessory", "accessories"], body["label"], req.budgets.get("accessory", 0) or 0, body_issues, measurements, limit=8) if req.budgets.get("accessory", 0) else []
 
     if not tops or not bottoms or not shoes:
         raise HTTPException(404, "预算范围内没有合适商品，请调高预算")
 
     def fmt(products, n=15):
         return "\n".join([f"[{p.id}] {p.name} | 颜色:{p.color} | CA${p.price} | 版型:{p.fit or 'regular'} | 标签:{','.join(p.tags or [])}" for p in products[:n]])
+
+    def optional_section(title, products):
+        return f"\n【{title}】\n{fmt(products, 8)}" if products else ""
+
+    optional_budget_text = []
+    if req.budgets.get("outerwear"): optional_budget_text.append(f"外套CA${req.budgets.get('outerwear')}")
+    if req.budgets.get("hat"): optional_budget_text.append(f"帽子CA${req.budgets.get('hat')}")
+    if req.budgets.get("accessory"): optional_budget_text.append(f"配饰CA${req.budgets.get('accessory')}")
+    optional_budget_text = "，" + "，".join(optional_budget_text) if optional_budget_text else ""
 
     body_prompt  = build_body_prompt(body_issues,measurements,req.body_analysis or "",req.skin,req.face)
     style_prompt = build_style_prompt(req.style, req.scene)
@@ -230,7 +245,7 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 - 身高{req.height}cm，体重{req.weight}kg，体型{body['label']}（BMI {body['bmi']}）
 - 场景：{req.scene}，排斥：{req.dislike or '无'}，已有：{req.existing or '无'}
 - 补充：{req.desc or '无'}
-- 预算：上衣CA${req.budgets.get('top')}，裤子CA${req.budgets.get('bottom')}，鞋子CA${req.budgets.get('shoes')}
+- 预算：上衣CA${req.budgets.get('top')}，裤子CA${req.budgets.get('bottom')}，鞋子CA${req.budgets.get('shoes')}{optional_budget_text}
 
 【⚠️ 体型约束（最高优先级）】
 {body_prompt}
@@ -246,10 +261,13 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 
 【候选鞋子】
 {fmt(shoes)}
+{optional_section("候选外套（可选）", outerwear)}
+{optional_section("候选帽子（可选）", hats)}
+{optional_section("候选配饰（可选）", accessories)}
 
-规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言
+规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选；外套、帽子、配饰有合适候选时可选，没有合适候选可返回 null
 
-返回JSON：{{"summary":"体型风格总结","tips":["体型贴士1","贴士2","贴士3"],"outfits":[{{"id":1,"name":"...","safety":"高","reason":"具体说明适合体型原因","top_id":"...","bottom_id":"...","shoes_id":"..."}}]}}"""
+返回JSON：{{"summary":"体型风格总结","tips":["体型贴士1","贴士2","贴士3"],"outfits":[{{"id":1,"name":"...","safety":"高","reason":"具体说明适合体型原因","top_id":"...","bottom_id":"...","shoes_id":"...","outerwear_id":null,"hat_id":null,"accessory_id":null}}]}}"""
 
     async with httpx.AsyncClient(timeout=60) as client:
         resp = await client.post("https://api.deepseek.com/chat/completions",
@@ -270,6 +288,9 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
         outfit["top"]    = find_product(outfit.get("top_id"))
         outfit["bottom"] = find_product(outfit.get("bottom_id"))
         outfit["shoes"]  = find_product(outfit.get("shoes_id"))
+        outfit["outerwear"] = find_product(outfit.get("outerwear_id"))
+        outfit["hat"] = find_product(outfit.get("hat_id"))
+        outfit["accessory"] = find_product(outfit.get("accessory_id"))
 
     if req.language == "en":
         body_labels_en = {

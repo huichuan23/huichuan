@@ -65,6 +65,18 @@ class Feedback(Base):
     created_at    = Column(DateTime, default=datetime.utcnow)
 
 
+class User(Base):
+    __tablename__ = "users"
+
+    id            = Column(Integer, primary_key=True, autoincrement=True)
+    email         = Column(String, unique=True, index=True, nullable=False)
+    password_hash = Column(Text, nullable=False)
+    auth_token    = Column(String, unique=True, index=True)
+    profile       = Column(JSON, default=dict)
+    created_at    = Column(DateTime, default=datetime.utcnow)
+    updated_at    = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 def get_db():
     db = SessionLocal()
     try:

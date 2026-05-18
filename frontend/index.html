@@ -29,7 +29,7 @@
   .budget-total-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--tag-bg);border-radius:10px;padding:10px 16px;margin-bottom:14px;}
   .budget-total-label{font-size:12px;color:var(--muted);line-height:1.35;}
   .budget-total-value{font-size:18px;font-weight:700;font-family:'Noto Serif SC',serif;}
-  .budget-sliders{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .budget-sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
   .budget-slider-item{background:var(--bg);border-radius:12px;padding:12px;}
   .slider-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
   .slider-label{font-size:11px;color:var(--muted);font-weight:500;line-height:1.35;}
@@ -156,6 +156,17 @@
   .feedback-status{font-size:12px;color:var(--muted);}
   .feedback-status.ok{color:var(--safe-c);}
   .feedback-status.err{color:#c0392b;}
+  .auth-card{padding:18px 22px;margin-bottom:18px;display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:end;}
+  .auth-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .auth-sub{font-size:12px;color:var(--muted);line-height:1.6;}
+  .auth-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .auth-card input{width:100%;height:40px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:13px;padding:0 12px;outline:none;}
+  .auth-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;}
+  .auth-btn{min-height:38px;padding:8px 14px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:13px;cursor:pointer;}
+  .auth-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .auth-status{font-size:12px;color:var(--muted);line-height:1.5;}
+  .auth-status.ok{color:var(--safe-c);}
+  .auth-status.err{color:#c0392b;}
   /* 体型分析区域 */
   .body-analysis-section{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:24px 28px;margin-bottom:20px;}
   .body-photo-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
@@ -273,6 +284,8 @@
     .liked-grid{grid-template-columns:repeat(2,1fr);}
     .feedback-grid{grid-template-columns:1fr;}
     .feedback-card{padding:20px;}
+    .auth-card{grid-template-columns:1fr;padding:18px;}
+    .auth-fields{grid-template-columns:1fr;}
     header{padding:20px 16px 12px;}
     .logo{font-size:22px;}
     .form-card,.tryon-section{padding:20px;}
@@ -442,6 +455,15 @@ const UI_TEXT = {
     top: '上衣',
     bottom: '裤子',
     shoes: '鞋子',
+    outerwear: '外套',
+    hat: '帽子',
+    accessory: '配饰',
+    topBudget: '上衣预算',
+    bottomBudget: '裤子预算',
+    shoesBudget: '鞋子预算',
+    outerwearBudget: '外套预算',
+    hatBudget: '帽子预算',
+    accessoryBudget: '配饰预算',
     chooseTryon: '选择试穿套装',
     chooseOutfit: '选择套装',
     yourPhoto: '你的照片',
@@ -465,6 +487,19 @@ const UI_TEXT = {
     feedbackSending: '正在提交...',
     feedbackOk: '收到啦，谢谢你的反馈',
     feedbackFail: '提交失败，请稍后再试',
+    profileTitle: '用户档案',
+    profileSub: '登录后保存身体数据、风格偏好和预算，下次会自动填好。',
+    email: '邮箱',
+    password: '密码',
+    login: '登录',
+    register: '注册',
+    logout: '退出',
+    saveProfile: '保存档案',
+    profileLoaded: '已加载你的档案',
+    profileSaved: '档案已保存',
+    loginOk: '登录成功',
+    registerOk: '注册成功',
+    authRequired: '请先登录',
   },
   en: {
     realProducts: 'Real Amazon.ca items',
@@ -484,6 +519,15 @@ const UI_TEXT = {
     top: 'Top',
     bottom: 'Bottoms',
     shoes: 'Shoes',
+    outerwear: 'Outerwear',
+    hat: 'Hat',
+    accessory: 'Accessory',
+    topBudget: 'Top',
+    bottomBudget: 'Bottoms',
+    shoesBudget: 'Shoes',
+    outerwearBudget: 'Outerwear',
+    hatBudget: 'Hat',
+    accessoryBudget: 'Accessory',
     chooseTryon: 'Choose Try-On Outfit',
     chooseOutfit: 'Choose Outfit',
     yourPhoto: 'Your Photo',
@@ -507,6 +551,19 @@ const UI_TEXT = {
     feedbackSending: 'Submitting...',
     feedbackOk: 'Got it. Thanks for your feedback',
     feedbackFail: 'Submit failed. Please try again later',
+    profileTitle: 'User Profile',
+    profileSub: 'Log in to save body data, preferences, and budgets so the form fills itself next time.',
+    email: 'Email',
+    password: 'Password',
+    login: 'Log In',
+    register: 'Sign Up',
+    logout: 'Log Out',
+    saveProfile: 'Save Profile',
+    profileLoaded: 'Profile loaded',
+    profileSaved: 'Profile saved',
+    loginOk: 'Logged in',
+    registerOk: 'Account created',
+    authRequired: 'Please log in first',
   }
 };
 function ui(key, ...args){
@@ -617,6 +674,12 @@ function applySelectOptions(){
 
 function applyExtraTranslations(){
   applySelectOptions();
+  document.querySelectorAll('[data-ui]').forEach(el=>{
+    el.textContent = ui(el.dataset.ui);
+  });
+  document.querySelectorAll('[data-ui-placeholder]').forEach(el=>{
+    el.placeholder = ui(el.dataset.uiPlaceholder);
+  });
   document.querySelectorAll('.body-issue-btn[data-issue]').forEach(btn=>{
     const label = ISSUE_LABEL_TEXTS[btn.dataset.issue];
     if(label) btn.textContent = window._lang === 'en' ? label[1] : label[0];
@@ -763,21 +826,184 @@ function t(key){ return LANG[window._lang][key] || LANG['zh'][key] || key; }
 
 
 const BACKEND = 'https://huichuan-production.up.railway.app';
-let DB = {tops:[], bottoms:[], shoes:[]};
+let DB = {tops:[], bottoms:[], shoes:[], outerwear:[], hats:[], accessories:[]};
 let dbStats = {total:0};
+let AUTH_TOKEN = localStorage.getItem('huichuan_token') || '';
+let AUTH_USER = null;
+
+function authHeaders(){
+  return AUTH_TOKEN ? {'Authorization': `Bearer ${AUTH_TOKEN}`} : {};
+}
+
+function setAuthStatus(msg, type=''){
+  const el = document.getElementById('authStatus');
+  if(!el) return;
+  el.textContent = msg || '';
+  el.className = `auth-status ${type}`;
+}
+
+function collectProfile(){
+  return {
+    height: document.getElementById('height')?.value || '',
+    weight: document.getElementById('weight')?.value || '',
+    age: document.getElementById('age')?.value || '',
+    skin: document.getElementById('skin')?.value || '',
+    face: document.getElementById('face')?.value || '',
+    scene: document.getElementById('scene')?.value || '',
+    style: document.getElementById('style')?.value || '',
+    dislike: document.getElementById('dislike')?.value || '',
+    existing: document.getElementById('existing')?.value || '',
+    desc: document.getElementById('desc')?.value || '',
+    budgets: {
+      top: document.getElementById('topBudget')?.value || 100,
+      bottom: document.getElementById('bottomBudget')?.value || 120,
+      shoes: document.getElementById('shoesBudget')?.value || 150,
+      outerwear: document.getElementById('outerwearBudget')?.value || 200,
+      hat: document.getElementById('hatBudget')?.value || 80,
+      accessory: document.getElementById('accessoryBudget')?.value || 100,
+    },
+    measurements: {
+      chest: document.getElementById('chest')?.value || '',
+      waist: document.getElementById('waist')?.value || '',
+      hip: document.getElementById('hip')?.value || '',
+      thigh: document.getElementById('thigh')?.value || '',
+      calf: document.getElementById('calf')?.value || '',
+    },
+    bodyIssues: Array.from(window._selectedIssues || []),
+  };
+}
+
+function applyProfile(profile){
+  if(!profile) return;
+  ['height','weight','age','skin','face','scene','style','dislike','existing','desc'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && profile[id] !== undefined && profile[id] !== null) el.value = profile[id];
+  });
+  Object.entries(profile.measurements || {}).forEach(([key,val])=>{
+    const el = document.getElementById(key);
+    if(el) el.value = val || '';
+  });
+  Object.entries(profile.budgets || {}).forEach(([key,val])=>{
+    const id = `${key}Budget`;
+    const el = document.getElementById(id);
+    if(el && val !== undefined && val !== null) el.value = val;
+    if(el) updateSlider(key, el.value);
+  });
+  window._selectedIssues = new Set(profile.bodyIssues || []);
+  document.querySelectorAll('.body-issue-btn[data-issue]').forEach(btn=>{
+    btn.classList.toggle('selected', window._selectedIssues.has(btn.dataset.issue));
+  });
+  updateSelectedSummary();
+  updateBodyRules();
+  updateTotal();
+}
+
+function updateAuthUI(){
+  const loggedIn = !!AUTH_TOKEN && !!AUTH_USER;
+  const signedOut = document.getElementById('authSignedOut');
+  const signedIn = document.getElementById('authSignedIn');
+  if(signedOut) signedOut.style.display = loggedIn ? 'none' : 'block';
+  if(signedIn) signedIn.style.display = loggedIn ? 'block' : 'none';
+  const email = document.getElementById('authUserEmail');
+  if(email) email.textContent = AUTH_USER?.email || '';
+}
+
+async function authRequest(path, payload){
+  const resp = await fetch(`${BACKEND}${path}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(payload),
+  });
+  const data = await resp.json().catch(()=>({}));
+  if(!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+  return data;
+}
+
+async function loginUser(mode){
+  const email = document.getElementById('authEmail')?.value.trim();
+  const password = document.getElementById('authPassword')?.value;
+  if(!email || !password){ setAuthStatus(ui('authRequired'), 'err'); return; }
+  try{
+    const data = await authRequest(mode === 'register' ? '/api/auth/register' : '/api/auth/login', {email, password});
+    AUTH_TOKEN = data.token;
+    AUTH_USER = data.user;
+    localStorage.setItem('huichuan_token', AUTH_TOKEN);
+    updateAuthUI();
+    applyProfile(data.user?.profile || {});
+    setAuthStatus(mode === 'register' ? ui('registerOk') : ui('loginOk'), 'ok');
+  }catch(err){
+    setAuthStatus(err.message, 'err');
+  }
+}
+
+function logoutUser(){
+  AUTH_TOKEN = '';
+  AUTH_USER = null;
+  localStorage.removeItem('huichuan_token');
+  updateAuthUI();
+  setAuthStatus('');
+}
+
+async function saveProfile(silent=false){
+  if(!AUTH_TOKEN){ if(!silent) setAuthStatus(ui('authRequired'), 'err'); return; }
+  try{
+    const resp = await fetch(`${BACKEND}/api/profile`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json', ...authHeaders()},
+      body: JSON.stringify({profile: collectProfile()}),
+    });
+    const data = await resp.json().catch(()=>({}));
+    if(!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+    AUTH_USER = data;
+    updateAuthUI();
+    if(!silent) setAuthStatus(ui('profileSaved'), 'ok');
+  }catch(err){
+    if(!silent) setAuthStatus(err.message, 'err');
+  }
+}
+
+async function loadProfile(){
+  if(!AUTH_TOKEN){ updateAuthUI(); return; }
+  try{
+    const resp = await fetch(`${BACKEND}/api/profile`, {headers: authHeaders()});
+    const data = await resp.json().catch(()=>({}));
+    if(!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+    AUTH_USER = data;
+    updateAuthUI();
+    applyProfile(data.profile || {});
+    setAuthStatus(ui('profileLoaded'), 'ok');
+  }catch(err){
+    logoutUser();
+  }
+}
 
 async function loadProducts(){
   try{
-    const [r1,r2,r3,rs] = await Promise.all([
-      fetch(`${BACKEND}/api/products?limit=200&category=top`),
-      fetch(`${BACKEND}/api/products?limit=200&category=bottom`),
-      fetch(`${BACKEND}/api/products?limit=200&category=shoes`),
+    const loadGroup = async (categories) => {
+      const results = await Promise.all(categories.map(cat =>
+        fetch(`${BACKEND}/api/products?limit=100&category=${encodeURIComponent(cat)}`)
+          .then(r=>r.json()).then(d=>d.products||[]).catch(()=>[])
+      ));
+      const byId = new Map();
+      results.flat().forEach(p=>byId.set(p.id, p));
+      return [...byId.values()].map(normalizeProduct);
+    };
+    const [d1,d2,d3,d4,d5,d6,rs] = await Promise.all([
+      loadGroup(['top']),
+      loadGroup(['bottom']),
+      loadGroup(['shoes']),
+      loadGroup(['outerwear','outer','jacket','coat']),
+      loadGroup(['hat','hats']),
+      loadGroup(['accessory','accessories']),
       fetch(`${BACKEND}/api/products/stats`),
     ]);
-    const [d1,d2,d3,stats] = await Promise.all([r1.json(),r2.json(),r3.json(),rs.json()]);
-    DB.tops    = (d1.products||[]).map(normalizeProduct);
-    DB.bottoms = (d2.products||[]).map(normalizeProduct);
-    DB.shoes   = (d3.products||[]).map(normalizeProduct);
+    const stats = await rs.json();
+    DB.tops    = d1;
+    DB.bottoms = d2;
+    DB.shoes   = d3;
+    DB.outerwear = d4;
+    DB.hats = d5;
+    DB.accessories = d6;
     dbStats    = stats;
     console.log(`✅ 商品：上衣${DB.tops.length}件，裤子${DB.bottoms.length}件，鞋子${DB.shoes.length}件`);
   }catch(e){ console.error('加载商品失败',e); }
@@ -831,32 +1057,45 @@ async function callBackendRecommend(userInfo){
   const outfits=(data.outfits||[]).map(o=>({
     id:o.id, name:o.name, safety:o.safety||'高', reason:o.reason,
     top_id:o.top?.id||o.top_id, bottom_id:o.bottom?.id||o.bottom_id, shoes_id:o.shoes?.id||o.shoes_id,
+    outerwear_id:o.outerwear?.id||o.outerwear_id, hat_id:o.hat?.id||o.hat_id, accessory_id:o.accessory?.id||o.accessory_id,
   }));
   (data.outfits||[]).forEach(o=>{
     if(o.top)   {const p=normalizeProduct(o.top);   if(!DB.tops.find(x=>x.id===p.id))   DB.tops.push(p);}
     if(o.bottom){const p=normalizeProduct(o.bottom);if(!DB.bottoms.find(x=>x.id===p.id))DB.bottoms.push(p);}
     if(o.shoes) {const p=normalizeProduct(o.shoes); if(!DB.shoes.find(x=>x.id===p.id))  DB.shoes.push(p);}
+    if(o.outerwear){const p=normalizeProduct(o.outerwear); if(!DB.outerwear.find(x=>x.id===p.id)) DB.outerwear.push(p);}
+    if(o.hat){const p=normalizeProduct(o.hat); if(!DB.hats.find(x=>x.id===p.id)) DB.hats.push(p);}
+    if(o.accessory){const p=normalizeProduct(o.accessory); if(!DB.accessories.find(x=>x.id===p.id)) DB.accessories.push(p);}
   });
   return {summary:data.summary||'', tips:data.tips||[], outfits, body:data.body};
 }
 
-const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'}};
-function findProduct(id){return [...DB.tops,...DB.bottoms,...DB.shoes].find(p=>p.id===id);}
+const CAT={top:{label:'上衣',icon:'👕'},bottom:{label:'裤子',icon:'👖'},shoes:{label:'鞋子',icon:'👟'},outerwear:{label:'外套',icon:'🧥'},hat:{label:'帽子',icon:'🧢'},accessory:{label:'配饰',icon:'⌚'}};
+function findProduct(id){return [...DB.tops,...DB.bottoms,...DB.shoes,...DB.outerwear,...DB.hats,...DB.accessories].find(p=>p.id===id);}
 function displayBodyLabel(label){
   if(window._lang !== 'en') return label;
   return {偏瘦:'Slim', 标准:'Standard', 略微偏胖:'Slightly Stocky', 偏胖:'Stocky'}[label] || label;
 }
 
 function renderResult(aiResult,userInfo){
-  const budgetTotal=userInfo.budgets.top+userInfo.budgets.bottom+userInfo.budgets.shoes;
+  const budgetTotal=Object.values(userInfo.budgets||{}).reduce((sum,val)=>sum+(parseInt(val)||0),0);
   const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
   const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">${ui('outfit')} ${o.id}: ${o.name}</option>`).join('');
 
   // Tinder 滑卡数据
   window._swipeOutfits = (aiResult.outfits||[]).map(o=>{
     const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
+    const outerwear=findProduct(o.outerwear_id),hat=findProduct(o.hat_id),accessory=findProduct(o.accessory_id);
     if(!top||!bottom||!shoe)return null;
-    return {outfit:o, top, bottom, shoe, total:top.price+bottom.price+shoe.price};
+    const products=[
+      {key:'top', product:top},
+      {key:'bottom', product:bottom},
+      {key:'shoes', product:shoe},
+      outerwear ? {key:'outerwear', product:outerwear} : null,
+      hat ? {key:'hat', product:hat} : null,
+      accessory ? {key:'accessory', product:accessory} : null,
+    ].filter(Boolean);
+    return {outfit:o, top, bottom, shoe, outerwear, hat, accessory, products, total:products.reduce((sum,item)=>sum+(Number(item.product.price)||0),0)};
   }).filter(Boolean);
   window._swipeIdx    = 0;
   window._likedOutfits= [];
@@ -867,7 +1106,7 @@ function renderResult(aiResult,userInfo){
     ${aiResult.summary?`<div class="ai-summary"><div class="ai-summary-title">${ui('aiAnalysisTitle')}</div><div class="ai-summary-text">${aiResult.summary}</div></div>`:''}
     <div class="meta-row">
       <span class="badge">🧍 ${displayBodyLabel(userInfo.body)} (BMI ${userInfo.bmi})</span>
-      <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes}</span>
+      <span class="badge dark">👕 CA$${userInfo.budgets.top} · 👖 CA$${userInfo.budgets.bottom} · 👟 CA$${userInfo.budgets.shoes} · 🧥 CA$${userInfo.budgets.outerwear} · 🧢 CA$${userInfo.budgets.hat} · ⌚ CA$${userInfo.budgets.accessory}</span>
     </div>
     <div class="tips">${tipsHTML}</div>
     <p class="section-label"><span data-i18n="swiperLabel">滑动选择你喜欢的穿搭 💫</span></p>
@@ -972,6 +1211,9 @@ async function getRecommend(){
     top:parseInt(document.getElementById('topBudget').value),
     bottom:parseInt(document.getElementById('bottomBudget').value),
     shoes:parseInt(document.getElementById('shoesBudget').value),
+    outerwear:parseInt(document.getElementById('outerwearBudget').value),
+    hat:parseInt(document.getElementById('hatBudget').value),
+    accessory:parseInt(document.getElementById('accessoryBudget').value),
   };
 
   const measurements={
@@ -1073,6 +1315,7 @@ async function getRecommend(){
       measurements,
     };
     window._lastUserInfo = userInfo;
+    if(AUTH_TOKEN) saveProfile(true);
 
     // 第三步：AI 推荐
     setStep(3);
@@ -1702,9 +1945,27 @@ function syncBodyPhotoToTryon(){
 }
 
 // ── Tinder 滑卡逻辑 ─────────────────────────────────────
+function getOutfitProducts(item){
+  if(item.products?.length) return item.products.filter(x=>x?.product);
+  return [
+    {key:'top', product:item.top},
+    {key:'bottom', product:item.bottom},
+    {key:'shoes', product:item.shoe},
+    {key:'outerwear', product:item.outerwear},
+    {key:'hat', product:item.hat},
+    {key:'accessory', product:item.accessory},
+  ].filter(x=>x.product);
+}
+
+function getBudgetTotal(budgets){
+  return Object.values(budgets || {}).reduce((sum,val)=>sum+(parseInt(val)||0),0);
+}
+
 function buildCard(item, idx, total){
-  const {outfit,top,bottom,shoe} = item;
+  const {outfit} = item;
+  const products = getOutfitProducts(item);
   const over = item.total > (window._budgetTotal||999);
+  const gridCols = Math.min(products.length, 3);
   return `
   <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
     <div class="swipe-stamp like">${ui('like')}</div>
@@ -1716,24 +1977,18 @@ function buildCard(item, idx, total){
       </div>
       <span class="safe-badge">${ui('safety')} ${outfit.safety||ui('high')}</span>
     </div>
-    <div class="card-outfit-img">
-      <div class="ci"><img src="${top.img}" onerror="this.src=''" alt="${ui('top')}"></div>
-      <div class="ci"><img src="${bottom.img}" onerror="this.src=''" alt="${ui('bottom')}"></div>
-      <div class="ci"><img src="${shoe.img}" onerror="this.src=''" alt="${ui('shoes')}"></div>
+    <div class="card-outfit-img" style="grid-template-columns:repeat(${gridCols},1fr)">
+      ${products.map(({key,product})=>`<div class="ci"><img src="${product.img}" onerror="this.src=''" alt="${ui(key)}"></div>`).join('')}
     </div>
     <div class="card-outfit-info">
       <div class="card-outfit-reason">💡 ${outfit.reason||''}</div>
       <div class="card-outfit-prices">
-        <span class="card-price-tag">👕 CA$${top.price}</span>
-        <span class="card-price-tag">👖 CA$${bottom.price}</span>
-        <span class="card-price-tag">👟 CA$${shoe.price}</span>
+        ${products.map(({key,product})=>`<span class="card-price-tag">${CAT[key]?.icon||''} CA$${product.price}</span>`).join('')}
       </div>
       <div class="card-outfit-total${over?' over':''}">${ui('total')} CA$${item.total.toFixed(2)}${over?ui('overBudget'):''}</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px 16px 14px;">
-      <a href="${top.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui('top')} ↗</a>
-      <a href="${bottom.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui('bottom')} ↗</a>
-      <a href="${shoe.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui('shoes')} ↗</a>
+    <div style="display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:6px;padding:10px 16px 14px;">
+      ${products.map(({key,product})=>`<a href="${product.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui(key)} ↗</a>`).join('')}
     </div>
   </div>`;
 }
@@ -1741,9 +1996,7 @@ function buildCard(item, idx, total){
 function initSwipe(){
   const outfits = window._swipeOutfits || [];
   if(!outfits.length) return;
-  window._budgetTotal = (window._lastUserInfo?.budgets?.top||0)
-    + (window._lastUserInfo?.budgets?.bottom||0)
-    + (window._lastUserInfo?.budgets?.shoes||0);
+  window._budgetTotal = getBudgetTotal(window._lastUserInfo?.budgets);
 
   const container = document.getElementById('swipeContainer');
   if(!container) return;
@@ -1849,16 +2102,17 @@ function updateLikedSection(){
   sec.style.display = liked.length ? 'block' : 'none';
   if(cnt) cnt.textContent = ui('likedCount', liked.length);
   if(!grid) return;
-  grid.innerHTML = liked.map((item,i)=>`
-    <div class="liked-item" onclick="showLikedDetail(${i})">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:6px">
-        <img src="${item.top.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">
-        <img src="${item.bottom.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">
-        <img src="${item.shoe.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">
+  grid.innerHTML = liked.map((item,i)=>{
+    const products = getOutfitProducts(item);
+    const cols = Math.min(products.length, 3);
+    return `<div class="liked-item" onclick="showLikedDetail(${i})">
+      <div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:4px;margin-bottom:6px">
+        ${products.map(({product})=>`<img src="${product.img}" style="width:100%;aspect-ratio:1;object-fit:contain;border-radius:4px;background:#f5f5f5">`).join('')}
       </div>
       <div class="liked-item-name">${item.outfit.name}</div>
       <div class="liked-item-price">CA$${item.total.toFixed(2)}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function showLikedDetail(i){
@@ -1920,17 +2174,24 @@ function bindSwipe(card, idx){
 
 function updateSlider(cat,val){
   val=parseInt(val);
-  const maxMap={top:200,bottom:200,shoes:250};
-  const ids={top:'topBudgetDisplay',bottom:'bottomBudgetDisplay',shoes:'shoesBudgetDisplay'};
+  const maxMap={top:500,bottom:500,shoes:600,outerwear:800,hat:200,accessory:300};
+  const ids={
+    top:'topBudgetDisplay',
+    bottom:'bottomBudgetDisplay',
+    shoes:'shoesBudgetDisplay',
+    outerwear:'outerwearBudgetDisplay',
+    hat:'hatBudgetDisplay',
+    accessory:'accessoryBudgetDisplay'
+  };
   const el=document.getElementById(ids[cat]);
+  if(!el) return;
   el.textContent=val>=maxMap[cat]?`CA$${val}+`:`CA$${val}`;
   updateTotal();
 }
 function updateTotal(){
-  const t=parseInt(document.getElementById('topBudget').value);
-  const b=parseInt(document.getElementById('bottomBudget').value);
-  const s=parseInt(document.getElementById('shoesBudget').value);
-  document.getElementById('totalDisplay').textContent=`CA$${t+b+s}`;
+  const total = ['top','bottom','shoes','outerwear','hat','accessory']
+    .reduce((sum,key)=>sum+(parseInt(document.getElementById(`${key}Budget`)?.value)||0),0);
+  document.getElementById('totalDisplay').textContent=`CA$${total}`;
 }
 
 function previewBodyPhoto(inputId, previewId, boxId){
@@ -2166,6 +2427,32 @@ async function submitFeedback(){
 async function init(){
   await loadProducts();
   document.getElementById('app').innerHTML=`
+    <div class="card auth-card">
+      <div>
+        <div class="auth-title" data-ui="profileTitle">${ui('profileTitle')}</div>
+        <div class="auth-sub" data-ui="profileSub">${ui('profileSub')}</div>
+        <div class="auth-status" id="authStatus"></div>
+      </div>
+      <div>
+        <div id="authSignedOut">
+          <div class="auth-fields">
+            <input id="authEmail" type="email" autocomplete="email" data-ui-placeholder="email" placeholder="${ui('email')}">
+            <input id="authPassword" type="password" autocomplete="current-password" data-ui-placeholder="password" placeholder="${ui('password')}">
+          </div>
+          <div class="auth-actions">
+            <button class="auth-btn primary" data-ui="login" onclick="loginUser('login')">${ui('login')}</button>
+            <button class="auth-btn" data-ui="register" onclick="loginUser('register')">${ui('register')}</button>
+          </div>
+        </div>
+        <div id="authSignedIn" style="display:none">
+          <div class="auth-sub" id="authUserEmail"></div>
+          <div class="auth-actions">
+            <button class="auth-btn primary" data-ui="saveProfile" onclick="saveProfile()">${ui('saveProfile')}</button>
+            <button class="auth-btn" data-ui="logout" onclick="logoutUser()">${ui('logout')}</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 进度条 -->
     <div class="progress-steps">
       <div class="progress-step active" id="step1">
@@ -2397,23 +2684,38 @@ async function init(){
         <p class="section-title"><span data-i18n="budgetTitle">分类预算设置</span></p>
         <div class="budget-total-bar">
           <span class="budget-total-label"><span data-i18n="budgetTotal" class="budget-total-label">套装预计总价</span>
-          <span class="budget-total-value" id="totalDisplay">CA$230</span>
+          <span class="budget-total-value" id="totalDisplay">CA$750</span>
         </div>
         <div class="budget-sliders">
           <div class="budget-slider-item">
-            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label">上衣预算</span></div><span class="slider-value" id="topBudgetDisplay">CA$60</span></div>
-            <input type="range" id="topBudget" min="20" max="200" step="10" value="60" oninput="updateSlider('top',this.value)">
-            <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👕</span><span class="slider-label" data-ui="topBudget">上衣预算</span></div><span class="slider-value" id="topBudgetDisplay">CA$100</span></div>
+            <input type="range" id="topBudget" min="20" max="500" step="10" value="100" oninput="updateSlider('top',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$500+</span></div>
           </div>
           <div class="budget-slider-item">
-            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label">裤子预算</span></div><span class="slider-value" id="bottomBudgetDisplay">CA$80</span></div>
-            <input type="range" id="bottomBudget" min="20" max="200" step="10" value="80" oninput="updateSlider('bottom',this.value)">
-            <div class="slider-range"><span>CA$20</span><span>CA$200+</span></div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👖</span><span class="slider-label" data-ui="bottomBudget">裤子预算</span></div><span class="slider-value" id="bottomBudgetDisplay">CA$120</span></div>
+            <input type="range" id="bottomBudget" min="20" max="500" step="10" value="120" oninput="updateSlider('bottom',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$500+</span></div>
           </div>
           <div class="budget-slider-item">
-            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label">鞋子预算</span></div><span class="slider-value" id="shoesBudgetDisplay">CA$90</span></div>
-            <input type="range" id="shoesBudget" min="20" max="250" step="10" value="90" oninput="updateSlider('shoes',this.value)">
-            <div class="slider-range"><span>CA$20</span><span>CA$250+</span></div>
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>👟</span><span class="slider-label" data-ui="shoesBudget">鞋子预算</span></div><span class="slider-value" id="shoesBudgetDisplay">CA$150</span></div>
+            <input type="range" id="shoesBudget" min="20" max="600" step="10" value="150" oninput="updateSlider('shoes',this.value)">
+            <div class="slider-range"><span>CA$20</span><span>CA$600+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>🧥</span><span class="slider-label" data-ui="outerwearBudget">外套预算</span></div><span class="slider-value" id="outerwearBudgetDisplay">CA$200</span></div>
+            <input type="range" id="outerwearBudget" min="0" max="800" step="10" value="200" oninput="updateSlider('outerwear',this.value)">
+            <div class="slider-range"><span>CA$0</span><span>CA$800+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>🧢</span><span class="slider-label" data-ui="hatBudget">帽子预算</span></div><span class="slider-value" id="hatBudgetDisplay">CA$80</span></div>
+            <input type="range" id="hatBudget" min="0" max="200" step="10" value="80" oninput="updateSlider('hat',this.value)">
+            <div class="slider-range"><span>CA$0</span><span>CA$200+</span></div>
+          </div>
+          <div class="budget-slider-item">
+            <div class="slider-header"><div style="display:flex;align-items:center;gap:6px"><span>⌚</span><span class="slider-label" data-ui="accessoryBudget">配饰预算</span></div><span class="slider-value" id="accessoryBudgetDisplay">CA$100</span></div>
+            <input type="range" id="accessoryBudget" min="0" max="300" step="10" value="100" oninput="updateSlider('accessory',this.value)">
+            <div class="slider-range"><span>CA$0</span><span>CA$300+</span></div>
           </div>
         </div>
       </div>
@@ -2447,6 +2749,8 @@ async function init(){
       </div>
     </div>`;
   updateTotal();
+  updateAuthUI();
+  loadProfile();
   // 表单渲染完后应用语言
   setTimeout(applyLang, 100);
 }
