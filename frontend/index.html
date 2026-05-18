@@ -190,6 +190,11 @@
   .body-slider-head label{font-size:12px;color:var(--muted);font-weight:600;}
   .body-slider-value{font-size:14px;font-weight:700;font-family:'Noto Serif SC',serif;}
   .body-slider-row input[type=range]{width:100%;}
+  .body-preset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+  .body-preset-btn{min-height:36px;border:1px solid var(--border);border-radius:10px;background:var(--bg);font-family:inherit;font-size:12px;color:var(--ink);cursor:pointer;transition:all .15s;}
+  .body-preset-btn:hover,.body-preset-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .body-shape-sub{font-size:11px;color:var(--muted);line-height:1.5;margin:-4px 0 12px;}
+  .body-hidden-measures{display:none;}
   .analyze-btn{width:100%;min-height:44px;padding:9px 14px;background:linear-gradient(135deg,#1a1a1a,#444);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;margin-bottom:14px;transition:opacity .15s;line-height:1.35;white-space:normal;}
   .analyze-btn:hover{opacity:.85;}.analyze-btn:disabled{opacity:.4;cursor:not-allowed;}
   .analysis-result{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:12px;padding:16px 20px;margin-bottom:16px;display:none;}
@@ -306,7 +311,8 @@
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
     .body-photo-row,.measure-grid{grid-template-columns:1fr;}
     .body-model-panel{grid-template-columns:1fr;}
-  .body-model-card{min-height:330px;}
+    .body-model-card{min-height:330px;}
+    .body-preset-grid{grid-template-columns:repeat(2,1fr);}
   .body-outline{width:190px;height:300px;}
     .swipe-card{max-width:100%;}
     .swipe-container{min-height:650px;}
@@ -364,6 +370,23 @@ const LANG = {
     measureTitle: '身体三围（可选，帮助精准推荐）',
     chestLabel: '胸围 (cm)', waistLabel: '腰围 (cm)', hipLabel: '臀围 (cm)',
     thighLabel: '大腿围 (cm)', calfLabel: '小腿围 (cm)',
+    bodyShapeTitle: '捏出你的体型',
+    bodyShapeSub: '先选一个基础体型，再用滑条微调轮廓。',
+    bodyPresetSlim: '偏瘦',
+    bodyPresetStandard: '标准',
+    bodyPresetAthletic: '健壮',
+    bodyPresetWideShoulder: '上身宽',
+    bodyPresetPear: '梨形',
+    bodyPresetBelly: '小肚腩',
+    bodyPresetShortLeg: '腿短',
+    bodyPresetTall: '个子高',
+    shoulderLabel: '肩宽',
+    torsoLabel: '胸背厚度',
+    bellyLabel: '腰腹',
+    pelvisLabel: '臀胯',
+    thighShapeLabel: '大腿',
+    calfShapeLabel: '小腿',
+    legRatioLabel: '腿长比例',
     bodyIssuesTitle: '身体特征（分步选择，AI 精准适配）',
     step1Label: '第一步：选择你想改善的部位',
     upperBtn: '👆 上半身', lowerBtn: '👇 下半身',
@@ -425,6 +448,23 @@ const LANG = {
     measureTitle: 'Body Measurements (Optional)',
     chestLabel: 'Chest (cm)', waistLabel: 'Waist (cm)', hipLabel: 'Hip (cm)',
     thighLabel: 'Thigh (cm)', calfLabel: 'Calf (cm)',
+    bodyShapeTitle: 'Shape Your Body',
+    bodyShapeSub: 'Start with a body preset, then fine-tune the silhouette.',
+    bodyPresetSlim: 'Slim',
+    bodyPresetStandard: 'Standard',
+    bodyPresetAthletic: 'Athletic',
+    bodyPresetWideShoulder: 'Wide Upper',
+    bodyPresetPear: 'Pear Shape',
+    bodyPresetBelly: 'Belly',
+    bodyPresetShortLeg: 'Short Legs',
+    bodyPresetTall: 'Tall',
+    shoulderLabel: 'Shoulders',
+    torsoLabel: 'Chest / Back',
+    bellyLabel: 'Waist / Belly',
+    pelvisLabel: 'Hips',
+    thighShapeLabel: 'Thighs',
+    calfShapeLabel: 'Calves',
+    legRatioLabel: 'Leg Ratio',
     bodyIssuesTitle: 'Body Features (Step by step)',
     step1Label: 'Step 1: Select areas to improve',
     upperBtn: '👆 Upper Body', lowerBtn: '👇 Lower Body',
@@ -904,6 +944,7 @@ function collectProfile(){
       thigh: document.getElementById('thigh')?.value || '',
       calf: document.getElementById('calf')?.value || '',
     },
+    bodyShape: collectBodyShape(),
     bodyIssues: Array.from(window._selectedIssues || []),
   };
 }
@@ -919,6 +960,7 @@ function applyProfile(profile){
     if(el) el.value = val || '';
     syncBodySlider(key, false);
   });
+  if(profile.bodyShape) applyBodyShape(profile.bodyShape, false);
   Object.entries(profile.budgets || {}).forEach(([key,val])=>{
     const id = `${key}Budget`;
     const el = document.getElementById(id);
@@ -1890,10 +1932,97 @@ const ISSUE_LABELS_ZH = {
 };
 
 const ADVANTAGE_ISSUES = new Set(['leg_long','waist_thin','shoulder_good','body_fit','tall','abs','arm_muscle','face_small','skin_white','hip_ratio']);
+const AUTO_SHAPE_ISSUES = new Set(['shoulder_narrow','shoulder_wide','back_wide','chest_wide','belly','belly_lower','love_handle','waist_thin','hip_big','hip_wide','thigh_thick','calf_thick','leg_short','leg_long','tall','body_fit','shoulder_good','bottom_heavy','top_heavy']);
+const BODY_SHAPE_KEYS = {
+  shoulder:'shoulderShape',
+  torso:'torsoShape',
+  belly:'bellyShape',
+  pelvis:'pelvisShape',
+  thighShape:'thighShape',
+  calfShape:'calfShape',
+  legRatio:'legRatioShape',
+};
+const BODY_SHAPE_PRESETS = {
+  slim:{shoulder:42,torso:38,belly:30,pelvis:38,thighShape:34,calfShape:32,legRatio:58},
+  standard:{shoulder:50,torso:50,belly:42,pelvis:48,thighShape:46,calfShape:42,legRatio:55},
+  athletic:{shoulder:68,torso:64,belly:38,pelvis:48,thighShape:54,calfShape:50,legRatio:56},
+  wideShoulder:{shoulder:76,torso:64,belly:44,pelvis:42,thighShape:44,calfShape:42,legRatio:55},
+  pear:{shoulder:42,torso:45,belly:48,pelvis:70,thighShape:68,calfShape:48,legRatio:54},
+  belly:{shoulder:52,torso:58,belly:76,pelvis:55,thighShape:52,calfShape:44,legRatio:53},
+  shortLeg:{shoulder:54,torso:52,belly:48,pelvis:50,thighShape:50,calfShape:42,legRatio:30},
+  tall:{shoulder:56,torso:48,belly:38,pelvis:46,thighShape:44,calfShape:40,legRatio:80},
+};
+
 function issueText(issue){
   const pair = ISSUE_LABEL_TEXTS[issue];
   if(pair) return window._lang === 'en' ? pair[1] : pair[0];
   return ISSUE_LABELS_ZH[issue] || issue;
+}
+
+function collectBodyShape(){
+  return Object.fromEntries(Object.entries(BODY_SHAPE_KEYS).map(([key,id])=>[key, parseInt(document.getElementById(id)?.value || 50)]));
+}
+
+function applyBodyShape(shape, refresh=true){
+  Object.entries(shape || {}).forEach(([key,val])=>{
+    const el = document.getElementById(BODY_SHAPE_KEYS[key] || `${key}Shape`);
+    if(el) el.value = val;
+  });
+  updateShapeFromSliders(refresh);
+}
+
+function applyBodyPreset(name){
+  document.querySelectorAll('.body-preset-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.preset === name));
+  applyBodyShape(BODY_SHAPE_PRESETS[name] || BODY_SHAPE_PRESETS.standard);
+}
+
+function setIssue(issue, active){
+  if(active) window._selectedIssues.add(issue);
+  else if(AUTO_SHAPE_ISSUES.has(issue)) window._selectedIssues.delete(issue);
+  const btn = document.querySelector(`.body-issue-btn[data-issue="${issue}"]`);
+  if(btn) btn.classList.toggle('selected', window._selectedIssues.has(issue));
+}
+
+function updateShapeFromSliders(refreshRules=true){
+  const shape = collectBodyShape();
+  const mapRange = (v, outMin, outMax) => Math.round(outMin + (v / 100) * (outMax - outMin));
+  const chest = Math.round((mapRange(shape.shoulder, 78, 116) + mapRange(shape.torso, 78, 112)) / 2);
+  const waist = mapRange(shape.belly, 62, 112);
+  const hip = mapRange(shape.pelvis, 78, 120);
+  const thigh = mapRange(shape.thighShape, 44, 76);
+  const calf = mapRange(shape.calfShape, 30, 52);
+  Object.entries({chest, waist, hip, thigh, calf}).forEach(([key,val])=>{
+    const el = document.getElementById(key);
+    if(el) el.value = val;
+  });
+  Object.entries(BODY_SHAPE_KEYS).forEach(([key,id])=>{
+    const el = document.getElementById(id);
+    const value = document.getElementById(`${id}Value`);
+    if(el && value) value.textContent = `${el.value}%`;
+  });
+  ['chest','waist','hip','thigh','calf'].forEach(key=>syncBodySlider(key, false));
+
+  setIssue('shoulder_narrow', shape.shoulder < 36);
+  setIssue('shoulder_wide', shape.shoulder > 68);
+  setIssue('back_wide', shape.torso > 70);
+  setIssue('chest_wide', shape.torso > 70);
+  setIssue('belly', shape.belly > 66);
+  setIssue('belly_lower', shape.belly > 74);
+  setIssue('love_handle', shape.belly > 72);
+  setIssue('waist_thin', shape.belly < 32);
+  setIssue('hip_big', shape.pelvis > 66);
+  setIssue('hip_wide', shape.pelvis > 66);
+  setIssue('thigh_thick', shape.thighShape > 66);
+  setIssue('calf_thick', shape.calfShape > 66);
+  setIssue('leg_short', shape.legRatio < 36);
+  setIssue('leg_long', shape.legRatio > 70);
+  setIssue('tall', shape.legRatio > 78);
+  setIssue('top_heavy', shape.shoulder - shape.pelvis > 28);
+  setIssue('bottom_heavy', shape.pelvis - shape.shoulder > 22);
+  setIssue('body_fit', shape.shoulder > 42 && shape.shoulder < 62 && shape.belly < 55 && shape.pelvis > 40 && shape.pelvis < 62);
+  setIssue('shoulder_good', shape.shoulder >= 52 && shape.shoulder <= 68);
+  updateSelectedSummary();
+  if(refreshRules) updateBodyRules();
 }
 
 function clampBodyValue(key, value){
@@ -1927,6 +2056,7 @@ function updateBodyModel(){
   const hip = clampBodyValue('hip', document.getElementById('hip')?.value);
   const thigh = clampBodyValue('thigh', document.getElementById('thigh')?.value);
   const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
+  const shape = collectBodyShape();
   const cx = 105;
   const chestW = 34 + (chest - 72) * .36;
   const waistW = 24 + (waist - 60) * .32;
@@ -1935,23 +2065,28 @@ function updateBodyModel(){
   const calfW = 9 + (calf - 28) * .33;
   const ankleW = Math.max(7, calfW * .62);
   const footW = Math.max(15, calfW * 1.25);
+  const legShift = (shape.legRatio - 55) * .42;
+  const hipY = 202 - legShift * .35;
+  const kneeY = 270 - legShift * .15;
+  const ankleY = 350 + legShift;
+  const footY = 366 + legShift;
   const path = [
     `M ${cx-15} 58`,
     `C ${cx-28} 64 ${cx-chestW} 75 ${cx-chestW-5} 96`,
     `C ${cx-chestW-18} 124 ${cx-chestW-24} 154 ${cx-chestW-29} 174`,
     `C ${cx-chestW-30} 183 ${cx-chestW-22} 187 ${cx-chestW-17} 180`,
     `C ${cx-chestW-9} 154 ${cx-chestW+2} 126 ${cx-waistW} 151`,
-    `C ${cx-waistW-4} 168 ${cx-hipW} 182 ${cx-hipW} 202`,
-    `C ${cx-hipW+2} 226 ${cx-thighW-9} 244 ${cx-thighW-8} 270`,
-    `C ${cx-thighW-7} 302 ${cx-calfW-5} 326 ${cx-ankleW} 350`,
-    `C ${cx-footW} 354 ${cx-footW-4} 364 ${cx-ankleW+3} 366`,
-    `C ${cx-5} 366 ${cx-7} 354 ${cx-5} 333`,
-    `C ${cx-4} 300 ${cx-7} 260 ${cx} 224`,
+    `C ${cx-waistW-4} 168 ${cx-hipW} 182 ${cx-hipW} ${hipY}`,
+    `C ${cx-hipW+2} ${hipY+24} ${cx-thighW-9} 244 ${cx-thighW-8} ${kneeY}`,
+    `C ${cx-thighW-7} ${kneeY+32} ${cx-calfW-5} 326 ${cx-ankleW} ${ankleY}`,
+    `C ${cx-footW} ${ankleY+4} ${cx-footW-4} ${footY-2} ${cx-ankleW+3} ${footY}`,
+    `C ${cx-5} ${footY} ${cx-7} ${ankleY+4} ${cx-5} 333`,
+    `C ${cx-4} 300 ${cx-7} 260 ${cx} ${hipY+22}`,
     `C ${cx+7} 260 ${cx+4} 300 ${cx+5} 333`,
-    `C ${cx+7} 354 ${cx+5} 366 ${cx+ankleW-3} 366`,
-    `C ${cx+footW+4} 364 ${cx+footW} 354 ${cx+ankleW} 350`,
-    `C ${cx+calfW+5} 326 ${cx+thighW+7} 302 ${cx+thighW+8} 270`,
-    `C ${cx+thighW+9} 244 ${cx+hipW-2} 226 ${cx+hipW} 202`,
+    `C ${cx+7} ${ankleY+4} ${cx+5} ${footY} ${cx+ankleW-3} ${footY}`,
+    `C ${cx+footW+4} ${footY-2} ${cx+footW} ${ankleY+4} ${cx+ankleW} ${ankleY}`,
+    `C ${cx+calfW+5} 326 ${cx+thighW+7} ${kneeY+32} ${cx+thighW+8} ${kneeY}`,
+    `C ${cx+thighW+9} 244 ${cx+hipW-2} ${hipY+24} ${cx+hipW} ${hipY}`,
     `C ${cx+hipW} 182 ${cx+waistW+4} 168 ${cx+waistW} 151`,
     `C ${cx+chestW-2} 126 ${cx+chestW+9} 154 ${cx+chestW+17} 180`,
     `C ${cx+chestW+22} 187 ${cx+chestW+30} 183 ${cx+chestW+29} 174`,
@@ -2652,7 +2787,18 @@ async function init(){
           </div>
         </div>
       </div>
-      <p class="section-title" style="margin-bottom:10px"><span data-i18n="measureTitle">身体三围（可选，帮助精准推荐）</span></p>
+      <p class="section-title" style="margin-bottom:6px"><span data-i18n="bodyShapeTitle">捏出你的体型</span></p>
+      <div class="body-shape-sub" data-i18n="bodyShapeSub">先选一个基础体型，再用滑条微调轮廓。</div>
+      <div class="body-preset-grid">
+        <button class="body-preset-btn" data-preset="slim" onclick="applyBodyPreset('slim')" data-i18n="bodyPresetSlim">偏瘦</button>
+        <button class="body-preset-btn active" data-preset="standard" onclick="applyBodyPreset('standard')" data-i18n="bodyPresetStandard">标准</button>
+        <button class="body-preset-btn" data-preset="athletic" onclick="applyBodyPreset('athletic')" data-i18n="bodyPresetAthletic">健壮</button>
+        <button class="body-preset-btn" data-preset="wideShoulder" onclick="applyBodyPreset('wideShoulder')" data-i18n="bodyPresetWideShoulder">上身宽</button>
+        <button class="body-preset-btn" data-preset="pear" onclick="applyBodyPreset('pear')" data-i18n="bodyPresetPear">梨形</button>
+        <button class="body-preset-btn" data-preset="belly" onclick="applyBodyPreset('belly')" data-i18n="bodyPresetBelly">小肚腩</button>
+        <button class="body-preset-btn" data-preset="shortLeg" onclick="applyBodyPreset('shortLeg')" data-i18n="bodyPresetShortLeg">腿短</button>
+        <button class="body-preset-btn" data-preset="tall" onclick="applyBodyPreset('tall')" data-i18n="bodyPresetTall">个子高</button>
+      </div>
       <div class="body-model-panel">
         <div class="body-model-card">
           <svg class="body-outline" viewBox="0 0 210 370" aria-label="body outline preview">
@@ -2663,26 +2809,42 @@ async function init(){
         </div>
         <div class="body-slider-stack">
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="chestLabel">胸围 (cm)</label><span class="body-slider-value" id="chestValue">90 cm</span></div>
-            <input type="range" id="chest" min="72" max="125" step="1" value="90" oninput="syncBodySlider('chest')">
+            <div class="body-slider-head"><label data-i18n="shoulderLabel">肩宽</label><span class="body-slider-value" id="shoulderShapeValue">50%</span></div>
+            <input type="range" id="shoulderShape" min="0" max="100" step="1" value="50" oninput="updateShapeFromSliders()">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="waistLabel">腰围 (cm)</label><span class="body-slider-value" id="waistValue">75 cm</span></div>
-            <input type="range" id="waist" min="60" max="120" step="1" value="75" oninput="syncBodySlider('waist')">
+            <div class="body-slider-head"><label data-i18n="torsoLabel">胸背厚度</label><span class="body-slider-value" id="torsoShapeValue">50%</span></div>
+            <input type="range" id="torsoShape" min="0" max="100" step="1" value="50" oninput="updateShapeFromSliders()">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="hipLabel">臀围 (cm)</label><span class="body-slider-value" id="hipValue">95 cm</span></div>
-            <input type="range" id="hip" min="75" max="125" step="1" value="95" oninput="syncBodySlider('hip')">
+            <div class="body-slider-head"><label data-i18n="bellyLabel">腰腹</label><span class="body-slider-value" id="bellyShapeValue">42%</span></div>
+            <input type="range" id="bellyShape" min="0" max="100" step="1" value="42" oninput="updateShapeFromSliders()">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="thighLabel">大腿围 (cm)</label><span class="body-slider-value" id="thighValue">58 cm</span></div>
-            <input type="range" id="thigh" min="42" max="78" step="1" value="58" oninput="syncBodySlider('thigh')">
+            <div class="body-slider-head"><label data-i18n="pelvisLabel">臀胯</label><span class="body-slider-value" id="pelvisShapeValue">48%</span></div>
+            <input type="range" id="pelvisShape" min="0" max="100" step="1" value="48" oninput="updateShapeFromSliders()">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="calfLabel">小腿围 (cm)</label><span class="body-slider-value" id="calfValue">37 cm</span></div>
-            <input type="range" id="calf" min="28" max="52" step="1" value="37" oninput="syncBodySlider('calf')">
+            <div class="body-slider-head"><label data-i18n="thighShapeLabel">大腿</label><span class="body-slider-value" id="thighShapeValue">46%</span></div>
+            <input type="range" id="thighShape" min="0" max="100" step="1" value="46" oninput="updateShapeFromSliders()">
+          </div>
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="calfShapeLabel">小腿</label><span class="body-slider-value" id="calfShapeValue">42%</span></div>
+            <input type="range" id="calfShape" min="0" max="100" step="1" value="42" oninput="updateShapeFromSliders()">
+          </div>
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="legRatioLabel">腿长比例</label><span class="body-slider-value" id="legRatioShapeValue">55%</span></div>
+            <input type="range" id="legRatioShape" min="0" max="100" step="1" value="55" oninput="updateShapeFromSliders()">
           </div>
         </div>
+      </div>
+      <div class="body-hidden-measures">
+        <input type="range" id="chest" min="72" max="125" step="1" value="90">
+        <input type="range" id="waist" min="60" max="120" step="1" value="75">
+        <input type="range" id="hip" min="75" max="125" step="1" value="95">
+        <input type="range" id="thigh" min="42" max="78" step="1" value="58">
+        <input type="range" id="calf" min="28" max="52" step="1" value="37">
+        <span id="chestValue"></span><span id="waistValue"></span><span id="hipValue"></span><span id="thighValue"></span><span id="calfValue"></span>
       </div>
 
       <div class="body-issues-section">
