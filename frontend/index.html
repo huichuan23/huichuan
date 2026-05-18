@@ -179,25 +179,11 @@
   .measure-item input{width:100%;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;}
   .measure-item input:focus{border-color:var(--ink);}
   .body-model-panel{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:center;margin-bottom:18px;}
-  .body-model-card{border:1px solid var(--border);border-radius:16px;background:linear-gradient(180deg,#f8f7f3,#efede8);padding:14px;min-height:360px;display:flex;align-items:center;justify-content:center;}
-  .body-model{position:relative;width:210px;height:330px;--chest-w:104px;--waist-w:78px;--hip-w:96px;--thigh-w:34px;--calf-w:24px;}
-  .body-model .head{position:absolute;left:50%;top:4px;width:46px;height:46px;border-radius:50%;background:#d8d1c7;transform:translateX(-50%);}
-  .body-model .neck{position:absolute;left:50%;top:48px;width:22px;height:18px;border-radius:8px;background:#d8d1c7;transform:translateX(-50%);}
-  .body-model .chest{position:absolute;left:50%;top:66px;width:var(--chest-w);height:74px;border-radius:34px 34px 22px 22px;background:#b9c7d8;transform:translateX(-50%);transition:width .18s ease;}
-  .body-model .waist{position:absolute;left:50%;top:126px;width:var(--waist-w);height:70px;border-radius:18px 18px 26px 26px;background:#c9d5e3;transform:translateX(-50%);transition:width .18s ease;}
-  .body-model .hip{position:absolute;left:50%;top:178px;width:var(--hip-w);height:58px;border-radius:28px;background:#b7c4d0;transform:translateX(-50%);transition:width .18s ease;}
-  .body-model .arm{position:absolute;top:76px;width:26px;height:134px;border-radius:18px;background:#d8d1c7;}
-  .body-model .arm.left{left:28px;transform:rotate(7deg);}
-  .body-model .arm.right{right:28px;transform:rotate(-7deg);}
-  .body-model .leg{position:absolute;top:226px;width:var(--thigh-w);height:88px;border-radius:18px 18px 14px 14px;background:#2f3440;transition:width .18s ease;}
-  .body-model .leg.left{left:72px;}
-  .body-model .leg.right{right:72px;}
-  .body-model .calf{position:absolute;bottom:14px;width:var(--calf-w);height:64px;border-radius:12px;background:#3d4451;transition:width .18s ease;}
-  .body-model .calf.left{left:76px;}
-  .body-model .calf.right{right:76px;}
-  .body-model .foot{position:absolute;bottom:0;width:42px;height:13px;border-radius:999px;background:#171717;}
-  .body-model .foot.left{left:60px;}
-  .body-model .foot.right{right:60px;}
+  .body-model-card{border:1px solid var(--border);border-radius:16px;background:#fbfaf7;padding:14px;min-height:360px;display:flex;align-items:center;justify-content:center;}
+  .body-outline{width:210px;height:330px;overflow:visible;}
+  .body-outline path,.body-outline ellipse{fill:none;stroke:#171717;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;}
+  .body-outline .guide{stroke:#d7d2ca;stroke-width:1.2;stroke-dasharray:4 5;}
+  .body-outline .center-line{stroke:#d7d2ca;stroke-width:1;stroke-dasharray:3 6;}
   .body-slider-stack{display:grid;gap:10px;}
   .body-slider-row{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
   .body-slider-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;}
@@ -320,7 +306,8 @@
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
     .body-photo-row,.measure-grid{grid-template-columns:1fr;}
     .body-model-panel{grid-template-columns:1fr;}
-    .body-model-card{min-height:330px;}
+  .body-model-card{min-height:330px;}
+  .body-outline{width:190px;height:300px;}
     .swipe-card{max-width:100%;}
     .swipe-container{min-height:650px;}
     .model-preview{height:360px;margin:12px;}
@@ -1933,18 +1920,46 @@ function syncBodySlider(key, refreshRules=true){
 }
 
 function updateBodyModel(){
-  const model = document.getElementById('bodyModel');
-  if(!model) return;
+  const outline = document.getElementById('bodyOutlinePath');
+  if(!outline) return;
   const chest = clampBodyValue('chest', document.getElementById('chest')?.value);
   const waist = clampBodyValue('waist', document.getElementById('waist')?.value);
   const hip = clampBodyValue('hip', document.getElementById('hip')?.value);
   const thigh = clampBodyValue('thigh', document.getElementById('thigh')?.value);
   const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
-  model.style.setProperty('--chest-w', `${72 + (chest - 72) * 1.12}px`);
-  model.style.setProperty('--waist-w', `${58 + (waist - 60) * .95}px`);
-  model.style.setProperty('--hip-w', `${78 + (hip - 75) * 1.08}px`);
-  model.style.setProperty('--thigh-w', `${24 + (thigh - 42) * .68}px`);
-  model.style.setProperty('--calf-w', `${18 + (calf - 28) * .58}px`);
+  const cx = 105;
+  const chestW = 34 + (chest - 72) * .36;
+  const waistW = 24 + (waist - 60) * .32;
+  const hipW = 31 + (hip - 75) * .42;
+  const thighW = 13 + (thigh - 42) * .34;
+  const calfW = 9 + (calf - 28) * .33;
+  const ankleW = Math.max(7, calfW * .62);
+  const footW = Math.max(15, calfW * 1.25);
+  const path = [
+    `M ${cx-15} 58`,
+    `C ${cx-28} 64 ${cx-chestW} 75 ${cx-chestW-5} 96`,
+    `C ${cx-chestW-18} 124 ${cx-chestW-24} 154 ${cx-chestW-29} 174`,
+    `C ${cx-chestW-30} 183 ${cx-chestW-22} 187 ${cx-chestW-17} 180`,
+    `C ${cx-chestW-9} 154 ${cx-chestW+2} 126 ${cx-waistW} 151`,
+    `C ${cx-waistW-4} 168 ${cx-hipW} 182 ${cx-hipW} 202`,
+    `C ${cx-hipW+2} 226 ${cx-thighW-9} 244 ${cx-thighW-8} 270`,
+    `C ${cx-thighW-7} 302 ${cx-calfW-5} 326 ${cx-ankleW} 350`,
+    `C ${cx-footW} 354 ${cx-footW-4} 364 ${cx-ankleW+3} 366`,
+    `C ${cx-5} 366 ${cx-7} 354 ${cx-5} 333`,
+    `C ${cx-4} 300 ${cx-7} 260 ${cx} 224`,
+    `C ${cx+7} 260 ${cx+4} 300 ${cx+5} 333`,
+    `C ${cx+7} 354 ${cx+5} 366 ${cx+ankleW-3} 366`,
+    `C ${cx+footW+4} 364 ${cx+footW} 354 ${cx+ankleW} 350`,
+    `C ${cx+calfW+5} 326 ${cx+thighW+7} 302 ${cx+thighW+8} 270`,
+    `C ${cx+thighW+9} 244 ${cx+hipW-2} 226 ${cx+hipW} 202`,
+    `C ${cx+hipW} 182 ${cx+waistW+4} 168 ${cx+waistW} 151`,
+    `C ${cx+chestW-2} 126 ${cx+chestW+9} 154 ${cx+chestW+17} 180`,
+    `C ${cx+chestW+22} 187 ${cx+chestW+30} 183 ${cx+chestW+29} 174`,
+    `C ${cx+chestW+24} 154 ${cx+chestW+18} 124 ${cx+chestW+5} 96`,
+    `C ${cx+chestW} 75 ${cx+28} 64 ${cx+15} 58`,
+    `C ${cx+10} 69 ${cx-10} 69 ${cx-15} 58 Z`,
+  ].join(' ');
+  outline.setAttribute('d', path);
   ['chest','waist','hip','thigh','calf'].forEach(k=>{
     const value = document.getElementById(`${k}Value`);
     const input = document.getElementById(k);
@@ -2640,14 +2655,11 @@ async function init(){
       <p class="section-title" style="margin-bottom:10px"><span data-i18n="measureTitle">身体三围（可选，帮助精准推荐）</span></p>
       <div class="body-model-panel">
         <div class="body-model-card">
-          <div class="body-model" id="bodyModel">
-            <div class="head"></div><div class="neck"></div>
-            <div class="chest"></div><div class="waist"></div><div class="hip"></div>
-            <div class="arm left"></div><div class="arm right"></div>
-            <div class="leg left"></div><div class="leg right"></div>
-            <div class="calf left"></div><div class="calf right"></div>
-            <div class="foot left"></div><div class="foot right"></div>
-          </div>
+          <svg class="body-outline" viewBox="0 0 210 370" aria-label="body outline preview">
+            <line class="center-line" x1="105" y1="58" x2="105" y2="366"></line>
+            <ellipse id="bodyHead" cx="105" cy="32" rx="20" ry="25"></ellipse>
+            <path id="bodyOutlinePath"></path>
+          </svg>
         </div>
         <div class="body-slider-stack">
           <div class="body-slider-row">
