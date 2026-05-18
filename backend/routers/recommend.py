@@ -273,7 +273,7 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 {optional_section("候选帽子（可选）", hats)}
 {optional_section("候选配饰（可选）", accessories)}
 
-规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选 8.{optional_rules_text}
+规则：1.只能选候选商品 2.体型约束高于一切 3.必须返回3套且三套的商品组合不得重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选 8.{optional_rules_text}
 
 返回JSON：{{"summary":"体型风格总结","tips":["体型贴士1","贴士2","贴士3"],"outfits":[{{"id":1,"name":"...","safety":"高","reason":"具体说明适合体型原因","top_id":"...","bottom_id":"...","shoes_id":"...","outerwear_id":null,"hat_id":null,"accessory_id":null}}]}}"""
 
@@ -287,18 +287,70 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 
     result = json.loads(resp.json()["choices"][0]["message"]["content"])
 
+    valid_ids = {
+        "top_id": {p.id for p in tops},
+        "bottom_id": {p.id for p in bottoms},
+        "shoes_id": {p.id for p in shoes},
+        "outerwear_id": {p.id for p in outerwear},
+        "hat_id": {p.id for p in hats},
+        "accessory_id": {p.id for p in accessories},
+    }
+
+    def choose(products, idx, step=1):
+        return products[(idx * step) % len(products)].id if products else None
+
+    def valid_or_choose(value, key, products, idx, step=1):
+        return value if value in valid_ids[key] else choose(products, idx, step)
+
+    def outfit_combo(outfit):
+        return (
+            outfit.get("top_id"),
+            outfit.get("bottom_id"),
+            outfit.get("shoes_id"),
+            outfit.get("outerwear_id"),
+            outfit.get("hat_id"),
+            outfit.get("accessory_id"),
+        )
+
+    outfits = result.get("outfits", [])
+    used_combos = set()
+
+    for idx, outfit in enumerate(outfits):
+        outfit["top_id"] = valid_or_choose(outfit.get("top_id"), "top_id", tops, idx, 1)
+        outfit["bottom_id"] = valid_or_choose(outfit.get("bottom_id"), "bottom_id", bottoms, idx, 2)
+        outfit["shoes_id"] = valid_or_choose(outfit.get("shoes_id"), "shoes_id", shoes, idx, 3)
+
+        if outerwear:
+            outfit["outerwear_id"] = valid_or_choose(outfit.get("outerwear_id"), "outerwear_id", outerwear, idx, 1)
+        else:
+            outfit["outerwear_id"] = None
+        if hats:
+            outfit["hat_id"] = valid_or_choose(outfit.get("hat_id"), "hat_id", hats, idx, 1)
+        else:
+            outfit["hat_id"] = None
+        if accessories:
+            outfit["accessory_id"] = valid_or_choose(outfit.get("accessory_id"), "accessory_id", accessories, idx, 1)
+        else:
+            outfit["accessory_id"] = None
+
+        attempts = max(len(tops), len(bottoms), len(shoes), len(outerwear) or 1)
+        offset = 0
+        while outfit_combo(outfit) in used_combos and offset < attempts:
+            offset += 1
+            outfit["top_id"] = choose(tops, idx + offset, 1)
+            outfit["bottom_id"] = choose(bottoms, idx + offset, 2)
+            outfit["shoes_id"] = choose(shoes, idx + offset, 3)
+            if outerwear:
+                outfit["outerwear_id"] = choose(outerwear, idx + offset, 1)
+
+        used_combos.add(outfit_combo(outfit))
+
     def find_product(pid):
         p = db.query(Product).filter(Product.id==pid).first()
         if not p: return None
         return {"id":p.id,"name":p.name,"brand":p.brand,"price":p.price,"color":p.color,"img":p.img,"buy":p.buy}
 
-    for idx, outfit in enumerate(result.get("outfits",[])):
-        if outerwear and not outfit.get("outerwear_id"):
-            outfit["outerwear_id"] = outerwear[idx % len(outerwear)].id
-        if hats and not outfit.get("hat_id"):
-            outfit["hat_id"] = hats[idx % len(hats)].id
-        if accessories and not outfit.get("accessory_id"):
-            outfit["accessory_id"] = accessories[idx % len(accessories)].id
+    for outfit in result.get("outfits",[]):
         outfit["top"]    = find_product(outfit.get("top_id"))
         outfit["bottom"] = find_product(outfit.get("bottom_id"))
         outfit["shoes"]  = find_product(outfit.get("shoes_id"))
