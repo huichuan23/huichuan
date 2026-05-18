@@ -53,6 +53,30 @@ class ScrapeLog(Base):
     finished_at = Column(DateTime)
 
 
+class Feedback(Base):
+    __tablename__ = "feedback"
+
+    id            = Column(Integer, primary_key=True, autoincrement=True)
+    feedback_type = Column(String, default="general")
+    message       = Column(Text, nullable=False)
+    contact       = Column(String)
+    page          = Column(String)
+    user_agent    = Column(Text)
+    created_at    = Column(DateTime, default=datetime.utcnow)
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id            = Column(Integer, primary_key=True, autoincrement=True)
+    email         = Column(String, unique=True, index=True, nullable=False)
+    password_hash = Column(Text, nullable=False)
+    auth_token    = Column(String, unique=True, index=True)
+    profile       = Column(JSON, default=dict)
+    created_at    = Column(DateTime, default=datetime.utcnow)
+    updated_at    = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 def get_db():
     db = SessionLocal()
     try:
@@ -63,4 +87,4 @@ def get_db():
 
 def init_db():
     Base.metadata.create_all(bind=engine)
-    print("✅ 数据库表创建完成")
+    print("Database tables are ready")
