@@ -11,6 +11,8 @@ from database import get_db, Product
 
 router = APIRouter()
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 class RecommendRequest(BaseModel):
     height: int
@@ -171,8 +173,125 @@ def build_style_prompt(style, scene):
 - 公式：{rule.get('formula','')}
 - 禁忌：{rule.get('forbidden','')}"""
 
+def extract_image_parts(messages):
+    image_parts = []
+    for msg in messages or []:
+        content = msg.get("content", []) if isinstance(msg, dict) else []
+        if isinstance(content, dict):
+            content = [content]
+        for part in content:
+            if not isinstance(part, dict) or part.get("type") != "image":
+                continue
+            source = part.get("source") or {}
+            data = source.get("data")
+            mime = source.get("media_type") or source.get("mime_type") or "image/jpeg"
+            if data:
+                image_parts.append({"inline_data": {"mime_type": mime, "data": data}})
+    return image_parts
+
+def clean_json_text(text):
+    text = (text or "").strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.lower().startswith("json"):
+            text = text[4:].strip()
+    start = text.find("{")
+    end = text.rfind("}")
+    return text[start:end + 1] if start != -1 and end != -1 and end > start else text
+
+def normalize_measurements(data):
+    raw = data.get("measurements") or {}
+    ranges = {
+        "chest": (72, 125),
+        "waist": (60, 120),
+        "hip": (75, 125),
+        "thigh": (42, 78),
+        "calf": (28, 52),
+    }
+    normalized = {}
+    for key, (min_v, max_v) in ranges.items():
+        try:
+            value = int(round(float(raw.get(key))))
+        except (TypeError, ValueError):
+            continue
+        normalized[key] = max(min_v, min(max_v, value))
+    return normalized
+
+async def analyze_body_with_gemini(req: AnalyzeBodyRequest, image_parts):
+    if not GEMINI_API_KEY or not image_parts:
+        return None
+    language_rule = "Write analysis in natural English." if req.language == "en" else "分析文字使用简体中文。"
+    prompt = f"""
+You are a menswear body-proportion analyst. Analyze the uploaded full-body photo for clothing recommendation only.
+
+Important:
+- Do not claim medical or tailor-level accuracy.
+- Estimate practical styling proportions from the visible body, pose, and provided height/weight.
+- If the photo is incomplete or unclear, still return best-effort estimates with lower confidence.
+
+User context:
+height={req.height or "unknown"} cm, weight={req.weight or "unknown"} kg.
+
+Return ONLY valid JSON:
+{{
+  "analysis": "2-4 short sentences. {language_rule}",
+  "tags": ["tag1", "tag2", "tag3"],
+  "measurements": {{
+    "chest": 90,
+    "waist": 75,
+    "hip": 95,
+    "thigh": 58,
+    "calf": 37
+  }},
+  "body_issues": ["shoulder_narrow", "belly", "thigh_thick", "leg_short"],
+  "confidence": 0.0
+}}
+
+Use cm estimates in these safe ranges: chest 72-125, waist 60-120, hip 75-125, thigh 42-78, calf 28-52.
+Use only body_issues ids when clearly useful: shoulder_narrow, shoulder_wide, back_wide, chest_wide, belly, waist_thin, hip_big, hip_wide, thigh_thick, calf_thick, leg_short, leg_long, body_fit, shoulder_good, bottom_heavy, top_heavy.
+"""
+    payload = {
+        "contents": [{"parts": image_parts + [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
+    }
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+    async with httpx.AsyncClient(timeout=45) as client:
+        resp = await client.post(
+            url,
+            params={"key": GEMINI_API_KEY},
+            headers={"Content-Type": "application/json"},
+            json=payload,
+        )
+    if not resp.is_success:
+        raise HTTPException(502, f"Gemini vision error: {resp.text[:300]}")
+    parts = resp.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+    text = "\n".join(p.get("text", "") for p in parts if isinstance(p, dict))
+    try:
+        data = json.loads(clean_json_text(text))
+    except json.JSONDecodeError:
+        raise HTTPException(502, "Gemini vision returned invalid JSON")
+    measurements = normalize_measurements(data)
+    tags = [str(t).strip() for t in data.get("tags", []) if str(t).strip()][:5]
+    tag_line = "Tags: " if req.language == "en" else "标签："
+    analysis = (data.get("analysis") or "").strip()
+    if tags:
+        analysis = f"{analysis}\n{tag_line}{'|'.join(tags)}"
+    return {
+        "analysis": analysis,
+        "measurements": measurements,
+        "body_issues": data.get("body_issues", []),
+        "confidence": data.get("confidence"),
+        "source": "gemini",
+    }
+
 @router.post("/analyze-body")
 async def analyze_body(req: AnalyzeBodyRequest):
+    image_parts = extract_image_parts(req.messages)
+    if image_parts:
+        gemini_result = await analyze_body_with_gemini(req, image_parts)
+        if gemini_result:
+            return gemini_result
+
     api_key = DEEPSEEK_API_KEY
     if not api_key: raise HTTPException(400, "DeepSeek API Key 未配置")
     vals = []

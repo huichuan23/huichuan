@@ -1381,6 +1381,27 @@ async function getRecommend(){
 
         if(resp.ok){
           const d = await resp.json();
+          if(d.measurements){
+            Object.entries(d.measurements).forEach(([key,val])=>{
+              const el = document.getElementById(key);
+              if(el && val !== null && val !== undefined){
+                el.value = val;
+                syncBodySlider(key, false);
+              }
+            });
+            updateBodyModel();
+            updateBodyRules();
+          }
+          if(Array.isArray(d.body_issues)){
+            d.body_issues.forEach(issue=>{
+              if(typeof issue === 'string' && issue.trim()){
+                window._selectedIssues.add(issue.trim());
+                const btn = document.querySelector(`.body-issue-btn[data-issue="${issue.trim()}"]`);
+                if(btn) btn.classList.add('selected');
+              }
+            });
+            updateSelectedSummary();
+          }
           bodyAnalysis = d.analysis || '';
           window._bodyAnalysis = bodyAnalysis;
 
