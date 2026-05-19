@@ -13,6 +13,7 @@ router = APIRouter()
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_IMAGE_MODEL = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-3.1-flash-image-preview")
 
 class RecommendRequest(BaseModel):
     height: int
@@ -41,6 +42,14 @@ class AnalyzeBodyRequest(BaseModel):
     hip: Optional[str] = None
     thigh: Optional[str] = None
     calf: Optional[str] = None
+
+class BodyImageRequest(BaseModel):
+    messages: Optional[list] = []
+    language: str = "zh"
+    height: Optional[str] = None
+    weight: Optional[str] = None
+    analysis: Optional[str] = None
+    measurements: Optional[dict] = {}
 
 ISSUE_PROMPTS = {
     "shoulder_narrow": "用户肩膀较窄，上衣优先选横条纹、oversize、层叠款增加肩宽感，避免无袖和深V",
@@ -283,6 +292,83 @@ Use only body_issues ids when clearly useful: shoulder_narrow, shoulder_wide, ba
         "confidence": data.get("confidence"),
         "source": "gemini",
     }
+
+@router.post("/generate-body-image")
+async def generate_body_image(req: BodyImageRequest):
+    if not GEMINI_API_KEY:
+        raise HTTPException(400, "GEMINI_API_KEY is not configured")
+
+    measurements = normalize_measurements({"measurements": req.measurements or {}})
+    m = {**{"chest": 90, "waist": 75, "hip": 95, "thigh": 58, "calf": 37}, **measurements}
+    image_parts = extract_image_parts(req.messages)
+    language_line = "No text in the image." if req.language == "en" else "图片里不要出现文字。"
+    prompt = f"""
+Create a tasteful body-reference illustration for a men's outfit recommendation app.
+
+Style:
+- clean front-facing full-body male mannequin/reference figure
+- realistic human proportions, not cartoonish, not abstract
+- neutral standing pose, arms relaxed slightly away from body
+- wearing a plain fitted light-gray compression outfit or bodysuit, no nudity
+- no face identity, no hair detail, no logos, no text, white or warm off-white background
+- fashion fitting-room reference, elegant, simple, non-sexualized
+
+Body cues to reflect:
+- height: {req.height or "unknown"} cm, weight: {req.weight or "unknown"} kg
+- estimated chest: {m["chest"]} cm
+- estimated waist: {m["waist"]} cm
+- estimated hip: {m["hip"]} cm
+- estimated thigh: {m["thigh"]} cm
+- estimated calf: {m["calf"]} cm
+- analysis: {(req.analysis or "")[:600]}
+
+If a user photo is provided, use it only as a body-proportion reference. Do not preserve face identity.
+{language_line}
+Return one vertical image suitable for a 3:4 card.
+"""
+    def payload_for(model):
+        image_config = {"aspectRatio": "3:4"}
+        if "3.1" in model or "3-pro" in model:
+            image_config["imageSize"] = "1K"
+        return {
+            "contents": [{"parts": image_parts + [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": 0.35,
+                "responseModalities": ["IMAGE"],
+                "responseFormat": {"image": image_config},
+            },
+        }
+
+    models = [GEMINI_IMAGE_MODEL]
+    if GEMINI_IMAGE_MODEL != "gemini-2.5-flash-image":
+        models.append("gemini-2.5-flash-image")
+
+    last_error = ""
+    resp = None
+    async with httpx.AsyncClient(timeout=75) as client:
+        for model in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            resp = await client.post(
+                url,
+                headers={"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"},
+                json=payload_for(model),
+            )
+            if resp.is_success:
+                break
+            last_error = f"{model}: {resp.text[:300]}"
+    if not resp or not resp.is_success:
+        raise HTTPException(502, f"Gemini image error: {last_error}")
+
+    parts = resp.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+    for part in parts:
+        inline = part.get("inlineData") or part.get("inline_data")
+        if inline and inline.get("data"):
+            mime = inline.get("mimeType") or inline.get("mime_type") or "image/png"
+            return {
+                "image_url": f"data:{mime};base64,{inline['data']}",
+                "source": "gemini",
+            }
+    raise HTTPException(502, "Gemini did not return an image")
 
 @router.post("/analyze-body")
 async def analyze_body(req: AnalyzeBodyRequest):
