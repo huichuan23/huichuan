@@ -11,6 +11,8 @@ from database import get_db, Product
 
 router = APIRouter()
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 class RecommendRequest(BaseModel):
     height: int
@@ -171,8 +173,125 @@ def build_style_prompt(style, scene):
 - 公式：{rule.get('formula','')}
 - 禁忌：{rule.get('forbidden','')}"""
 
+def extract_image_parts(messages):
+    image_parts = []
+    for msg in messages or []:
+        content = msg.get("content", []) if isinstance(msg, dict) else []
+        if isinstance(content, dict):
+            content = [content]
+        for part in content:
+            if not isinstance(part, dict) or part.get("type") != "image":
+                continue
+            source = part.get("source") or {}
+            data = source.get("data")
+            mime = source.get("media_type") or source.get("mime_type") or "image/jpeg"
+            if data:
+                image_parts.append({"inline_data": {"mime_type": mime, "data": data}})
+    return image_parts
+
+def clean_json_text(text):
+    text = (text or "").strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.lower().startswith("json"):
+            text = text[4:].strip()
+    start = text.find("{")
+    end = text.rfind("}")
+    return text[start:end + 1] if start != -1 and end != -1 and end > start else text
+
+def normalize_measurements(data):
+    raw = data.get("measurements") or {}
+    ranges = {
+        "chest": (72, 125),
+        "waist": (60, 120),
+        "hip": (75, 125),
+        "thigh": (42, 78),
+        "calf": (28, 52),
+    }
+    normalized = {}
+    for key, (min_v, max_v) in ranges.items():
+        try:
+            value = int(round(float(raw.get(key))))
+        except (TypeError, ValueError):
+            continue
+        normalized[key] = max(min_v, min(max_v, value))
+    return normalized
+
+async def analyze_body_with_gemini(req: AnalyzeBodyRequest, image_parts):
+    if not GEMINI_API_KEY or not image_parts:
+        return None
+    language_rule = "Write analysis in natural English." if req.language == "en" else "分析文字使用简体中文。"
+    prompt = f"""
+You are a menswear body-proportion analyst. Analyze the uploaded full-body photo for clothing recommendation only.
+
+Important:
+- Do not claim medical or tailor-level accuracy.
+- Estimate practical styling proportions from the visible body, pose, and provided height/weight.
+- If the photo is incomplete or unclear, still return best-effort estimates with lower confidence.
+
+User context:
+height={req.height or "unknown"} cm, weight={req.weight or "unknown"} kg.
+
+Return ONLY valid JSON:
+{{
+  "analysis": "2-4 short sentences. {language_rule}",
+  "tags": ["tag1", "tag2", "tag3"],
+  "measurements": {{
+    "chest": 90,
+    "waist": 75,
+    "hip": 95,
+    "thigh": 58,
+    "calf": 37
+  }},
+  "body_issues": ["shoulder_narrow", "belly", "thigh_thick", "leg_short"],
+  "confidence": 0.0
+}}
+
+Use cm estimates in these safe ranges: chest 72-125, waist 60-120, hip 75-125, thigh 42-78, calf 28-52.
+Use only body_issues ids when clearly useful: shoulder_narrow, shoulder_wide, back_wide, chest_wide, belly, waist_thin, hip_big, hip_wide, thigh_thick, calf_thick, leg_short, leg_long, body_fit, shoulder_good, bottom_heavy, top_heavy.
+"""
+    payload = {
+        "contents": [{"parts": image_parts + [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
+    }
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+    async with httpx.AsyncClient(timeout=45) as client:
+        resp = await client.post(
+            url,
+            params={"key": GEMINI_API_KEY},
+            headers={"Content-Type": "application/json"},
+            json=payload,
+        )
+    if not resp.is_success:
+        raise HTTPException(502, f"Gemini vision error: {resp.text[:300]}")
+    parts = resp.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+    text = "\n".join(p.get("text", "") for p in parts if isinstance(p, dict))
+    try:
+        data = json.loads(clean_json_text(text))
+    except json.JSONDecodeError:
+        raise HTTPException(502, "Gemini vision returned invalid JSON")
+    measurements = normalize_measurements(data)
+    tags = [str(t).strip() for t in data.get("tags", []) if str(t).strip()][:5]
+    tag_line = "Tags: " if req.language == "en" else "标签："
+    analysis = (data.get("analysis") or "").strip()
+    if tags:
+        analysis = f"{analysis}\n{tag_line}{'|'.join(tags)}"
+    return {
+        "analysis": analysis,
+        "measurements": measurements,
+        "body_issues": data.get("body_issues", []),
+        "confidence": data.get("confidence"),
+        "source": "gemini",
+    }
+
 @router.post("/analyze-body")
 async def analyze_body(req: AnalyzeBodyRequest):
+    image_parts = extract_image_parts(req.messages)
+    if image_parts:
+        gemini_result = await analyze_body_with_gemini(req, image_parts)
+        if gemini_result:
+            return gemini_result
+
     api_key = DEEPSEEK_API_KEY
     if not api_key: raise HTTPException(400, "DeepSeek API Key 未配置")
     vals = []
@@ -225,6 +344,14 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
     if req.budgets.get("hat"): optional_budget_text.append(f"帽子CA${req.budgets.get('hat')}")
     if req.budgets.get("accessory"): optional_budget_text.append(f"配饰CA${req.budgets.get('accessory')}")
     optional_budget_text = "，" + "，".join(optional_budget_text) if optional_budget_text else ""
+    optional_rules = []
+    if outerwear:
+        optional_rules.append("外套预算大于0且存在候选外套，每套必须选择一个 outerwear_id")
+    if hats:
+        optional_rules.append("帽子预算大于0且存在候选帽子，每套必须选择一个 hat_id")
+    if accessories:
+        optional_rules.append("配饰预算大于0且存在候选配饰，每套必须选择一个 accessory_id")
+    optional_rules_text = "；".join(optional_rules) or "外套、帽子、配饰没有候选时返回 null"
 
     body_prompt  = build_body_prompt(body_issues,measurements,req.body_analysis or "",req.skin,req.face)
     style_prompt = build_style_prompt(req.style, req.scene)
@@ -265,7 +392,7 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 {optional_section("候选帽子（可选）", hats)}
 {optional_section("候选配饰（可选）", accessories)}
 
-规则：1.只能选候选商品 2.体型约束高于一切 3.三套不重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选；外套、帽子、配饰有合适候选时可选，没有合适候选可返回 null
+规则：1.只能选候选商品 2.体型约束高于一切 3.必须返回3套且三套的商品组合不得重复 4.颜色协调 5.reason说明为何适合此体型 6.严格遵守输出语言 7.上衣、裤子、鞋子必选 8.{optional_rules_text}
 
 返回JSON：{{"summary":"体型风格总结","tips":["体型贴士1","贴士2","贴士3"],"outfits":[{{"id":1,"name":"...","safety":"高","reason":"具体说明适合体型原因","top_id":"...","bottom_id":"...","shoes_id":"...","outerwear_id":null,"hat_id":null,"accessory_id":null}}]}}"""
 
@@ -278,6 +405,64 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
     if not resp.is_success: raise HTTPException(502, f"DeepSeek错误: {resp.text[:200]}")
 
     result = json.loads(resp.json()["choices"][0]["message"]["content"])
+
+    valid_ids = {
+        "top_id": {p.id for p in tops},
+        "bottom_id": {p.id for p in bottoms},
+        "shoes_id": {p.id for p in shoes},
+        "outerwear_id": {p.id for p in outerwear},
+        "hat_id": {p.id for p in hats},
+        "accessory_id": {p.id for p in accessories},
+    }
+
+    def choose(products, idx, step=1):
+        return products[(idx * step) % len(products)].id if products else None
+
+    def valid_or_choose(value, key, products, idx, step=1):
+        return value if value in valid_ids[key] else choose(products, idx, step)
+
+    def outfit_combo(outfit):
+        return (
+            outfit.get("top_id"),
+            outfit.get("bottom_id"),
+            outfit.get("shoes_id"),
+            outfit.get("outerwear_id"),
+            outfit.get("hat_id"),
+            outfit.get("accessory_id"),
+        )
+
+    outfits = result.get("outfits", [])
+    used_combos = set()
+
+    for idx, outfit in enumerate(outfits):
+        outfit["top_id"] = valid_or_choose(outfit.get("top_id"), "top_id", tops, idx, 1)
+        outfit["bottom_id"] = valid_or_choose(outfit.get("bottom_id"), "bottom_id", bottoms, idx, 2)
+        outfit["shoes_id"] = valid_or_choose(outfit.get("shoes_id"), "shoes_id", shoes, idx, 3)
+
+        if outerwear:
+            outfit["outerwear_id"] = valid_or_choose(outfit.get("outerwear_id"), "outerwear_id", outerwear, idx, 1)
+        else:
+            outfit["outerwear_id"] = None
+        if hats:
+            outfit["hat_id"] = valid_or_choose(outfit.get("hat_id"), "hat_id", hats, idx, 1)
+        else:
+            outfit["hat_id"] = None
+        if accessories:
+            outfit["accessory_id"] = valid_or_choose(outfit.get("accessory_id"), "accessory_id", accessories, idx, 1)
+        else:
+            outfit["accessory_id"] = None
+
+        attempts = max(len(tops), len(bottoms), len(shoes), len(outerwear) or 1)
+        offset = 0
+        while outfit_combo(outfit) in used_combos and offset < attempts:
+            offset += 1
+            outfit["top_id"] = choose(tops, idx + offset, 1)
+            outfit["bottom_id"] = choose(bottoms, idx + offset, 2)
+            outfit["shoes_id"] = choose(shoes, idx + offset, 3)
+            if outerwear:
+                outfit["outerwear_id"] = choose(outerwear, idx + offset, 1)
+
+        used_combos.add(outfit_combo(outfit))
 
     def find_product(pid):
         p = db.query(Product).filter(Product.id==pid).first()

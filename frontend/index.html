@@ -178,6 +178,21 @@
   .measure-item label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500;line-height:1.35;}
   .measure-item input{width:100%;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;}
   .measure-item input:focus{border-color:var(--ink);}
+  .body-model-panel{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:center;margin-bottom:18px;}
+  .body-model-card{border:1px solid var(--border);border-radius:16px;background:#fbfaf7;padding:14px;min-height:360px;display:flex;align-items:center;justify-content:center;}
+  .body-outline{width:210px;height:330px;overflow:visible;}
+  .body-outline path,.body-outline ellipse{fill:none;stroke:#171717;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;}
+  .body-slider-stack{display:grid;gap:10px;}
+  .body-slider-row{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
+  .body-slider-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;}
+  .body-slider-head label{font-size:12px;color:var(--muted);font-weight:600;}
+  .body-slider-value{font-size:14px;font-weight:700;font-family:'Noto Serif SC',serif;}
+  .body-slider-row input[type=range]{width:100%;}
+  .body-preset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+  .body-preset-btn{min-height:36px;border:1px solid var(--border);border-radius:10px;background:var(--bg);font-family:inherit;font-size:12px;color:var(--ink);cursor:pointer;transition:all .15s;}
+  .body-preset-btn:hover,.body-preset-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .body-shape-sub{font-size:11px;color:var(--muted);line-height:1.5;margin:-4px 0 12px;}
+  .body-hidden-measures{display:none;}
   .analyze-btn{width:100%;min-height:44px;padding:9px 14px;background:linear-gradient(135deg,#1a1a1a,#444);color:#fff;border:none;border-radius:10px;font-size:14px;font-family:inherit;font-weight:500;cursor:pointer;margin-bottom:14px;transition:opacity .15s;line-height:1.35;white-space:normal;}
   .analyze-btn:hover{opacity:.85;}.analyze-btn:disabled{opacity:.4;cursor:not-allowed;}
   .analysis-result{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);color:#fff;border-radius:12px;padding:16px 20px;margin-bottom:16px;display:none;}
@@ -233,8 +248,8 @@
   .rule-item{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;}
   .rule-icon{flex-shrink:0;}
   /* ── Tinder 滑卡 ── */
-  .swipe-container{position:relative;width:100%;min-height:520px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
-  .swipe-card{position:absolute;width:100%;max-width:420px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
+  .swipe-container{position:relative;width:100%;min-height:680px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;overflow:hidden;}
+  .swipe-card{position:absolute;width:100%;max-width:450px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.08);cursor:grab;user-select:none;transition:box-shadow .2s;touch-action:pan-y;}
   .swipe-card.dragging{cursor:grabbing;box-shadow:0 16px 48px rgba(0,0,0,.18);transition:none;}
   .swipe-card.fly-left{animation:flyLeft .35s ease forwards;}
   .swipe-card.fly-right{animation:flyRight .35s ease forwards;}
@@ -246,13 +261,27 @@
   .card-outfit-img{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px;}
   .card-outfit-img .ci{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center;}
   .card-outfit-img .ci img{width:100%;height:100%;object-fit:contain;}
+  .model-preview{position:relative;height:390px;margin:14px 16px 10px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(180deg,#f7f6f2,#efede8);overflow:hidden;}
+  .model-preview:before{content:"";position:absolute;left:50%;top:24px;width:72px;height:72px;border-radius:50%;transform:translateX(-50%);background:#d8d1c7;box-shadow:0 96px 0 36px #d8d1c7, -38px 142px 0 -8px #d8d1c7, 38px 142px 0 -8px #d8d1c7, -24px 242px 0 -10px #d8d1c7, 24px 242px 0 -10px #d8d1c7;opacity:.45;}
+  .model-preview:after{content:"";position:absolute;left:50%;bottom:18px;width:180px;height:20px;border-radius:50%;background:rgba(0,0,0,.07);transform:translateX(-50%);}
+  .wear-layer{position:absolute;display:flex;align-items:center;justify-content:center;pointer-events:auto;}
+  .wear-layer img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,.16));}
+  .wear-layer.outerwear{left:100px;top:82px;width:250px;height:170px;z-index:4;}
+  .wear-layer.top{left:122px;top:92px;width:206px;height:145px;z-index:3;}
+  .wear-layer.bottom{left:124px;top:210px;width:202px;height:138px;z-index:2;}
+  .wear-layer.shoes{left:112px;top:318px;width:226px;height:62px;z-index:5;}
+  .wear-layer.hat{left:158px;top:8px;width:134px;height:70px;z-index:6;}
+  .wear-layer.accessory{right:34px;top:190px;width:78px;height:78px;z-index:7;}
+  .wear-chip{position:absolute;left:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;z-index:9;}
+  .wear-chip span{background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:600;}
   .card-outfit-info{padding:0 16px 12px;}
   .card-outfit-name{font-size:15px;font-weight:600;margin-bottom:4px;}
   .card-outfit-reason{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
-  .card-outfit-prices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .card-outfit-prices{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
   .card-price-tag{background:var(--tag-bg);border-radius:6px;padding:3px 8px;font-size:12px;font-weight:500;}
   .card-outfit-total{font-size:16px;font-weight:700;font-family:'Noto Serif SC',serif;}
   .card-outfit-total.over{color:#c0392b;}
+  .card-buy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:10px 16px 16px;}
   .swipe-actions{display:flex;gap:16px;justify-content:center;margin-bottom:20px;}
   .swipe-btn{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:var(--card);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
   .swipe-btn:hover{transform:scale(1.12);}
@@ -279,7 +308,17 @@
     .item:last-child{border-bottom:none;}
     .tryon-grid,.compare-row{grid-template-columns:1fr;}
     .body-photo-row,.measure-grid{grid-template-columns:1fr;}
+    .body-model-panel{grid-template-columns:1fr;}
+    .body-model-card{min-height:330px;}
+    .body-preset-grid{grid-template-columns:repeat(2,1fr);}
+  .body-outline{width:190px;height:300px;}
     .swipe-card{max-width:100%;}
+    .swipe-container{min-height:650px;}
+    .model-preview{height:360px;margin:12px;}
+    .wear-layer.outerwear{left:72px;top:78px;width:230px;height:158px;}
+    .wear-layer.top{left:96px;top:92px;width:184px;height:132px;}
+    .wear-layer.bottom{left:92px;top:202px;width:190px;height:130px;}
+    .wear-layer.shoes{left:88px;top:300px;width:205px;height:58px;}
     .swipe-btn{width:52px;height:52px;font-size:20px;}
     .liked-grid{grid-template-columns:repeat(2,1fr);}
     .feedback-grid{grid-template-columns:1fr;}
@@ -329,6 +368,23 @@ const LANG = {
     measureTitle: '身体三围（可选，帮助精准推荐）',
     chestLabel: '胸围 (cm)', waistLabel: '腰围 (cm)', hipLabel: '臀围 (cm)',
     thighLabel: '大腿围 (cm)', calfLabel: '小腿围 (cm)',
+    bodyShapeTitle: '捏出你的体型',
+    bodyShapeSub: '先选一个基础体型，再用真实围度微调轮廓。',
+    bodyPresetSlim: '偏瘦',
+    bodyPresetStandard: '标准',
+    bodyPresetAthletic: '健壮',
+    bodyPresetWideShoulder: '上身宽',
+    bodyPresetPear: '梨形',
+    bodyPresetBelly: '小肚腩',
+    bodyPresetShortLeg: '腿短',
+    bodyPresetTall: '个子高',
+    shoulderLabel: '肩宽',
+    torsoLabel: '胸背厚度',
+    bellyLabel: '腰腹',
+    pelvisLabel: '臀胯',
+    thighShapeLabel: '大腿',
+    calfShapeLabel: '小腿',
+    legRatioLabel: '腿长比例',
     bodyIssuesTitle: '身体特征（分步选择，AI 精准适配）',
     step1Label: '第一步：选择你想改善的部位',
     upperBtn: '👆 上半身', lowerBtn: '👇 下半身',
@@ -390,6 +446,23 @@ const LANG = {
     measureTitle: 'Body Measurements (Optional)',
     chestLabel: 'Chest (cm)', waistLabel: 'Waist (cm)', hipLabel: 'Hip (cm)',
     thighLabel: 'Thigh (cm)', calfLabel: 'Calf (cm)',
+    bodyShapeTitle: 'Shape Your Body',
+    bodyShapeSub: 'Start with a body preset, then fine-tune the body with real measurements.',
+    bodyPresetSlim: 'Slim',
+    bodyPresetStandard: 'Standard',
+    bodyPresetAthletic: 'Athletic',
+    bodyPresetWideShoulder: 'Wide Upper',
+    bodyPresetPear: 'Pear Shape',
+    bodyPresetBelly: 'Belly',
+    bodyPresetShortLeg: 'Short Legs',
+    bodyPresetTall: 'Tall',
+    shoulderLabel: 'Shoulders',
+    torsoLabel: 'Chest / Back',
+    bellyLabel: 'Waist / Belly',
+    pelvisLabel: 'Hips',
+    thighShapeLabel: 'Thighs',
+    calfShapeLabel: 'Calves',
+    legRatioLabel: 'Leg Ratio',
     bodyIssuesTitle: 'Body Features (Step by step)',
     step1Label: 'Step 1: Select areas to improve',
     upperBtn: '👆 Upper Body', lowerBtn: '👇 Lower Body',
@@ -869,6 +942,7 @@ function collectProfile(){
       thigh: document.getElementById('thigh')?.value || '',
       calf: document.getElementById('calf')?.value || '',
     },
+    bodyShape: collectBodyShape(),
     bodyIssues: Array.from(window._selectedIssues || []),
   };
 }
@@ -882,7 +956,9 @@ function applyProfile(profile){
   Object.entries(profile.measurements || {}).forEach(([key,val])=>{
     const el = document.getElementById(key);
     if(el) el.value = val || '';
+    syncBodySlider(key, false);
   });
+  if(profile.bodyShape) applyBodyShape(profile.bodyShape, false);
   Object.entries(profile.budgets || {}).forEach(([key,val])=>{
     const id = `${key}Budget`;
     const el = document.getElementById(id);
@@ -895,6 +971,7 @@ function applyProfile(profile){
   });
   updateSelectedSummary();
   updateBodyRules();
+  updateBodyModel();
   updateTotal();
 }
 
@@ -1081,11 +1158,40 @@ function renderResult(aiResult,userInfo){
   const budgetTotal=Object.values(userInfo.budgets||{}).reduce((sum,val)=>sum+(parseInt(val)||0),0);
   const tipsHTML=(aiResult.tips||[]).map(t=>`<span class="tip">${t}</span>`).join('');
   const outfitOpts=(aiResult.outfits||[]).map(o=>`<option value="${o.id}">${ui('outfit')} ${o.id}: ${o.name}</option>`).join('');
+  const chooseByBudget = (products, budget, idx, step=1) => {
+    const pool = (products || []).filter(p => (Number(p.price)||0) <= (Number(budget)||0));
+    const source = pool.length ? pool : (products || []);
+    return source.length ? source[(idx * step) % source.length] : null;
+  };
+  const usedCombos = new Set();
 
   // Tinder 滑卡数据
-  window._swipeOutfits = (aiResult.outfits||[]).map(o=>{
-    const top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
-    const outerwear=findProduct(o.outerwear_id),hat=findProduct(o.hat_id),accessory=findProduct(o.accessory_id);
+  window._swipeOutfits = (aiResult.outfits||[]).map((o,idx)=>{
+    let top=findProduct(o.top_id),bottom=findProduct(o.bottom_id),shoe=findProduct(o.shoes_id);
+    let outerwear=findProduct(o.outerwear_id),hat=findProduct(o.hat_id),accessory=findProduct(o.accessory_id);
+    if(!outerwear && Number(userInfo.budgets?.outerwear || 0) > 0){
+      outerwear = chooseByBudget(DB.outerwear, userInfo.budgets.outerwear, idx, 1);
+      if(outerwear) o.outerwear_id = outerwear.id;
+    }
+    if(!hat && Number(userInfo.budgets?.hat || 0) > 0){
+      hat = chooseByBudget(DB.hats, userInfo.budgets.hat, idx, 1);
+      if(hat) o.hat_id = hat.id;
+    }
+    if(!accessory && Number(userInfo.budgets?.accessory || 0) > 0){
+      accessory = chooseByBudget(DB.accessories, userInfo.budgets.accessory, idx, 1);
+      if(accessory) o.accessory_id = accessory.id;
+    }
+    let combo = [top?.id,bottom?.id,shoe?.id,outerwear?.id,hat?.id,accessory?.id].join('|');
+    let offset = 0;
+    while(usedCombos.has(combo) && offset < Math.max(DB.tops.length, DB.bottoms.length, DB.shoes.length, DB.outerwear.length, 1)){
+      offset++;
+      top = chooseByBudget(DB.tops, userInfo.budgets.top, idx + offset, 1) || top;
+      bottom = chooseByBudget(DB.bottoms, userInfo.budgets.bottom, idx + offset, 2) || bottom;
+      shoe = chooseByBudget(DB.shoes, userInfo.budgets.shoes, idx + offset, 3) || shoe;
+      if(outerwear) outerwear = chooseByBudget(DB.outerwear, userInfo.budgets.outerwear, idx + offset, 1) || outerwear;
+      combo = [top?.id,bottom?.id,shoe?.id,outerwear?.id,hat?.id,accessory?.id].join('|');
+    }
+    usedCombos.add(combo);
     if(!top||!bottom||!shoe)return null;
     const products=[
       {key:'top', product:top},
@@ -1095,6 +1201,9 @@ function renderResult(aiResult,userInfo){
       hat ? {key:'hat', product:hat} : null,
       accessory ? {key:'accessory', product:accessory} : null,
     ].filter(Boolean);
+    o.top_id = top.id;
+    o.bottom_id = bottom.id;
+    o.shoes_id = shoe.id;
     return {outfit:o, top, bottom, shoe, outerwear, hat, accessory, products, total:products.reduce((sum,item)=>sum+(Number(item.product.price)||0),0)};
   }).filter(Boolean);
   window._swipeIdx    = 0;
@@ -1272,6 +1381,27 @@ async function getRecommend(){
 
         if(resp.ok){
           const d = await resp.json();
+          if(d.measurements){
+            Object.entries(d.measurements).forEach(([key,val])=>{
+              const el = document.getElementById(key);
+              if(el && val !== null && val !== undefined){
+                el.value = val;
+                syncBodySlider(key, false);
+              }
+            });
+            updateBodyModel();
+            updateBodyRules();
+          }
+          if(Array.isArray(d.body_issues)){
+            d.body_issues.forEach(issue=>{
+              if(typeof issue === 'string' && issue.trim()){
+                window._selectedIssues.add(issue.trim());
+                const btn = document.querySelector(`.body-issue-btn[data-issue="${issue.trim()}"]`);
+                if(btn) btn.classList.add('selected');
+              }
+            });
+            updateSelectedSummary();
+          }
           bodyAnalysis = d.analysis || '';
           window._bodyAnalysis = bodyAnalysis;
 
@@ -1821,10 +1951,245 @@ const ISSUE_LABELS_ZH = {
 };
 
 const ADVANTAGE_ISSUES = new Set(['leg_long','waist_thin','shoulder_good','body_fit','tall','abs','arm_muscle','face_small','skin_white','hip_ratio']);
+const AUTO_SHAPE_ISSUES = new Set(['shoulder_narrow','shoulder_wide','back_wide','chest_wide','belly','belly_lower','love_handle','waist_thin','hip_big','hip_wide','thigh_thick','calf_thick','leg_short','leg_long','tall','body_fit','shoulder_good','bottom_heavy','top_heavy']);
+const BODY_SHAPE_KEYS = {
+  shoulder:'shoulderShape',
+  torso:'torsoShape',
+  belly:'bellyShape',
+  pelvis:'pelvisShape',
+  thighShape:'thighShape',
+  calfShape:'calfShape',
+  legRatio:'legRatioShape',
+};
+const BODY_SHAPE_PRESETS = {
+  slim:{shoulder:42,torso:38,belly:30,pelvis:38,thighShape:34,calfShape:32,legRatio:58},
+  standard:{shoulder:50,torso:50,belly:42,pelvis:48,thighShape:46,calfShape:42,legRatio:55},
+  athletic:{shoulder:68,torso:64,belly:38,pelvis:48,thighShape:54,calfShape:50,legRatio:56},
+  wideShoulder:{shoulder:76,torso:64,belly:44,pelvis:42,thighShape:44,calfShape:42,legRatio:55},
+  pear:{shoulder:42,torso:45,belly:48,pelvis:70,thighShape:68,calfShape:48,legRatio:54},
+  belly:{shoulder:52,torso:58,belly:76,pelvis:55,thighShape:52,calfShape:44,legRatio:53},
+  shortLeg:{shoulder:54,torso:52,belly:48,pelvis:50,thighShape:50,calfShape:42,legRatio:30},
+  tall:{shoulder:56,torso:48,belly:38,pelvis:46,thighShape:44,calfShape:40,legRatio:80},
+};
+
 function issueText(issue){
   const pair = ISSUE_LABEL_TEXTS[issue];
   if(pair) return window._lang === 'en' ? pair[1] : pair[0];
   return ISSUE_LABELS_ZH[issue] || issue;
+}
+
+function collectBodyShape(){
+  return Object.fromEntries(Object.entries(BODY_SHAPE_KEYS).map(([key,id])=>[key, parseInt(document.getElementById(id)?.value || 50)]));
+}
+
+function applyBodyShape(shape, refresh=true){
+  Object.entries(shape || {}).forEach(([key,val])=>{
+    const el = document.getElementById(BODY_SHAPE_KEYS[key] || `${key}Shape`);
+    if(el) el.value = val;
+  });
+  updateShapeFromSliders(refresh);
+}
+
+function applyBodyPreset(name){
+  document.querySelectorAll('.body-preset-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.preset === name));
+  applyBodyShape(BODY_SHAPE_PRESETS[name] || BODY_SHAPE_PRESETS.standard);
+}
+
+function refreshAutoShapeIssues(shape){
+  setIssue('shoulder_narrow', shape.shoulder < 36);
+  setIssue('shoulder_wide', shape.shoulder > 68);
+  setIssue('back_wide', shape.torso > 70);
+  setIssue('chest_wide', shape.torso > 70);
+  setIssue('belly', shape.belly > 66);
+  setIssue('belly_lower', shape.belly > 74);
+  setIssue('love_handle', shape.belly > 72);
+  setIssue('waist_thin', shape.belly < 32);
+  setIssue('hip_big', shape.pelvis > 66);
+  setIssue('hip_wide', shape.pelvis > 66);
+  setIssue('thigh_thick', shape.thighShape > 66);
+  setIssue('calf_thick', shape.calfShape > 66);
+  setIssue('leg_short', shape.legRatio < 36);
+  setIssue('leg_long', shape.legRatio > 70);
+  setIssue('tall', shape.legRatio > 78);
+  setIssue('top_heavy', shape.shoulder - shape.pelvis > 28);
+  setIssue('bottom_heavy', shape.pelvis - shape.shoulder > 22);
+  setIssue('body_fit', shape.shoulder > 42 && shape.shoulder < 62 && shape.belly < 55 && shape.pelvis > 40 && shape.pelvis < 62);
+  setIssue('shoulder_good', shape.shoulder >= 52 && shape.shoulder <= 68);
+}
+
+function setIssue(issue, active){
+  if(active) window._selectedIssues.add(issue);
+  else if(AUTO_SHAPE_ISSUES.has(issue)) window._selectedIssues.delete(issue);
+  const btn = document.querySelector(`.body-issue-btn[data-issue="${issue}"]`);
+  if(btn) btn.classList.toggle('selected', window._selectedIssues.has(issue));
+}
+
+function shapeFromMeasurements(){
+  const toPct = (value, min, max) => Math.round(((value - min) / (max - min)) * 100);
+  const chest = clampBodyValue('chest', document.getElementById('chest')?.value);
+  const waist = clampBodyValue('waist', document.getElementById('waist')?.value);
+  const hip = clampBodyValue('hip', document.getElementById('hip')?.value);
+  const thigh = clampBodyValue('thigh', document.getElementById('thigh')?.value);
+  const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
+  const legRatio = parseInt(document.getElementById('legRatioShape')?.value || 55);
+  const clampPct = v => Math.max(0, Math.min(100, v));
+  return {
+    shoulder: clampPct(toPct(chest, 78, 116)),
+    torso: clampPct(toPct(chest, 78, 112)),
+    belly: clampPct(toPct(waist, 62, 112)),
+    pelvis: clampPct(toPct(hip, 78, 120)),
+    thighShape: clampPct(toPct(thigh, 44, 76)),
+    calfShape: clampPct(toPct(calf, 30, 52)),
+    legRatio,
+  };
+}
+
+function syncHiddenShapeFromMeasurements(refreshRules=true){
+  const shape = shapeFromMeasurements();
+  Object.entries(BODY_SHAPE_KEYS).forEach(([key,id])=>{
+    const el = document.getElementById(id);
+    const value = document.getElementById(`${id}Value`);
+    if(el) el.value = shape[key];
+    if(value) value.textContent = `${shape[key]}%`;
+  });
+  if(refreshRules){
+    refreshAutoShapeIssues(shape);
+    updateSelectedSummary();
+  }
+}
+
+function updateShapeFromSliders(refreshRules=true){
+  const shape = collectBodyShape();
+  const mapRange = (v, outMin, outMax) => Math.round(outMin + (v / 100) * (outMax - outMin));
+  const chest = Math.round((mapRange(shape.shoulder, 78, 116) + mapRange(shape.torso, 78, 112)) / 2);
+  const waist = mapRange(shape.belly, 62, 112);
+  const hip = mapRange(shape.pelvis, 78, 120);
+  const thigh = mapRange(shape.thighShape, 44, 76);
+  const calf = mapRange(shape.calfShape, 30, 52);
+  Object.entries({chest, waist, hip, thigh, calf}).forEach(([key,val])=>{
+    const el = document.getElementById(key);
+    if(el) el.value = val;
+  });
+  Object.entries(BODY_SHAPE_KEYS).forEach(([key,id])=>{
+    const el = document.getElementById(id);
+    const value = document.getElementById(`${id}Value`);
+    if(el && value) value.textContent = `${el.value}%`;
+  });
+  ['chest','waist','hip','thigh','calf'].forEach(key=>syncBodySlider(key, false));
+  refreshAutoShapeIssues(shape);
+  updateSelectedSummary();
+  if(refreshRules) updateBodyRules();
+}
+
+function clampBodyValue(key, value){
+  const ranges = {
+    chest:[72,125,90],
+    waist:[60,120,75],
+    hip:[75,125,95],
+    thigh:[42,78,58],
+    calf:[28,52,37],
+  };
+  const [min,max,fallback] = ranges[key] || [0,999,0];
+  const n = parseInt(value);
+  return Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : fallback;
+}
+
+function syncBodySlider(key, refreshRules=true){
+  const el = document.getElementById(key);
+  if(!el) return;
+  el.value = clampBodyValue(key, el.value);
+  const value = document.getElementById(`${key}Value`);
+  if(value) value.textContent = `${el.value} cm`;
+  syncHiddenShapeFromMeasurements(refreshRules);
+  updateBodyModel();
+  if(refreshRules) updateBodyRules();
+}
+
+function updateBodyModel(){
+  const outline = document.getElementById('bodyOutlinePath');
+  if(!outline) return;
+  const leftArm = document.getElementById('bodyLeftArmPath');
+  const rightArm = document.getElementById('bodyRightArmPath');
+  const innerLeg = document.getElementById('bodyInnerLegPath');
+  const chest = clampBodyValue('chest', document.getElementById('chest')?.value);
+  const waist = clampBodyValue('waist', document.getElementById('waist')?.value);
+  const hip = clampBodyValue('hip', document.getElementById('hip')?.value);
+  const thigh = clampBodyValue('thigh', document.getElementById('thigh')?.value);
+  const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
+  const shape = collectBodyShape();
+  const cx = 105;
+  const chestW = 28 + (chest - 72) * .24;
+  const waistW = 17 + (waist - 60) * .23;
+  const hipW = 25 + (hip - 75) * .27;
+  const thighW = 10 + (thigh - 42) * .19;
+  const calfW = 6 + (calf - 28) * .20;
+  const shoulderW = Math.max(chestW + 12, 38 + shape.shoulder * .22);
+  const ankleW = Math.max(5.5, calfW * .58);
+  const footW = Math.max(13, calfW * 1.45);
+  const legShift = (shape.legRatio - 55) * .35;
+  const neckY = 56;
+  const shoulderY = 78;
+  const chestY = 112;
+  const waistY = 158;
+  const hipY = 204 - legShift * .18;
+  const crotchY = 229 - legShift * .08;
+  const kneeY = 286 + legShift * .22;
+  const ankleY = 348 + legShift * .62;
+  const footY = 362 + legShift * .62;
+  const neckW = 11;
+  const shoulderL = cx - shoulderW;
+  const shoulderR = cx + shoulderW;
+  const path = [
+    `M ${cx-neckW} ${neckY}`,
+    `C ${cx-17} 63 ${shoulderL+15} ${shoulderY-3} ${shoulderL} ${shoulderY}`,
+    `C ${cx-chestW-8} ${chestY-4} ${cx-waistW-5} ${waistY-8} ${cx-waistW} ${waistY}`,
+    `C ${cx-waistW-2} ${waistY+18} ${cx-hipW} ${hipY-12} ${cx-hipW} ${hipY}`,
+    `C ${cx-hipW+1} ${hipY+18} ${cx-thighW-8} ${crotchY+20} ${cx-thighW-7} ${kneeY}`,
+    `C ${cx-thighW-5} ${kneeY+28} ${cx-calfW-3} ${ankleY-20} ${cx-ankleW} ${ankleY}`,
+    `C ${cx-footW} ${ankleY+2} ${cx-footW-4} ${footY-3} ${cx-ankleW+3} ${footY}`,
+    `C ${cx-4} ${footY} ${cx-5} ${ankleY+2} ${cx-4} ${ankleY-4}`,
+    `C ${cx-4} ${kneeY+24} ${cx-4} ${crotchY+12} ${cx} ${crotchY}`,
+    `C ${cx+4} ${crotchY+12} ${cx+4} ${kneeY+24} ${cx+4} ${ankleY-4}`,
+    `C ${cx+5} ${ankleY+2} ${cx+4} ${footY} ${cx+ankleW-3} ${footY}`,
+    `C ${cx+footW+4} ${footY-3} ${cx+footW} ${ankleY+2} ${cx+ankleW} ${ankleY}`,
+    `C ${cx+calfW+3} ${ankleY-20} ${cx+thighW+5} ${kneeY+28} ${cx+thighW+7} ${kneeY}`,
+    `C ${cx+thighW+8} ${crotchY+20} ${cx+hipW-1} ${hipY+18} ${cx+hipW} ${hipY}`,
+    `C ${cx+hipW} ${hipY-12} ${cx+waistW+2} ${waistY+18} ${cx+waistW} ${waistY}`,
+    `C ${cx+waistW+5} ${waistY-8} ${cx+chestW+8} ${chestY-4} ${shoulderR} ${shoulderY}`,
+    `C ${shoulderR-15} ${shoulderY-3} ${cx+17} 63 ${cx+neckW} ${neckY}`,
+  ].join(' ');
+  outline.setAttribute('d', path);
+  if(leftArm){
+    leftArm.setAttribute('d', [
+      `M ${shoulderL} ${shoulderY}`,
+      `C ${shoulderL-13} ${shoulderY+28} ${shoulderL-21} 138 ${shoulderL-25} 176`,
+      `C ${shoulderL-29} 208 ${shoulderL-23} 232 ${shoulderL-15} 237`,
+      `C ${shoulderL-8} 230 ${shoulderL-9} 207 ${shoulderL-5} 180`,
+      `C ${shoulderL-1} 144 ${shoulderL+9} 114 ${cx-chestW-4} ${chestY}`
+    ].join(' '));
+  }
+  if(rightArm){
+    rightArm.setAttribute('d', [
+      `M ${shoulderR} ${shoulderY}`,
+      `C ${shoulderR+13} ${shoulderY+28} ${shoulderR+21} 138 ${shoulderR+25} 176`,
+      `C ${shoulderR+29} 208 ${shoulderR+23} 232 ${shoulderR+15} 237`,
+      `C ${shoulderR+8} 230 ${shoulderR+9} 207 ${shoulderR+5} 180`,
+      `C ${shoulderR+1} 144 ${shoulderR-9} 114 ${cx+chestW+4} ${chestY}`
+    ].join(' '));
+  }
+  if(innerLeg){
+    innerLeg.setAttribute('d', [
+      `M ${cx} ${crotchY}`,
+      `C ${cx-5} ${crotchY+28} ${cx-5} ${kneeY+14} ${cx-5} ${ankleY-8}`,
+      `M ${cx} ${crotchY}`,
+      `C ${cx+5} ${crotchY+28} ${cx+5} ${kneeY+14} ${cx+5} ${ankleY-8}`
+    ].join(' '));
+  }
+  ['chest','waist','hip','thigh','calf'].forEach(k=>{
+    const value = document.getElementById(`${k}Value`);
+    const input = document.getElementById(k);
+    if(value && input) value.textContent = `${input.value} cm`;
+  });
 }
 
 function updateSelectedSummary(){
@@ -1965,7 +2330,10 @@ function buildCard(item, idx, total){
   const {outfit} = item;
   const products = getOutfitProducts(item);
   const over = item.total > (window._budgetTotal||999);
-  const gridCols = Math.min(products.length, 3);
+  const wearLayer = ({key,product}) => `
+    <a class="wear-layer ${key}" href="${product.buy}" target="_blank" title="${ui(key)} · CA$${product.price}">
+      <img src="${product.img}" onerror="this.src=''" alt="${ui(key)}">
+    </a>`;
   return `
   <div class="swipe-card" id="card-${idx}" data-idx="${idx}">
     <div class="swipe-stamp like">${ui('like')}</div>
@@ -1977,8 +2345,11 @@ function buildCard(item, idx, total){
       </div>
       <span class="safe-badge">${ui('safety')} ${outfit.safety||ui('high')}</span>
     </div>
-    <div class="card-outfit-img" style="grid-template-columns:repeat(${gridCols},1fr)">
-      ${products.map(({key,product})=>`<div class="ci"><img src="${product.img}" onerror="this.src=''" alt="${ui(key)}"></div>`).join('')}
+    <div class="model-preview">
+      <div class="wear-chip">
+        ${products.map(({key,product})=>`<span>${CAT[key]?.icon||''} ${ui(key)} CA$${product.price}</span>`).join('')}
+      </div>
+      ${products.map(wearLayer).join('')}
     </div>
     <div class="card-outfit-info">
       <div class="card-outfit-reason">💡 ${outfit.reason||''}</div>
@@ -1987,7 +2358,7 @@ function buildCard(item, idx, total){
       </div>
       <div class="card-outfit-total${over?' over':''}">${ui('total')} CA$${item.total.toFixed(2)}${over?ui('overBudget'):''}</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:6px;padding:10px 16px 14px;">
+    <div class="card-buy-grid">
       ${products.map(({key,product})=>`<a href="${product.buy}" target="_blank" class="buy-btn" style="justify-content:center;font-size:10px">${ui(key)} ↗</a>`).join('')}
     </div>
   </div>`;
@@ -2001,7 +2372,7 @@ function initSwipe(){
   const container = document.getElementById('swipeContainer');
   if(!container) return;
 
-  // 渲染所有卡片（后面的在下面）
+  // 渲染所有卡片，idx 越小越靠上，保证计数和视觉卡片一致
   container.innerHTML = '';
   [...outfits].reverse().forEach((item,ri)=>{
     const idx = outfits.length - 1 - ri;
@@ -2009,9 +2380,9 @@ function initSwipe(){
     div.innerHTML = buildCard(item, idx, outfits.length);
     const card = div.firstElementChild;
     // 堆叠效果
-    const offset = (outfits.length - 1 - idx) * 4;
+    const offset = idx * 4;
     card.style.transform = `scale(${1 - offset*0.02}) translateY(${offset*2}px)`;
-    card.style.zIndex = idx + 1;
+    card.style.zIndex = outfits.length - idx;
     container.appendChild(card);
     bindSwipe(card, idx);
   });
@@ -2506,15 +2877,60 @@ async function init(){
           </div>
         </div>
       </div>
-      <p class="section-title" style="margin-bottom:10px"><span data-i18n="measureTitle">身体三围（可选，帮助精准推荐）</span></p>
-      <div class="measure-grid">
-        <div class="measure-item"><label data-i18n="chestLabel">胸围 (cm)</label><input type="number" id="chest" placeholder="例：90" oninput="updateBodyRules()"></div>
-        <div class="measure-item"><label data-i18n="waistLabel">腰围 (cm)</label><input type="number" id="waist" placeholder="例：75" oninput="updateBodyRules()"></div>
-        <div class="measure-item"><label data-i18n="hipLabel">臀围 (cm)</label><input type="number" id="hip" placeholder="例：95" oninput="updateBodyRules()"></div>
+      <p class="section-title" style="margin-bottom:6px"><span data-i18n="bodyShapeTitle">捏出你的体型</span></p>
+      <div class="body-shape-sub" data-i18n="bodyShapeSub">先选一个基础体型，再用滑条微调轮廓。</div>
+      <div class="body-preset-grid">
+        <button class="body-preset-btn" data-preset="slim" onclick="applyBodyPreset('slim')" data-i18n="bodyPresetSlim">偏瘦</button>
+        <button class="body-preset-btn active" data-preset="standard" onclick="applyBodyPreset('standard')" data-i18n="bodyPresetStandard">标准</button>
+        <button class="body-preset-btn" data-preset="athletic" onclick="applyBodyPreset('athletic')" data-i18n="bodyPresetAthletic">健壮</button>
+        <button class="body-preset-btn" data-preset="wideShoulder" onclick="applyBodyPreset('wideShoulder')" data-i18n="bodyPresetWideShoulder">上身宽</button>
+        <button class="body-preset-btn" data-preset="pear" onclick="applyBodyPreset('pear')" data-i18n="bodyPresetPear">梨形</button>
+        <button class="body-preset-btn" data-preset="belly" onclick="applyBodyPreset('belly')" data-i18n="bodyPresetBelly">小肚腩</button>
+        <button class="body-preset-btn" data-preset="shortLeg" onclick="applyBodyPreset('shortLeg')" data-i18n="bodyPresetShortLeg">腿短</button>
+        <button class="body-preset-btn" data-preset="tall" onclick="applyBodyPreset('tall')" data-i18n="bodyPresetTall">个子高</button>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-        <div class="measure-item"><label data-i18n="thighLabel">大腿围 (cm)</label><input type="number" id="thigh" placeholder="例：58" oninput="updateBodyRules()"></div>
-        <div class="measure-item"><label data-i18n="calfLabel">小腿围 (cm)</label><input type="number" id="calf" placeholder="例：37" oninput="updateBodyRules()"></div>
+      <div class="body-model-panel">
+        <div class="body-model-card">
+          <svg class="body-outline" viewBox="0 0 210 370" aria-label="body outline preview">
+            <ellipse id="bodyHead" cx="105" cy="32" rx="20" ry="25"></ellipse>
+            <path id="bodyOutlinePath"></path>
+            <path id="bodyLeftArmPath"></path>
+            <path id="bodyRightArmPath"></path>
+            <path id="bodyInnerLegPath"></path>
+          </svg>
+        </div>
+        <div class="body-slider-stack">
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="chestLabel">胸围 (cm)</label><span class="body-slider-value" id="chestValue">90 cm</span></div>
+            <input type="range" id="chest" min="72" max="125" step="1" value="90" oninput="syncBodySlider('chest')">
+          </div>
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="waistLabel">腰围 (cm)</label><span class="body-slider-value" id="waistValue">75 cm</span></div>
+            <input type="range" id="waist" min="60" max="120" step="1" value="75" oninput="syncBodySlider('waist')">
+          </div>
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="hipLabel">臀围 (cm)</label><span class="body-slider-value" id="hipValue">95 cm</span></div>
+            <input type="range" id="hip" min="75" max="125" step="1" value="95" oninput="syncBodySlider('hip')">
+          </div>
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="thighLabel">大腿围 (cm)</label><span class="body-slider-value" id="thighValue">58 cm</span></div>
+            <input type="range" id="thigh" min="42" max="78" step="1" value="58" oninput="syncBodySlider('thigh')">
+          </div>
+          <div class="body-slider-row">
+            <div class="body-slider-head"><label data-i18n="calfLabel">小腿围 (cm)</label><span class="body-slider-value" id="calfValue">37 cm</span></div>
+            <input type="range" id="calf" min="28" max="52" step="1" value="37" oninput="syncBodySlider('calf')">
+          </div>
+        </div>
+      </div>
+      <div class="body-hidden-measures">
+        <input type="range" id="shoulderShape" min="0" max="100" step="1" value="50">
+        <input type="range" id="torsoShape" min="0" max="100" step="1" value="50">
+        <input type="range" id="bellyShape" min="0" max="100" step="1" value="42">
+        <input type="range" id="pelvisShape" min="0" max="100" step="1" value="48">
+        <input type="range" id="thighShape" min="0" max="100" step="1" value="46">
+        <input type="range" id="calfShape" min="0" max="100" step="1" value="42">
+        <input type="range" id="legRatioShape" min="0" max="100" step="1" value="55">
+        <span id="shoulderShapeValue"></span><span id="torsoShapeValue"></span><span id="bellyShapeValue"></span><span id="pelvisShapeValue"></span><span id="thighShapeValue"></span><span id="calfShapeValue"></span><span id="legRatioShapeValue"></span>
       </div>
 
       <div class="body-issues-section">
@@ -2749,6 +3165,7 @@ async function init(){
       </div>
     </div>`;
   updateTotal();
+  updateBodyModel();
   updateAuthUI();
   loadProfile();
   // 表单渲染完后应用语言
