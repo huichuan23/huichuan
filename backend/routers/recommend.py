@@ -326,25 +326,38 @@ If a user photo is provided, use it only as a body-proportion reference. Do not 
 {language_line}
 Return one vertical image suitable for a 3:4 card.
 """
-    payload = {
-        "contents": [{"parts": image_parts + [{"text": prompt}]}],
-        "generationConfig": {
-            "temperature": 0.35,
-            "responseModalities": ["TEXT", "IMAGE"],
-            "responseFormat": {
-                "image": {"aspectRatio": "3:4"}
+    def payload_for(model):
+        image_config = {"aspectRatio": "3:4"}
+        if "3.1" in model or "3-pro" in model:
+            image_config["imageSize"] = "1K"
+        return {
+            "contents": [{"parts": image_parts + [{"text": prompt}]}],
+            "generationConfig": {
+                "temperature": 0.35,
+                "responseModalities": ["IMAGE"],
+                "responseFormat": {"image": image_config},
             },
-        },
-    }
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_IMAGE_MODEL}:generateContent"
+        }
+
+    models = [GEMINI_IMAGE_MODEL]
+    if GEMINI_IMAGE_MODEL != "gemini-2.5-flash-image":
+        models.append("gemini-2.5-flash-image")
+
+    last_error = ""
+    resp = None
     async with httpx.AsyncClient(timeout=75) as client:
-        resp = await client.post(
-            url,
-            headers={"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"},
-            json=payload,
-        )
-    if not resp.is_success:
-        raise HTTPException(502, f"Gemini image error: {resp.text[:300]}")
+        for model in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            resp = await client.post(
+                url,
+                headers={"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"},
+                json=payload_for(model),
+            )
+            if resp.is_success:
+                break
+            last_error = f"{model}: {resp.text[:300]}"
+    if not resp or not resp.is_success:
+        raise HTTPException(502, f"Gemini image error: {last_error}")
 
     parts = resp.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
     for part in parts:

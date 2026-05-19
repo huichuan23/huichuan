@@ -2175,7 +2175,11 @@ async function generateBodyReferenceImage(opts={}){
         measurements: currentMeasurements(),
       })
     });
-    if(!resp.ok) throw new Error(await resp.text());
+    if(!resp.ok){
+      let detail = await resp.text();
+      try{ detail = JSON.parse(detail).detail || detail; }catch(_){}
+      throw new Error(detail);
+    }
     const data = await resp.json();
     if(data.image_url && img){
       img.src = data.image_url;
@@ -2184,7 +2188,7 @@ async function generateBodyReferenceImage(opts={}){
     }
   }catch(err){
     console.warn('body image generation failed', err);
-    if(status) status.textContent = window._lang === 'en' ? 'Generation failed. Try again later.' : '生成失败，稍后再试';
+    if(status) status.textContent = (window._lang === 'en' ? 'Generation failed: ' : '生成失败：') + (err.message || 'unknown error').slice(0, 120);
   }finally{
     if(btn) btn.disabled = false;
   }
