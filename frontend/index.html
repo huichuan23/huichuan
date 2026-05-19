@@ -369,7 +369,7 @@ const LANG = {
     chestLabel: '胸围 (cm)', waistLabel: '腰围 (cm)', hipLabel: '臀围 (cm)',
     thighLabel: '大腿围 (cm)', calfLabel: '小腿围 (cm)',
     bodyShapeTitle: '捏出你的体型',
-    bodyShapeSub: '先选一个基础体型，再用滑条微调轮廓。',
+    bodyShapeSub: '先选一个基础体型，再用真实围度微调轮廓。',
     bodyPresetSlim: '偏瘦',
     bodyPresetStandard: '标准',
     bodyPresetAthletic: '健壮',
@@ -447,7 +447,7 @@ const LANG = {
     chestLabel: 'Chest (cm)', waistLabel: 'Waist (cm)', hipLabel: 'Hip (cm)',
     thighLabel: 'Thigh (cm)', calfLabel: 'Calf (cm)',
     bodyShapeTitle: 'Shape Your Body',
-    bodyShapeSub: 'Start with a body preset, then fine-tune the silhouette.',
+    bodyShapeSub: 'Start with a body preset, then fine-tune the body with real measurements.',
     bodyPresetSlim: 'Slim',
     bodyPresetStandard: 'Standard',
     bodyPresetAthletic: 'Athletic',
@@ -1974,11 +1974,67 @@ function applyBodyPreset(name){
   applyBodyShape(BODY_SHAPE_PRESETS[name] || BODY_SHAPE_PRESETS.standard);
 }
 
+function refreshAutoShapeIssues(shape){
+  setIssue('shoulder_narrow', shape.shoulder < 36);
+  setIssue('shoulder_wide', shape.shoulder > 68);
+  setIssue('back_wide', shape.torso > 70);
+  setIssue('chest_wide', shape.torso > 70);
+  setIssue('belly', shape.belly > 66);
+  setIssue('belly_lower', shape.belly > 74);
+  setIssue('love_handle', shape.belly > 72);
+  setIssue('waist_thin', shape.belly < 32);
+  setIssue('hip_big', shape.pelvis > 66);
+  setIssue('hip_wide', shape.pelvis > 66);
+  setIssue('thigh_thick', shape.thighShape > 66);
+  setIssue('calf_thick', shape.calfShape > 66);
+  setIssue('leg_short', shape.legRatio < 36);
+  setIssue('leg_long', shape.legRatio > 70);
+  setIssue('tall', shape.legRatio > 78);
+  setIssue('top_heavy', shape.shoulder - shape.pelvis > 28);
+  setIssue('bottom_heavy', shape.pelvis - shape.shoulder > 22);
+  setIssue('body_fit', shape.shoulder > 42 && shape.shoulder < 62 && shape.belly < 55 && shape.pelvis > 40 && shape.pelvis < 62);
+  setIssue('shoulder_good', shape.shoulder >= 52 && shape.shoulder <= 68);
+}
+
 function setIssue(issue, active){
   if(active) window._selectedIssues.add(issue);
   else if(AUTO_SHAPE_ISSUES.has(issue)) window._selectedIssues.delete(issue);
   const btn = document.querySelector(`.body-issue-btn[data-issue="${issue}"]`);
   if(btn) btn.classList.toggle('selected', window._selectedIssues.has(issue));
+}
+
+function shapeFromMeasurements(){
+  const toPct = (value, min, max) => Math.round(((value - min) / (max - min)) * 100);
+  const chest = clampBodyValue('chest', document.getElementById('chest')?.value);
+  const waist = clampBodyValue('waist', document.getElementById('waist')?.value);
+  const hip = clampBodyValue('hip', document.getElementById('hip')?.value);
+  const thigh = clampBodyValue('thigh', document.getElementById('thigh')?.value);
+  const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
+  const legRatio = parseInt(document.getElementById('legRatioShape')?.value || 55);
+  const clampPct = v => Math.max(0, Math.min(100, v));
+  return {
+    shoulder: clampPct(toPct(chest, 78, 116)),
+    torso: clampPct(toPct(chest, 78, 112)),
+    belly: clampPct(toPct(waist, 62, 112)),
+    pelvis: clampPct(toPct(hip, 78, 120)),
+    thighShape: clampPct(toPct(thigh, 44, 76)),
+    calfShape: clampPct(toPct(calf, 30, 52)),
+    legRatio,
+  };
+}
+
+function syncHiddenShapeFromMeasurements(refreshRules=true){
+  const shape = shapeFromMeasurements();
+  Object.entries(BODY_SHAPE_KEYS).forEach(([key,id])=>{
+    const el = document.getElementById(id);
+    const value = document.getElementById(`${id}Value`);
+    if(el) el.value = shape[key];
+    if(value) value.textContent = `${shape[key]}%`;
+  });
+  if(refreshRules){
+    refreshAutoShapeIssues(shape);
+    updateSelectedSummary();
+  }
 }
 
 function updateShapeFromSliders(refreshRules=true){
@@ -1999,26 +2055,7 @@ function updateShapeFromSliders(refreshRules=true){
     if(el && value) value.textContent = `${el.value}%`;
   });
   ['chest','waist','hip','thigh','calf'].forEach(key=>syncBodySlider(key, false));
-
-  setIssue('shoulder_narrow', shape.shoulder < 36);
-  setIssue('shoulder_wide', shape.shoulder > 68);
-  setIssue('back_wide', shape.torso > 70);
-  setIssue('chest_wide', shape.torso > 70);
-  setIssue('belly', shape.belly > 66);
-  setIssue('belly_lower', shape.belly > 74);
-  setIssue('love_handle', shape.belly > 72);
-  setIssue('waist_thin', shape.belly < 32);
-  setIssue('hip_big', shape.pelvis > 66);
-  setIssue('hip_wide', shape.pelvis > 66);
-  setIssue('thigh_thick', shape.thighShape > 66);
-  setIssue('calf_thick', shape.calfShape > 66);
-  setIssue('leg_short', shape.legRatio < 36);
-  setIssue('leg_long', shape.legRatio > 70);
-  setIssue('tall', shape.legRatio > 78);
-  setIssue('top_heavy', shape.shoulder - shape.pelvis > 28);
-  setIssue('bottom_heavy', shape.pelvis - shape.shoulder > 22);
-  setIssue('body_fit', shape.shoulder > 42 && shape.shoulder < 62 && shape.belly < 55 && shape.pelvis > 40 && shape.pelvis < 62);
-  setIssue('shoulder_good', shape.shoulder >= 52 && shape.shoulder <= 68);
+  refreshAutoShapeIssues(shape);
   updateSelectedSummary();
   if(refreshRules) updateBodyRules();
 }
@@ -2042,6 +2079,7 @@ function syncBodySlider(key, refreshRules=true){
   el.value = clampBodyValue(key, el.value);
   const value = document.getElementById(`${key}Value`);
   if(value) value.textContent = `${el.value} cm`;
+  syncHiddenShapeFromMeasurements(refreshRules);
   updateBodyModel();
   if(refreshRules) updateBodyRules();
 }
@@ -2059,62 +2097,63 @@ function updateBodyModel(){
   const calf = clampBodyValue('calf', document.getElementById('calf')?.value);
   const shape = collectBodyShape();
   const cx = 105;
-  const shoulderW = 36 + shape.shoulder * .42;
-  const chestW = 30 + (chest - 72) * .30;
-  const waistW = 20 + (waist - 60) * .25;
-  const hipW = 28 + (hip - 75) * .34;
-  const thighW = 12 + (thigh - 42) * .27;
-  const calfW = 8 + (calf - 28) * .26;
-  const ankleW = Math.max(7, calfW * .62);
-  const footW = Math.max(15, calfW * 1.25);
-  const legShift = (shape.legRatio - 55) * .42;
+  const chestW = 28 + (chest - 72) * .24;
+  const waistW = 17 + (waist - 60) * .23;
+  const hipW = 25 + (hip - 75) * .27;
+  const thighW = 10 + (thigh - 42) * .19;
+  const calfW = 6 + (calf - 28) * .20;
+  const shoulderW = Math.max(chestW + 12, 38 + shape.shoulder * .22);
+  const ankleW = Math.max(5.5, calfW * .58);
+  const footW = Math.max(13, calfW * 1.45);
+  const legShift = (shape.legRatio - 55) * .35;
+  const neckY = 56;
   const shoulderY = 78;
-  const chestY = 118;
-  const waistY = 156;
-  const hipY = 202 - legShift * .25;
-  const crotchY = 226 - legShift * .12;
-  const kneeY = 282 + legShift * .25;
-  const ankleY = 350 + legShift;
-  const footY = 366 + legShift;
-  const neckW = 13;
+  const chestY = 112;
+  const waistY = 158;
+  const hipY = 204 - legShift * .18;
+  const crotchY = 229 - legShift * .08;
+  const kneeY = 286 + legShift * .22;
+  const ankleY = 348 + legShift * .62;
+  const footY = 362 + legShift * .62;
+  const neckW = 11;
   const shoulderL = cx - shoulderW;
   const shoulderR = cx + shoulderW;
   const path = [
-    `M ${cx-neckW} 58`,
-    `C ${cx-24} 64 ${shoulderL+16} ${shoulderY-4} ${shoulderL} ${shoulderY}`,
-    `C ${cx-chestW-8} ${chestY} ${cx-waistW-3} ${waistY-8} ${cx-waistW} ${waistY}`,
-    `C ${cx-waistW-6} ${waistY+22} ${cx-hipW} ${hipY-14} ${cx-hipW} ${hipY}`,
-    `C ${cx-hipW} ${hipY+18} ${cx-thighW-10} ${crotchY+22} ${cx-thighW-8} ${kneeY}`,
-    `C ${cx-thighW-5} ${kneeY+30} ${cx-calfW-4} ${ankleY-20} ${cx-ankleW} ${ankleY}`,
+    `M ${cx-neckW} ${neckY}`,
+    `C ${cx-17} 63 ${shoulderL+15} ${shoulderY-3} ${shoulderL} ${shoulderY}`,
+    `C ${cx-chestW-8} ${chestY-4} ${cx-waistW-5} ${waistY-8} ${cx-waistW} ${waistY}`,
+    `C ${cx-waistW-2} ${waistY+18} ${cx-hipW} ${hipY-12} ${cx-hipW} ${hipY}`,
+    `C ${cx-hipW+1} ${hipY+18} ${cx-thighW-8} ${crotchY+20} ${cx-thighW-7} ${kneeY}`,
+    `C ${cx-thighW-5} ${kneeY+28} ${cx-calfW-3} ${ankleY-20} ${cx-ankleW} ${ankleY}`,
     `C ${cx-footW} ${ankleY+2} ${cx-footW-4} ${footY-3} ${cx-ankleW+3} ${footY}`,
-    `C ${cx-6} ${footY+1} ${cx-7} ${ankleY+2} ${cx-5} ${ankleY-4}`,
-    `C ${cx-4} ${kneeY+30} ${cx-6} ${crotchY+12} ${cx} ${crotchY}`,
-    `C ${cx+6} ${crotchY+12} ${cx+4} ${kneeY+30} ${cx+5} ${ankleY-4}`,
-    `C ${cx+7} ${ankleY+2} ${cx+6} ${footY+1} ${cx+ankleW-3} ${footY}`,
+    `C ${cx-4} ${footY} ${cx-5} ${ankleY+2} ${cx-4} ${ankleY-4}`,
+    `C ${cx-4} ${kneeY+24} ${cx-4} ${crotchY+12} ${cx} ${crotchY}`,
+    `C ${cx+4} ${crotchY+12} ${cx+4} ${kneeY+24} ${cx+4} ${ankleY-4}`,
+    `C ${cx+5} ${ankleY+2} ${cx+4} ${footY} ${cx+ankleW-3} ${footY}`,
     `C ${cx+footW+4} ${footY-3} ${cx+footW} ${ankleY+2} ${cx+ankleW} ${ankleY}`,
-    `C ${cx+calfW+4} ${ankleY-20} ${cx+thighW+5} ${kneeY+30} ${cx+thighW+8} ${kneeY}`,
-    `C ${cx+thighW+10} ${crotchY+22} ${cx+hipW} ${hipY+18} ${cx+hipW} ${hipY}`,
-    `C ${cx+hipW} ${hipY-14} ${cx+waistW+6} ${waistY+22} ${cx+waistW} ${waistY}`,
-    `C ${cx+waistW+3} ${waistY-8} ${cx+chestW+8} ${chestY} ${shoulderR} ${shoulderY}`,
-    `C ${shoulderR-16} ${shoulderY-4} ${cx+24} 64 ${cx+neckW} 58`,
+    `C ${cx+calfW+3} ${ankleY-20} ${cx+thighW+5} ${kneeY+28} ${cx+thighW+7} ${kneeY}`,
+    `C ${cx+thighW+8} ${crotchY+20} ${cx+hipW-1} ${hipY+18} ${cx+hipW} ${hipY}`,
+    `C ${cx+hipW} ${hipY-12} ${cx+waistW+2} ${waistY+18} ${cx+waistW} ${waistY}`,
+    `C ${cx+waistW+5} ${waistY-8} ${cx+chestW+8} ${chestY-4} ${shoulderR} ${shoulderY}`,
+    `C ${shoulderR-15} ${shoulderY-3} ${cx+17} 63 ${cx+neckW} ${neckY}`,
   ].join(' ');
   outline.setAttribute('d', path);
   if(leftArm){
     leftArm.setAttribute('d', [
       `M ${shoulderL} ${shoulderY}`,
-      `C ${shoulderL-12} ${shoulderY+22} ${shoulderL-22} 124 ${shoulderL-30} 166`,
-      `C ${shoulderL-34} 190 ${shoulderL-28} 207 ${shoulderL-20} 214`,
-      `C ${shoulderL-12} 207 ${shoulderL-13} 190 ${shoulderL-9} 170`,
-      `C ${shoulderL-3} 136 ${shoulderL+10} 108 ${cx-chestW-3} ${chestY}`
+      `C ${shoulderL-13} ${shoulderY+28} ${shoulderL-21} 138 ${shoulderL-25} 176`,
+      `C ${shoulderL-29} 208 ${shoulderL-23} 232 ${shoulderL-15} 237`,
+      `C ${shoulderL-8} 230 ${shoulderL-9} 207 ${shoulderL-5} 180`,
+      `C ${shoulderL-1} 144 ${shoulderL+9} 114 ${cx-chestW-4} ${chestY}`
     ].join(' '));
   }
   if(rightArm){
     rightArm.setAttribute('d', [
       `M ${shoulderR} ${shoulderY}`,
-      `C ${shoulderR+12} ${shoulderY+22} ${shoulderR+22} 124 ${shoulderR+30} 166`,
-      `C ${shoulderR+34} 190 ${shoulderR+28} 207 ${shoulderR+20} 214`,
-      `C ${shoulderR+12} 207 ${shoulderR+13} 190 ${shoulderR+9} 170`,
-      `C ${shoulderR+3} 136 ${shoulderR-10} 108 ${cx+chestW+3} ${chestY}`
+      `C ${shoulderR+13} ${shoulderY+28} ${shoulderR+21} 138 ${shoulderR+25} 176`,
+      `C ${shoulderR+29} 208 ${shoulderR+23} 232 ${shoulderR+15} 237`,
+      `C ${shoulderR+8} 230 ${shoulderR+9} 207 ${shoulderR+5} 180`,
+      `C ${shoulderR+1} 144 ${shoulderR-9} 114 ${cx+chestW+4} ${chestY}`
     ].join(' '));
   }
   if(innerLeg){
@@ -2841,42 +2880,36 @@ async function init(){
         </div>
         <div class="body-slider-stack">
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="shoulderLabel">肩宽</label><span class="body-slider-value" id="shoulderShapeValue">50%</span></div>
-            <input type="range" id="shoulderShape" min="0" max="100" step="1" value="50" oninput="updateShapeFromSliders()">
+            <div class="body-slider-head"><label data-i18n="chestLabel">胸围 (cm)</label><span class="body-slider-value" id="chestValue">90 cm</span></div>
+            <input type="range" id="chest" min="72" max="125" step="1" value="90" oninput="syncBodySlider('chest')">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="torsoLabel">胸背厚度</label><span class="body-slider-value" id="torsoShapeValue">50%</span></div>
-            <input type="range" id="torsoShape" min="0" max="100" step="1" value="50" oninput="updateShapeFromSliders()">
+            <div class="body-slider-head"><label data-i18n="waistLabel">腰围 (cm)</label><span class="body-slider-value" id="waistValue">75 cm</span></div>
+            <input type="range" id="waist" min="60" max="120" step="1" value="75" oninput="syncBodySlider('waist')">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="bellyLabel">腰腹</label><span class="body-slider-value" id="bellyShapeValue">42%</span></div>
-            <input type="range" id="bellyShape" min="0" max="100" step="1" value="42" oninput="updateShapeFromSliders()">
+            <div class="body-slider-head"><label data-i18n="hipLabel">臀围 (cm)</label><span class="body-slider-value" id="hipValue">95 cm</span></div>
+            <input type="range" id="hip" min="75" max="125" step="1" value="95" oninput="syncBodySlider('hip')">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="pelvisLabel">臀胯</label><span class="body-slider-value" id="pelvisShapeValue">48%</span></div>
-            <input type="range" id="pelvisShape" min="0" max="100" step="1" value="48" oninput="updateShapeFromSliders()">
+            <div class="body-slider-head"><label data-i18n="thighLabel">大腿围 (cm)</label><span class="body-slider-value" id="thighValue">58 cm</span></div>
+            <input type="range" id="thigh" min="42" max="78" step="1" value="58" oninput="syncBodySlider('thigh')">
           </div>
           <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="thighShapeLabel">大腿</label><span class="body-slider-value" id="thighShapeValue">46%</span></div>
-            <input type="range" id="thighShape" min="0" max="100" step="1" value="46" oninput="updateShapeFromSliders()">
-          </div>
-          <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="calfShapeLabel">小腿</label><span class="body-slider-value" id="calfShapeValue">42%</span></div>
-            <input type="range" id="calfShape" min="0" max="100" step="1" value="42" oninput="updateShapeFromSliders()">
-          </div>
-          <div class="body-slider-row">
-            <div class="body-slider-head"><label data-i18n="legRatioLabel">腿长比例</label><span class="body-slider-value" id="legRatioShapeValue">55%</span></div>
-            <input type="range" id="legRatioShape" min="0" max="100" step="1" value="55" oninput="updateShapeFromSliders()">
+            <div class="body-slider-head"><label data-i18n="calfLabel">小腿围 (cm)</label><span class="body-slider-value" id="calfValue">37 cm</span></div>
+            <input type="range" id="calf" min="28" max="52" step="1" value="37" oninput="syncBodySlider('calf')">
           </div>
         </div>
       </div>
       <div class="body-hidden-measures">
-        <input type="range" id="chest" min="72" max="125" step="1" value="90">
-        <input type="range" id="waist" min="60" max="120" step="1" value="75">
-        <input type="range" id="hip" min="75" max="125" step="1" value="95">
-        <input type="range" id="thigh" min="42" max="78" step="1" value="58">
-        <input type="range" id="calf" min="28" max="52" step="1" value="37">
-        <span id="chestValue"></span><span id="waistValue"></span><span id="hipValue"></span><span id="thighValue"></span><span id="calfValue"></span>
+        <input type="range" id="shoulderShape" min="0" max="100" step="1" value="50">
+        <input type="range" id="torsoShape" min="0" max="100" step="1" value="50">
+        <input type="range" id="bellyShape" min="0" max="100" step="1" value="42">
+        <input type="range" id="pelvisShape" min="0" max="100" step="1" value="48">
+        <input type="range" id="thighShape" min="0" max="100" step="1" value="46">
+        <input type="range" id="calfShape" min="0" max="100" step="1" value="42">
+        <input type="range" id="legRatioShape" min="0" max="100" step="1" value="55">
+        <span id="shoulderShapeValue"></span><span id="torsoShapeValue"></span><span id="bellyShapeValue"></span><span id="pelvisShapeValue"></span><span id="thighShapeValue"></span><span id="calfShapeValue"></span><span id="legRatioShapeValue"></span>
       </div>
 
       <div class="body-issues-section">
