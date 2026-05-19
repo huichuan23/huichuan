@@ -179,9 +179,16 @@
   .measure-item input{width:100%;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink);outline:none;}
   .measure-item input:focus{border-color:var(--ink);}
   .body-model-panel{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:center;margin-bottom:18px;}
-  .body-model-card{border:1px solid var(--border);border-radius:16px;background:#fbfaf7;padding:14px;min-height:360px;display:flex;align-items:center;justify-content:center;}
+  .body-model-card{border:1px solid var(--border);border-radius:16px;background:#fbfaf7;padding:14px;min-height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
   .body-outline{width:210px;height:330px;overflow:visible;}
   .body-outline path,.body-outline ellipse{fill:none;stroke:#171717;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;}
+  .body-generated-img{display:none;width:100%;max-width:220px;aspect-ratio:3/4;object-fit:contain;border-radius:12px;background:#fff;border:1px solid var(--border);}
+  .body-model-card.has-generated .body-outline{display:none;}
+  .body-model-card.has-generated .body-generated-img{display:block;}
+  .body-image-btn{min-height:34px;padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--ink);font-size:12px;font-family:inherit;cursor:pointer;}
+  .body-image-btn:hover{border-color:var(--ink);}
+  .body-image-btn:disabled{opacity:.5;cursor:not-allowed;}
+  .body-image-status{min-height:16px;font-size:11px;color:var(--muted);text-align:center;line-height:1.4;}
   .body-slider-stack{display:grid;gap:10px;}
   .body-slider-row{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
   .body-slider-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;}
@@ -389,7 +396,7 @@ const LANG = {
     step1Label: '第一步：选择你想改善的部位',
     upperBtn: '👆 上半身', lowerBtn: '👇 下半身',
     overallBtn: '📐 整体比例', advBtn: '✨ 我的优势',
-    photoHint: '📸 照片仅在本地使用，不会上传或保存',
+    photoHint: '📸 照片仅用于 AI 体型分析，不会保存',
     // 表单
     formTitle: '基本信息与偏好',
     ageLabel: '年龄', heightLabel: '身高 (cm)', weightLabel: '体重 (kg)',
@@ -467,7 +474,7 @@ const LANG = {
     step1Label: 'Step 1: Select areas to improve',
     upperBtn: '👆 Upper Body', lowerBtn: '👇 Lower Body',
     overallBtn: '📐 Proportions', advBtn: '✨ My Strengths',
-    photoHint: '📸 Photos are used locally only, never uploaded',
+    photoHint: '📸 Photos are used only for AI body analysis and are not saved',
     formTitle: 'Basic Info & Preferences',
     ageLabel: 'Age', heightLabel: 'Height (cm)', weightLabel: 'Weight (kg)',
     skinLabel: 'Skin Tone', faceLabel: 'Face Shape', sceneLabel: 'Occasion', styleLabel: 'Style',
@@ -858,7 +865,7 @@ function applyLang(){
     '❤️ 我喜欢的穿搭': '❤️ My Liked Outfits',
     '全部看完了！': 'All done!',
     '重新看一遍': 'See again',
-    '照片仅用于本地分析，不会上传或保存': 'Photos are used locally only, never uploaded',
+    '照片仅用于 AI 体型分析，不会保存': 'Photos are used only for AI body analysis and are not saved',
   };
   const textMap_en = Object.fromEntries(Object.entries(textMap_zh).map(([k,v])=>[v,k]));
   const textMap = lang === 'en' ? textMap_zh : textMap_en;
@@ -1354,24 +1361,21 @@ async function getRecommend(){
     // 第一步：体型分析（如果有照片或三围数据）
     let bodyAnalysis = window._bodyAnalysis || '';
     const frontFile = document.getElementById('frontPhotoInput')?.files[0];
+    const sideFile = document.getElementById('sidePhotoInput')?.files[0];
     const hasMeasurements = Object.values(measurements).some(v=>v);
 
-    if((frontFile || hasMeasurements) && !bodyAnalysis){
+    if((frontFile || sideFile || hasMeasurements) && !bodyAnalysis){
       setStep(1);
       if(statusEl) statusEl.textContent = t('statusAnalyzing');
 
       try{
-        const toB64 = f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});
-        const frontB64 = frontFile ? await toB64(frontFile) : null;
+        const imageMessages = await collectBodyPhotoMessages();
 
         const resp = await fetch(`${BACKEND}/api/analyze-body`,{
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({
-            messages: frontB64 ? [{role:'user',content:[
-              {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frontB64.split(',')[1]}},
-              {type:'text',text:'分析体型'}
-            ]}] : [],
+            messages: imageMessages,
             language: window._lang,
             height: h+'', weight: w+'',
             chest: measurements.chest, waist: measurements.waist,
@@ -1416,6 +1420,9 @@ async function getRecommend(){
             if(analysisEl){ analysisEl.classList.add('show'); }
             if(textEl){ textEl.textContent = mainText; }
             if(tagsEl){ tagsEl.innerHTML = tags.map(t=>`<span class="analysis-tag">${t}</span>`).join(''); }
+          }
+          if(d.source === 'gemini' && imageMessages.length){
+            generateBodyReferenceImage({messages:imageMessages});
           }
         }
       }catch(e){
@@ -2102,7 +2109,85 @@ function syncBodySlider(key, refreshRules=true){
   if(value) value.textContent = `${el.value} cm`;
   syncHiddenShapeFromMeasurements(refreshRules);
   updateBodyModel();
+  if(refreshRules && document.querySelector('.body-model-card')?.classList.contains('has-generated')){
+    const status = document.getElementById('bodyImageStatus');
+    if(status) status.textContent = window._lang === 'en' ? 'Measurements changed. Regenerate to update the image.' : '围度已调整，点击重新生成体型图';
+  }
   if(refreshRules) updateBodyRules();
+}
+
+function fileToDataUrl(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function collectBodyPhotoMessages(){
+  const items = [];
+  const photos = [
+    {file: document.getElementById('frontPhotoInput')?.files?.[0], label: 'front full-body photo'},
+    {file: document.getElementById('sidePhotoInput')?.files?.[0], label: 'side full-body photo'},
+  ];
+  for(const item of photos){
+    if(!item.file) continue;
+    const dataUrl = await fileToDataUrl(item.file);
+    items.push({
+      type: 'image',
+      source: {
+        type: 'base64',
+        media_type: item.file.type || 'image/jpeg',
+        data: dataUrl.split(',')[1],
+      }
+    });
+    items.push({type:'text', text:item.label});
+  }
+  return items.length ? [{role:'user', content:items}] : [];
+}
+
+function currentMeasurements(){
+  return Object.fromEntries(['chest','waist','hip','thigh','calf'].map(key=>[
+    key,
+    document.getElementById(key)?.value || ''
+  ]));
+}
+
+async function generateBodyReferenceImage(opts={}){
+  const btn = document.getElementById('bodyImageBtn');
+  const status = document.getElementById('bodyImageStatus');
+  const img = document.getElementById('bodyGeneratedImage');
+  const card = document.querySelector('.body-model-card');
+  if(btn) btn.disabled = true;
+  if(status) status.textContent = window._lang === 'en' ? 'Generating body reference...' : '正在生成体型图...';
+  try{
+    const messages = opts.messages || await collectBodyPhotoMessages();
+    const resp = await fetch(`${BACKEND}/api/generate-body-image`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        messages,
+        language: window._lang,
+        height: document.getElementById('height')?.value || '',
+        weight: document.getElementById('weight')?.value || '',
+        analysis: window._bodyAnalysis || '',
+        measurements: currentMeasurements(),
+      })
+    });
+    if(!resp.ok) throw new Error(await resp.text());
+    const data = await resp.json();
+    if(data.image_url && img){
+      img.src = data.image_url;
+      if(card) card.classList.add('has-generated');
+      if(status) status.textContent = window._lang === 'en' ? 'AI body reference generated' : 'AI 体型图已生成';
+    }
+  }catch(err){
+    console.warn('body image generation failed', err);
+    if(status) status.textContent = window._lang === 'en' ? 'Generation failed. Try again later.' : '生成失败，稍后再试';
+  }finally{
+    if(btn) btn.disabled = false;
+  }
 }
 
 function updateBodyModel(){
@@ -2891,6 +2976,7 @@ async function init(){
       </div>
       <div class="body-model-panel">
         <div class="body-model-card">
+          <img class="body-generated-img" id="bodyGeneratedImage" alt="AI body reference">
           <svg class="body-outline" viewBox="0 0 210 370" aria-label="body outline preview">
             <ellipse id="bodyHead" cx="105" cy="32" rx="20" ry="25"></ellipse>
             <path id="bodyOutlinePath"></path>
@@ -2898,6 +2984,8 @@ async function init(){
             <path id="bodyRightArmPath"></path>
             <path id="bodyInnerLegPath"></path>
           </svg>
+          <button class="body-image-btn" id="bodyImageBtn" onclick="generateBodyReferenceImage()">AI 生成体型图</button>
+          <div class="body-image-status" id="bodyImageStatus"></div>
         </div>
         <div class="body-slider-stack">
           <div class="body-slider-row">
@@ -3074,7 +3162,7 @@ async function init(){
         <div class="analysis-result-text" id="bodyAnalysisText"></div>
         <div class="analysis-tags" id="bodyAnalysisTags"></div>
       </div>
-      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" data-i18n="photoHint">📸 照片仅在本地使用，不会上传或保存</div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" data-i18n="photoHint">📸 照片仅用于 AI 体型分析，不会保存</div>
     </div>
 
     <div class="card form-card">
