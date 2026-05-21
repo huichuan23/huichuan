@@ -107,6 +107,16 @@ def get_stats(db: Session = Depends(get_db)):
     }
 
 
+@router.delete("/products")
+def clear_products(
+    db: Session = Depends(get_db),
+    _: None = Depends(require_admin)
+):
+    deleted = db.query(Product).delete(synchronize_session=False)
+    db.commit()
+    return {"message": "products cleared", "deleted": deleted}
+
+
 @router.post("/products/import")
 def import_products(
     background_tasks: BackgroundTasks,
