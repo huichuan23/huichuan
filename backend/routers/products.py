@@ -24,7 +24,16 @@ def require_admin(x_admin_key: Optional[str] = Header(default=None)):
     if not ADMIN_API_KEY:
         raise HTTPException(status_code=403, detail="Admin API is disabled")
     if x_admin_key != ADMIN_API_KEY:
-        raise HTTPException(status_code=403, detail="Invalid admin key")
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error": "Invalid admin key",
+                "configured": bool(ADMIN_API_KEY),
+                "received": bool(x_admin_key),
+                "expected_length": len(ADMIN_API_KEY),
+                "received_length": len(x_admin_key or ""),
+            },
+        )
 
 
 def get_import_json_path() -> Path:
